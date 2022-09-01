@@ -68,6 +68,6 @@ jobs:
     - name: 上传
       run: ftp 113.88.226.167:56001
     - name: awa
-    run:
+      run:
            send "D:\a\BianCore\BianCore\bin\Debug\netstandard2.0\Bian.dll"
 
