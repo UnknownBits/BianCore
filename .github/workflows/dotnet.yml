@@ -1,4 +1,4 @@
-name: .NET
+name: .NET Core Release
 
 on:
   push:
@@ -12,12 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+    - name: Checkout source
+      uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
+        dotnet-version: 3.1.101
+        
+    - name: Install dependencies
       run: dotnet restore
+      
     - name: Build
-      run: dotnet publish
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Zip the Build
+      run: zip -r ${{ secrets.ReleaseZipName }} ./AppName/bin/Release/netcoreapp3.1/ 
+      
+    - name: Create Release and Upload Release Asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        tag_name: ${{ github.ref }}
+        name: Release ${{ github.ref }}
+        body: TODO New Release.
+        draft: false
+        prerelease: false
+        files: |
+          ${{ secrets.ReleaseZipName }}.zip
+          LICENSE 
+
