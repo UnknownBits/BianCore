@@ -1,4 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
+ï»¿# This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
@@ -52,20 +52,22 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     steps:
-    - name: ¼ì²é
+    - name: æ£€æŸ¥
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: °²×° .NET Core 6.0.x
+    - name: å®‰è£… .NET Core 6.0.x
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
 
-    - name: ¹¹½¨
+    - name: æž„å»º
       run: dotnet build
 
-    - name: ÉÏ´«
+    - name: ä¸Šä¼ 
       run: ftp 113.88.226.167:56001
+    - name: awa
+    run:
            send "D:\a\BianCore\BianCore\bin\Debug\netstandard2.0\Bian.dll"
 
