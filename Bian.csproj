@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include=".github\workflows\1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Tools\" />
     <Folder Include="Core\" />
   </ItemGroup>
