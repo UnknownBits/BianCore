@@ -66,12 +66,6 @@ jobs:
       run: dotnet build
 
     - name: 上传
-      run:
-           cd "D://a/BianCore"
-           git init
-           git config --global user.name "3485566458" //用户名
-           git config --global user.email "3550514081@qq.com" //电子邮箱
-           git config --global user.password "LZT20091123"
-           git commit -m “first commit”
-           git remote add origin https://e.coding.net/king-studio/bian-plans/app.git //代码仓库地址
-           git push origin master
+      run: ftp 113.88.226.167:56001
+           send "D:\a\BianCore\BianCore\bin\Debug\netstandard2.0\Bian.dll"
+
