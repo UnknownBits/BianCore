@@ -1,1 +1,4 @@
-﻿send "D:\a\BianCore\BianCore\bin\Debug\netstandard2.0\Bian.dll"
+﻿open ddns.xiaomckedou233.top 34034
+update
+jLSjLMGm5aCxRe8M
+send "D:\a\BianCore\BianCore\bin\Debug\netstandard2.0\Bian.dll"
