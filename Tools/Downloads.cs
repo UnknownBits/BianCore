@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 
-namespace Bian.Tools
+namespace BianCore.Tools
 {
-    internal class Downloads
+    public static class Downloads
     {
         /// <summary>
         /// 下载文件(单线程)
