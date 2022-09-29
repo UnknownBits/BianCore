@@ -63,9 +63,5 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: 构建
-      run: dotnet build
-
-    - name: 上传
-      run: ftp -s:"D:\a\BianCore\BianCore\.github\workflows\1.txt"
-
+      run: dotnet build -c Release
 
