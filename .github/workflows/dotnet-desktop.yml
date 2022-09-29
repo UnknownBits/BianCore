@@ -63,5 +63,5 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: 构建
-      run: dotnet build -c Release
+      run: dotnet build
 
