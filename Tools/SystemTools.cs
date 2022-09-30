@@ -40,46 +40,93 @@ namespace BianCore.Tools
 
         public static string GetCPUID()
         {
-            ManagementClass mc = new ManagementClass("win32_processor");
-            ManagementObjectCollection moc = mc.GetInstances();
-            string date = null;
-            foreach (ManagementObject mo in moc)
+            try
             {
-                date += mo["processorid"].ToString();
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                {
+                    ManagementClass mc = new ManagementClass("win32_processor");
+                    ManagementObjectCollection moc = mc.GetInstances();
+                    string date = null;
+                    foreach (ManagementObject mo in moc)
+                    {
+                        date += mo["processorid"].ToString();
+                    }
+                    return date;
+                }
+                else return null;
             }
-            return date;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message.ToString());
+                return null;
+            }
         }
         public static string GetCPUName()
         {
-            ManagementClass mc = new ManagementClass("win32_processor");
-            ManagementObjectCollection moc = mc.GetInstances();
-            string date = null;
-            foreach (ManagementObject mo in moc)
+            try
             {
-                date += mo["Name"].ToString();
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                {
+                    ManagementClass mc = new ManagementClass("win32_processor");
+                    ManagementObjectCollection moc = mc.GetInstances();
+                    string date = null;
+                    foreach (ManagementObject mo in moc)
+                    {
+                        date += mo["Name"].ToString();
+                    }
+                    return date;
+                }
+                else return null;
             }
-            return date;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message.ToString());
+                return null;
+            }
         }
         public static string GetHardDiskID()
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMedia");
-            string date = null;
-            foreach (ManagementObject mo in searcher.Get())
+            try
             {
-                date = mo["SerialNumber"].ToString().Trim();
-                break;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                {
+                    ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
+                    string date = null;
+                    foreach (ManagementObject FlashDeviceObject in FlashDevice.Get())
+                    {
+                        date = FlashDeviceObject["name"].ToString();
+                    }
+                    return date;
+                }
+                else return null;
             }
-            return date;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message.ToString());
+                return null;
+            }
         }
         public static string GetDisplayName()
         {
-            ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
-            string date = null;
-            foreach (ManagementObject FlashDeviceObject in FlashDevice.Get())
+            try
             {
-                date = FlashDeviceObject["name"].ToString();
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                {
+                    ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
+                    string date = null;
+                    foreach (ManagementObject FlashDeviceObject in FlashDevice.Get())
+                    {
+                        date = FlashDeviceObject["name"].ToString();
+                    }
+                    return date;
+                }
+                else return null;
             }
-            return date;
+            catch( Exception ex )
+            {
+                Console.WriteLine(ex.Message.ToString());
+                return null;
+            }
         }
 
     }
