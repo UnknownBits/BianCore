@@ -12,10 +12,10 @@ namespace BianCore.Tools
     public static class Network
     {
         /// <summary>
-        /// Get请求
+        /// HttpGet请求
         /// </summary>
         /// <param name="url">请求地址</param>
-        /// <param name="Timeout">超时时间默认两分钟</param>
+        /// <param name="Timeout">超时时间(可选)</param>
         /// <returns></returns>
         public static string HttpGet(string url, int Timeout = 120000)
         {
@@ -33,10 +33,9 @@ namespace BianCore.Tools
 
             return retString;
         }
-
-        private static HttpListener listener = new HttpListener();
         public static string Server()
         {
+            HttpListener listener = new HttpListener();
             string[] prefixes = new string[] { "http://localhost:12000/" }; 
             while (true)
             {

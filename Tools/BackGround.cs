@@ -7,19 +7,17 @@ namespace BianCore.Tools
 {
     public static class BackGround
     {
-
-
-        public static class Bing_BackGround
+        public static class Bing
         {
             public static string Link()
             {
-                Regex regex = new Regex("\"url\":\"(?<Url>.*?)\"", RegexOptions.IgnoreCase);
-                return "https://cn.bing.com" + regex.Matches(Core.Config.BingBackGroud_Data.ToString())[0].Groups["Url"].Value.ToString();
+                return new Regex("\"url\":\"(?<Url>.*?)\"", RegexOptions.IgnoreCase).Match(BianCore.Core.Config.BingBackGroud_Data.ToString()).Groups["Url"].Value.ToString();
             }
+
+
             public static string Title()
             {
-                Regex regex = new Regex("\"title\":\"(?<title>.*?)\"", RegexOptions.IgnoreCase);
-                return regex.Matches(Core.Config.BingBackGroud_Data.ToString())[0].Groups["title"].Value.ToString();
+                return new Regex("\"title\":\"(?<title>.*?)\"", RegexOptions.IgnoreCase).Match(BianCore.Core.Config.BingBackGroud_Data.ToString()).Groups["title"].Value.ToString();
             }
         }
     }
