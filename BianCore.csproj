@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,MC</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.0.0-Alpha</Version>
+    <Version>1.0.1.0-Alpha</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
@@ -44,7 +44,7 @@
 
   <ItemGroup>
     <Folder Include=".github\workflows\" />
-    <Folder Include="Tools\API\" />
+    <Folder Include="Tools\Hiper\" />
   </ItemGroup>
 
 </Project>

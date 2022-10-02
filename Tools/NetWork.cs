@@ -33,7 +33,8 @@ namespace BianCore.Tools
 
             return retString;
         }
-        public static string Server()
+
+        public static string ListenServer()
         {
             HttpListener listener = new HttpListener();
             string[] prefixes = new string[] { "http://localhost:12000/" }; 
@@ -64,14 +65,14 @@ namespace BianCore.Tools
                     //等待请求连接
                     //没有请求则GetContext处于阻塞状态
                     HttpListenerContext ctx = listener.GetContext();
-                    string a = TaskProc(ctx);
+                    string a = ServerCore(ctx);
                     Console.Write(a);
                     return a;
                 }
             }
         }
 
-        public static string TaskProc(object o)
+        public static string ServerCore(object o)
         {
             HttpListenerContext ctx = (HttpListenerContext)o;
 
@@ -93,7 +94,11 @@ namespace BianCore.Tools
             }
         }
 
-        // Get 请求
+        /// <summary>
+        /// Get 请求
+        /// </summary>
+        /// <param name="IP">需要Ping的IP</param>
+        /// <returns> PingReply </returns>
         public static async Task<PingReply> Ping(string IP)
         {
             var pingReply = await Task.Run(() => {
