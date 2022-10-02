@@ -14,6 +14,10 @@ namespace BianCore.Tools.API
                 {
                     return Tools.Network.HttpGet("https://api.modrinth.com/v2/search");
                 }
+                catch (Exception ex) 
+                { 
+                    return null; 
+                }
             }
 
         }
