@@ -35,7 +35,7 @@ namespace BianCore.Tools
             {
                 return "MacOS";
             }
-            else return "error";
+            else return "Error";
         }
 
         public static string GetCPUID()
