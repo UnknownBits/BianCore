@@ -53,6 +53,7 @@ namespace BianCore.Tools.Hiper
             // 下载 Hiper 本体并验证哈希
             if (os == "Windows")
             {
+                // 下载本体
                 string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper.exe";
                 Downloads.Plan1(remotePath, "%AppData%\\BianCore\\hiper.exe");
                 string hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\hiper.exe");
@@ -63,6 +64,23 @@ namespace BianCore.Tools.Hiper
 
                 // 下载 WinTun
                 remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/wintun.dll";
+                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\wintun.dll");
+                hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\wintun.dll");
+                if (hash != HashMap[remotePath])
+                {
+                    throw new NotImplementedException("The file hash value is incorrect.");
+                }
+            }
+            else
+            {
+                // 下载本体
+                string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper";
+                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\hiper");
+                string hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\hiper");
+                if (hash != HashMap[remotePath])
+                {
+                    throw new NotImplementedException("The file hash value is incorrect.");
+                }
             }
         }
     }
