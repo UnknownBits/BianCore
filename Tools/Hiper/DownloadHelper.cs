@@ -46,7 +46,7 @@ namespace BianCore.Tools.Hiper
             string Arc = ArchitectureMap[Architecture];
 
             // 获取哈希信息
-            string HashListStr = Network.HttpGet(Config.Hiper_Packages_URL);
+            string HashListStr = Network.HttpGet(Config.Hiper_HashMap_URL);
             GetHashMap(HashListStr);
 
             // 下载 Hiper 本体并验证哈希

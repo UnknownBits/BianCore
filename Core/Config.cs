@@ -31,6 +31,6 @@ namespace BianCore.Core
         public static string Music = WorkPath() + @"\Music\";
         public static JObject BingBackGroud_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         public const string Hiper_Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
-        public const string Hiper_Packages_URL = Hiper_Download_URL + "packages.sha1";
+        public const string Hiper_HashMap_URL = Hiper_Download_URL + "packages.sha1";
     }
 }
