@@ -1,19 +1,21 @@
-﻿using System;
+﻿using Flurl;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BianCore.Tools.API
 {
     public static class Bing
     {
-        public static string Link()
+        public static string Url()
         {
             try
             {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                return new Regex("\"url\":\"(?<Url>.*?)\"", RegexOptions.IgnoreCase).Match(BianCore.Core.Config.BingBackGroud_Data.ToString()).Groups["Url"].Value.ToString();
+                return "https://cn.bing.com" + (string)Core.Config.BingBackGroud_Data["images"][0]["url"];
+
             }
             catch (Exception ex)
             {
@@ -22,12 +24,22 @@ namespace BianCore.Tools.API
             }
 
         }
-
+        public static string Urlbase()
+        {
+            try
+            {
+                return "https://cn.bing.com" + (string)Core.Config.BingBackGroud_Data["images"][0]["urlbase"];
+            } 
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         public static string Copyright()
         {
             try
             {
-                return new Regex("\"copyright\":\"(?<Copyright>.*?)\"", RegexOptions.IgnoreCase).Match(BianCore.Core.Config.BingBackGroud_Data.ToString()).Groups["Copyright"].Value.ToString();
+                return (string)Core.Config.BingBackGroud_Data["images"][0]["copyright"];
             }
             catch (Exception ex)
             {
@@ -39,7 +51,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return new Regex("\"title\":\"(?<Title>.*?)\"", RegexOptions.IgnoreCase).Match(BianCore.Core.Config.BingBackGroud_Data.ToString()).Groups["Title"].Value.ToString();
+                return (string)Core.Config.BingBackGroud_Data["images"][0]["title"];
 
             }
             catch (Exception ex)

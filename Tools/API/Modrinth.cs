@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BianCore.Tools.API
 {
@@ -8,18 +11,11 @@ namespace BianCore.Tools.API
     {
         public class V2
         {
-            public string Search()
+            public JToken Search()
             {
-                try
-                {
-                    return Tools.Network.HttpGet("https://api.modrinth.com/v2/search");
-                }
-                catch (Exception ex) 
-                { 
-                    return null; 
-                }
+                var JsData = Json.Str_to_Json(Network.HttpGet("https://api.modrinth.com/v2/search"))["hits"];
+                return JsData;
             }
-
         }
     }
 }
