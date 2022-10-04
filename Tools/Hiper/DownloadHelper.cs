@@ -37,9 +37,9 @@ namespace BianCore.Tools.Hiper
         /// <summary>
         /// 下载 Hiper。
         /// </summary>
-        /// <param name="architecture">系统架构。</param>
-        /// <returns></returns>
-        public static void DownloadHiper(Architecture Architecture)
+        /// <param name="Architecture">系统架构。</param>
+        /// <returns>Hiper 主文件路径。</returns>
+        public static string DownloadHiper(Architecture Architecture)
         {
             // 获取架构，版本信息
             string OS = SystemTools.GetOSVersion();
@@ -69,6 +69,8 @@ namespace BianCore.Tools.Hiper
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
+
+                return Config.WorkPath() + "hiper.exe";
             }
             else
             {
@@ -80,13 +82,15 @@ namespace BianCore.Tools.Hiper
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
+
+                return Config.WorkPath() + "hiper";
             }
         }
 
         public static void DownloadCert(string code)
         {
             string url = $"https://cert.mcer.cn/{code}.yml";
-            Downloads.Plan1(url,);
+            Downloads.Plan1(url, Config.WorkPath() + "config.yml");
         }
     }
 }
