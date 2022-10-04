@@ -14,15 +14,15 @@ namespace BianCore.Core
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
             {
-                return @"%AppData%/";
+                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
             {
-                return @"/Applications/";
+                return @"/Applications";
             }
             else
             {
-                return @"/usr/";
+                return @"/usr";
             }
         }
         public static string WorkPath()
@@ -48,7 +48,8 @@ namespace BianCore.Core
         internal static class Hiper
         {
 
-            public static string WorkPath = Config.RootPath() + "/hiper";
+            public static string WorkPath = RootPath() + "/hiper";
+            public static string CertsPath = WorkPath + "/certs";
             public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
             public const string HashMap_URL = Download_URL + "packages.sha1";
         }
