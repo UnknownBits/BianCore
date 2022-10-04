@@ -39,21 +39,21 @@ namespace BianCore.Tools.Hiper
         /// </summary>
         /// <param name="architecture">系统架构。</param>
         /// <returns></returns>
-        public static void DownloadHiper(Architecture architecture)
+        public static void DownloadHiper(Architecture Architecture)
         {
             // 获取架构，版本信息
-            string os = SystemTools.GetOSVersion();
-            string arc = ArchitectureMap[architecture];
+            string OS = SystemTools.GetOSVersion();
+            string Arc = ArchitectureMap[Architecture];
 
             // 获取哈希信息
-            string hashListStr = Network.HttpGet(Config.Hiper_Packages_URL);
-            GetHashMap(hashListStr);
+            string HashListStr = Network.HttpGet(Config.Hiper_Packages_URL);
+            GetHashMap(HashListStr);
 
             // 下载 Hiper 本体并验证哈希
-            if (os == "Windows")
+            if (OS == "Windows")
             {
                 // 下载本体
-                string remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/hiper.exe";
+                string remotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/hiper.exe";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "hiper.exe");
                 string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
                 if (hash != HashMap[remotePath])
@@ -62,7 +62,7 @@ namespace BianCore.Tools.Hiper
                 }
 
                 // 下载 WinTun
-                remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/wintun.dll";
+                remotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/wintun.dll";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "wintun.dll");
                 hash = HashTools.GetFileSHA1(Config.WorkPath() + "wintun.dll");
                 if (hash != HashMap[remotePath])
@@ -73,10 +73,10 @@ namespace BianCore.Tools.Hiper
             else
             {
                 // 下载本体
-                string remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/hiper";
-                Downloads.Plan1(remotePath, Config.WorkPath() + "hiper");
-                string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
-                if (hash != HashMap[remotePath])
+                string RemotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/hiper";
+                Downloads.Plan1(RemotePath, Config.WorkPath() + "hiper");
+                string Hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
+                if (Hash != HashMap[RemotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
@@ -86,7 +86,6 @@ namespace BianCore.Tools.Hiper
         public static void DownloadCert(string code)
         {
             string url = $"https://cert.mcer.cn/{code}.yml";
-
         }
     }
 }
