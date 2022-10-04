@@ -30,7 +30,7 @@ namespace BianCore.Tools.Hiper
             foreach (string hash in hashs)
             {
                 string[] keyValue = hash.Split(' ');
-                HashMap.Add(keyValue[1], keyValue[0]);
+                HashMap.Add(keyValue[2], keyValue[0]);
             }
         }
 
@@ -53,7 +53,7 @@ namespace BianCore.Tools.Hiper
             if (OS == "Windows")
             {
                 // 下载本体
-                string remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper.exe";
+                string remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper.exe";
                 Downloads.Plan1(remotePath, Config.RootPath() + "/hiper.exe");
                 string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
                 if (hash != HashMap[remotePath])
@@ -75,7 +75,7 @@ namespace BianCore.Tools.Hiper
             else
             {
                 // 下载本体
-                string RemotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper";
+                string RemotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper";
                 Downloads.Plan1(RemotePath, Config.WorkPath() + "hiper");
                 string Hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
                 if (Hash != HashMap[RemotePath])
