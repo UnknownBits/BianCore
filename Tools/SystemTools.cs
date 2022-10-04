@@ -21,6 +21,11 @@ namespace BianCore.Tools
             return (string)Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion").GetValue("ProductName");
         }
 
+        public static Architecture GetArchitecture()
+        {
+            return RuntimeInformation.ProcessArchitecture;
+        }
+
         public static string GetOSVersion()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)

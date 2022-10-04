@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <Folder Include=".github\workflows\" />
-    <Folder Include="Tools\Hiper\" />
   </ItemGroup>
 
 </Project>
