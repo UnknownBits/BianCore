@@ -53,21 +53,18 @@ namespace BianCore.Tools.Hiper
             if (OS == "Windows")
             {
                 // 下载本体
-                string remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper.exe";
-                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/hiper.exe");
-                string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "hiper.exe");
                 string remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper.exe";
-                Downloads.Plan1(remotePath, Config.RootPath() + "/hiper.exe");
-                string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
+                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/hiper.exe");
+                string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/hiper.exe");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
 
                 // 下载 WinTun
-                remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/wintun.dll";
-                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "wintun.dll");
-                hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "wintun.dll");
+                remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/wintun.dll";
+                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/wintun.dll");
+                hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/wintun.dll");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
@@ -78,12 +75,9 @@ namespace BianCore.Tools.Hiper
             else
             {
                 // 下载本体
-                string RemotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper";
+                string RemotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper";
                 Downloads.Plan1(RemotePath, Config.Hiper.WorkPath + "/hiper");
                 string Hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/hiper");
-                string RemotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper";
-                Downloads.Plan1(RemotePath, Config.WorkPath() + "hiper");
-                string Hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
                 if (Hash != HashMap[RemotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
