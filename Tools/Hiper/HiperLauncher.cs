@@ -6,7 +6,7 @@ namespace BianCore.Tools.Hiper
 {
     public static class HiperLauncher
     {
-        public static void Launch()
+        public static void Launch(string code)
         {
 
         }
