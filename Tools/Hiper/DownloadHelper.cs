@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BianCore.Core;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -55,8 +56,8 @@ namespace BianCore.Tools.Hiper
             {
                 // 下载本体
                 string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper.exe";
-                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\hiper.exe");
-                string hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\hiper.exe");
+                Downloads.Plan1(remotePath, Config.WorkPath + "hiper.exe");
+                string hash = HashTools.GetFileSHA1(Config.WorkPath + "hiper.exe");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
@@ -64,8 +65,8 @@ namespace BianCore.Tools.Hiper
 
                 // 下载 WinTun
                 remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/wintun.dll";
-                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\wintun.dll");
-                hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\wintun.dll");
+                Downloads.Plan1(remotePath, Config.WorkPath + "wintun.dll");
+                hash = HashTools.GetFileSHA1(Config.WorkPath + "wintun.dll");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
@@ -75,8 +76,8 @@ namespace BianCore.Tools.Hiper
             {
                 // 下载本体
                 string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper";
-                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\hiper");
-                string hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\hiper");
+                Downloads.Plan1(remotePath, Config.WorkPath + "hiper");
+                string hash = HashTools.GetFileSHA1(Config.WorkPath + "hiper");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
