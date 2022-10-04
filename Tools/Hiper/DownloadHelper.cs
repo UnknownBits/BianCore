@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BianCore.Tools.Hiper
 {
@@ -23,12 +22,48 @@ namespace BianCore.Tools.Hiper
             { "Linux", "linux" },
             { "MacOS", "darwin" }
         };
+        public static Dictionary<string, string> HashMap = new Dictionary<string, string>();
 
-        public static async Task DownloadHiper(Architecture architecture)
+        private static void GetHashMap(string hashContent)
         {
-            string os = SystemTools.GetOSVersion();
-            
+            HashMap.Clear();
+            string[] hashs = hashContent.Split('\n');
+            foreach (string hash in hashs)
+            {
+                string[] keyValue = hash.Split(' ');
+                HashMap.Add(keyValue[1], keyValue[0]);
+            }
+        }
 
+        /// <summary>
+        /// 下载 Hiper。
+        /// </summary>
+        /// <param name="architecture">系统架构。</param>
+        /// <returns></returns>
+        public static void DownloadHiper(Architecture architecture)
+        {
+            // 获取架构，版本信息
+            string os = SystemTools.GetOSVersion();
+            string arc = ArchitectureMap[architecture];
+
+            // 获取哈希信息
+            string hashListStr = Network.HttpGet(HIPER_PACKAGES_URL);
+            GetHashMap(hashListStr);
+
+            // 下载 Hiper 本体并验证哈希
+            if (os == "Windows")
+            {
+                string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper.exe";
+                Downloads.Plan1(remotePath, "%AppData%\\BianCore\\hiper.exe");
+                string hash = HashTools.GetFileSHA1("%AppData%\\BianCore\\hiper.exe");
+                if (hash != HashMap[remotePath])
+                {
+                    throw new NotImplementedException("The file hash value is incorrect.");
+                }
+
+                // 下载 WinTun
+                remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/wintun.dll";
+            }
         }
     }
 }
