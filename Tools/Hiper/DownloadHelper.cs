@@ -46,15 +46,15 @@ namespace BianCore.Tools.Hiper
             string Arc = ArchitectureMap[Architecture];
 
             // 获取哈希信息
-            string HashListStr = Network.HttpGet(Config.Hiper_HashMap_URL);
+            string HashListStr = Network.HttpGet(Config.Hiper.HashMap_URL);
             GetHashMap(HashListStr);
 
             // 下载 Hiper 本体并验证哈希
             if (OS == "Windows")
             {
                 // 下载本体
-                string remotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/hiper.exe";
-                Downloads.Plan1(remotePath, Config.WorkPath() + "hiper.exe");
+                string remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper.exe";
+                Downloads.Plan1(remotePath, Config.RootPath() + "/hiper.exe");
                 string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
                 if (hash != HashMap[remotePath])
                 {
@@ -62,7 +62,7 @@ namespace BianCore.Tools.Hiper
                 }
 
                 // 下载 WinTun
-                remotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/wintun.dll";
+                remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/wintun.dll";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "wintun.dll");
                 hash = HashTools.GetFileSHA1(Config.WorkPath() + "wintun.dll");
                 if (hash != HashMap[remotePath])
@@ -73,7 +73,7 @@ namespace BianCore.Tools.Hiper
             else
             {
                 // 下载本体
-                string RemotePath = Config.Hiper_Download_URL + $"{OS}-{Arc}/hiper";
+                string RemotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper";
                 Downloads.Plan1(RemotePath, Config.WorkPath() + "hiper");
                 string Hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
                 if (Hash != HashMap[RemotePath])
@@ -86,6 +86,7 @@ namespace BianCore.Tools.Hiper
         public static void DownloadCert(string code)
         {
             string url = $"https://cert.mcer.cn/{code}.yml";
+            Downloads.Plan1(url,);
         }
     }
 }
