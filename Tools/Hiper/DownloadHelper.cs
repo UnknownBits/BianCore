@@ -8,8 +8,6 @@ namespace BianCore.Tools.Hiper
 {
     public static class DownloadHelper
     {
-        public const string HIPER_DOWNLOAD_URL = "https://gitcode.net/to/hiper/-/raw/master/";
-        public const string HIPER_PACKAGES_URL = HIPER_DOWNLOAD_URL + "packages.sha1";
         public static Dictionary<Architecture, string> ArchitectureMap = new Dictionary<Architecture, string>()
         {
             { Architecture.X86, "386" },
@@ -48,14 +46,14 @@ namespace BianCore.Tools.Hiper
             string arc = ArchitectureMap[architecture];
 
             // 获取哈希信息
-            string hashListStr = Network.HttpGet(HIPER_PACKAGES_URL);
+            string hashListStr = Network.HttpGet(Config.Hiper_Packages_URL);
             GetHashMap(hashListStr);
 
             // 下载 Hiper 本体并验证哈希
             if (os == "Windows")
             {
                 // 下载本体
-                string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper.exe";
+                string remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/hiper.exe";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "hiper.exe");
                 string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
                 if (hash != HashMap[remotePath])
@@ -64,7 +62,7 @@ namespace BianCore.Tools.Hiper
                 }
 
                 // 下载 WinTun
-                remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/wintun.dll";
+                remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/wintun.dll";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "wintun.dll");
                 hash = HashTools.GetFileSHA1(Config.WorkPath() + "wintun.dll");
                 if (hash != HashMap[remotePath])
@@ -75,7 +73,7 @@ namespace BianCore.Tools.Hiper
             else
             {
                 // 下载本体
-                string remotePath = HIPER_DOWNLOAD_URL + $"{os}-{arc}/hiper";
+                string remotePath = Config.Hiper_Download_URL + $"{os}-{arc}/hiper";
                 Downloads.Plan1(remotePath, Config.WorkPath() + "hiper");
                 string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
                 if (hash != HashMap[remotePath])
