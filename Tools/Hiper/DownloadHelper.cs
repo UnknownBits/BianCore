@@ -91,7 +91,6 @@ namespace BianCore.Tools.Hiper
         {
             string url = $"https://cert.mcer.cn/{code}.yml";
             Downloads.Plan1(url,Config.Hiper.CertsPath+$"/{code}.yml");
-            Downloads.Plan1(url, Config.WorkPath() + "config.yml");
         }
     }
 }
