@@ -30,16 +30,16 @@ namespace BianCore.Tools.Hiper
             foreach (string hash in hashs)
             {
                 string[] keyValue = hash.Split(' ');
-                HashMap.Add(keyValue[1], keyValue[0]);
+                HashMap.Add(keyValue[2], keyValue[0]);
             }
         }
 
         /// <summary>
         /// 下载 Hiper。
         /// </summary>
-        /// <param name="architecture">系统架构。</param>
-        /// <returns></returns>
-        public static void DownloadHiper(Architecture Architecture)
+        /// <param name="Architecture">系统架构。</param>
+        /// <returns>Hiper 主文件路径。</returns>
+        public static string DownloadHiper(Architecture Architecture)
         {
             // 获取架构，版本信息
             string OS = SystemTools.GetOSVersion();
@@ -56,6 +56,9 @@ namespace BianCore.Tools.Hiper
                 string remotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper.exe";
                 Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/hiper.exe");
                 string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "hiper.exe");
+                string remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper.exe";
+                Downloads.Plan1(remotePath, Config.RootPath() + "/hiper.exe");
+                string hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper.exe");
                 if (hash != HashMap[remotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
@@ -69,6 +72,8 @@ namespace BianCore.Tools.Hiper
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
+
+                return Config.WorkPath() + "hiper.exe";
             }
             else
             {
@@ -76,10 +81,15 @@ namespace BianCore.Tools.Hiper
                 string RemotePath = Config.Hiper.Download_URL + $"{OS}-{Arc}/hiper";
                 Downloads.Plan1(RemotePath, Config.Hiper.WorkPath + "/hiper");
                 string Hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/hiper");
+                string RemotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper";
+                Downloads.Plan1(RemotePath, Config.WorkPath() + "hiper");
+                string Hash = HashTools.GetFileSHA1(Config.WorkPath() + "hiper");
                 if (Hash != HashMap[RemotePath])
                 {
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
+
+                return Config.WorkPath() + "hiper";
             }
         }
 
@@ -87,6 +97,7 @@ namespace BianCore.Tools.Hiper
         {
             string url = $"https://cert.mcer.cn/{code}.yml";
             Downloads.Plan1(url,Config.Hiper.CertsPath+$"/{code}.yml");
+            Downloads.Plan1(url, Config.WorkPath() + "config.yml");
         }
     }
 }

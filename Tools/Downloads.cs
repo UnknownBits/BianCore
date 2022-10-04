@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace BianCore.Tools
         /// <returns></returns>
         public static void Plan1(string url, string save)
         {
+            if (!Directory.Exists(Path.GetDirectoryName(save)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(save));
+            }
             using (var web = new WebClient())
             {
                 web.DownloadFile(url, save);
