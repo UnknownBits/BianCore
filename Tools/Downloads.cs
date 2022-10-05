@@ -37,13 +37,23 @@ namespace BianCore.Tools
             DList.Add(link);
             DName.Add(name);
         }
-        public static async Task Plan2()
+        public static void ClearList()
         {
-            for (int i = 0; i < DList.Count; i++)
+            DPath.Clear();
+            DName.Clear();
+            DList.Clear();
+        }
+        public static async Task Plan2(string Url = null,string save = null,string name = null ,bool model = true)
+        {
+            if (model == false)
             {
-                await DList[i].DownloadFileAsync(DPath[i], DName[i]);
+                for (int i = 0; i < DList.Count; i++)
+                {
+                    await DList[i].DownloadFileAsync(DPath[i], DName[i]);
+                }
+                ClearList();
             }
-
+            await Url.DownloadFileAsync(save, name);
         }
     }
 }
