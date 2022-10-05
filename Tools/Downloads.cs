@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Flurl;
@@ -17,43 +18,55 @@ namespace BianCore.Tools
         /// <param name="url">下载链接</param>
         /// <param name="save">保存地址</param>
         /// <returns></returns>
-        public static void Plan1(string url, string save)
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(save)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(save));
-            }
-            using (var web = new WebClient())
-            {
-                web.DownloadFile(url, save);
-            }
-        }
         private static List<string> DList = new List<string>();
         private static List<string> DPath = new List<string>();
-        private static List<string> DName = new List<string>();
-        public static void AddDList(string link, string path, string name = null)
+        public static void AddDList(string link, string path)
         {
             DPath.Add(path);
             DList.Add(link);
-            DName.Add(name);
         }
         public static void ClearList()
         {
             DPath.Clear();
-            DName.Clear();
             DList.Clear();
         }
-        public static async Task Plan2(string Url = null,string save = null,string name = null ,bool model = true)
+        public static async Task Async(string Url = null, string save = null, bool model = true)
         {
-            if (model == false)
+            using (var web = new WebClient())
             {
-                for (int i = 0; i < DList.Count; i++)
+                if (!Directory.Exists(Path.GetDirectoryName(save)))
                 {
-                    await DList[i].DownloadFileAsync(DPath[i], DName[i]);
+                    Directory.CreateDirectory(Path.GetDirectoryName(save));
                 }
-                ClearList();
+                if (model == false)
+                {
+                    for (int i = 0; i < DList.Count; i++)
+                    {
+                        await web.DownloadFileTaskAsync(DList[i], DPath[i]);
+                    }
+                    ClearList();
+                }
+                else { await web.DownloadFileTaskAsync(Url, save); }
             }
-            else { await Url.DownloadFileAsync(save, name); }
+        }
+        public static void Plan1(string Url = null, string save = null, bool model = true)
+        {
+            using (var web = new WebClient())
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(save)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(save));
+                }
+                if (model == false)
+                {
+                    for (int i = 0; i < DList.Count; i++)
+                    {
+                        web.DownloadFile(DList[i], DPath[i]);
+                    }
+                    ClearList();
+                }
+                else { web.DownloadFile(Url, save); }
+            }
         }
     }
 }
