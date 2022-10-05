@@ -52,25 +52,29 @@ namespace BianCore.Tools.Hiper
             // 下载 Hiper 本体并验证哈希
             if (OS == "Windows")
             {
-                // 下载本体
+                // 下载
+
                 string remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/hiper.exe";
-                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/hiper.exe");
-                string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/hiper.exe");
-                if (hash != HashMap[remotePath])
-                {
-                    throw new NotImplementedException("The file hash value is incorrect.");
-                }
-
-                // 下载 WinTun
+                Downloads.AddDList(remotePath, Config.Hiper.WorkPath);
                 remotePath = Config.Hiper.Download_URL + $"{OSMap[OS]}-{Arc}/wintun.dll";
-                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "/wintun.dll");
-                hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/wintun.dll");
-                if (hash != HashMap[remotePath])
+                Downloads.AddDList(remotePath, Config.Hiper.WorkPath);
+                Downloads.Plan2(model: false).Wait();
+
+                // 校验
+
+                string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/hiper.exe");
+                if (hash != HashMap[$"{OSMap[OS]}-{Arc}/hiper.exe"])
                 {
-                    throw new NotImplementedException("The file hash value is incorrect.");
+                    throw new NotImplementedException("Hiper哈希值错误");
                 }
 
-                return Config.WorkPath() + "hiper.exe";
+                hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "/wintun.dll");
+                if (hash != HashMap[$"{OSMap[OS]}-{Arc}/wintun.dll"])
+                {
+                    throw new NotImplementedException("WinTun支持库哈希值错误");
+                }
+
+                return Config.Hiper.WorkPath + "/hiper.exe";
             }
             else
             {
@@ -83,7 +87,7 @@ namespace BianCore.Tools.Hiper
                     throw new NotImplementedException("The file hash value is incorrect.");
                 }
 
-                return Config.WorkPath() + "hiper";
+                return Config.Hiper.WorkPath + "/hiper";
             }
         }
 

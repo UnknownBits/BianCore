@@ -53,7 +53,7 @@ namespace BianCore.Tools
                 }
                 ClearList();
             }
-            await Url.DownloadFileAsync(save, name);
+            else { await Url.DownloadFileAsync(save, name); }
         }
     }
 }

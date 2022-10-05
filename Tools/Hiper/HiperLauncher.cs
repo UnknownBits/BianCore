@@ -13,6 +13,7 @@ namespace BianCore.Tools.Hiper
             Architecture architecture = SystemTools.GetArchitecture();
             string content = DownloadHelper.DownloadHiper(architecture);
             DownloadHelper.DownloadCert(code);
+
             Process.Start(content);
         }
     }
