@@ -38,15 +38,22 @@ namespace BianCore.Tools
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(save));
                 }
-                if (model == false)
+                if (File.Exists(save))
                 {
-                    for (int i = 0; i < DList.Count; i++)
-                    {
-                        await web.DownloadFileTaskAsync(DList[i], DPath[i]);
-                    }
-                    ClearList();
+
                 }
-                else { await web.DownloadFileTaskAsync(Url, save); }
+                else
+                {
+                    if (model == false)
+                    {
+                        for (int i = 0; i < DList.Count; i++)
+                        {
+                            await web.DownloadFileTaskAsync(DList[i], DPath[i]);
+                        }
+                        ClearList();
+                    }
+                    else { await web.DownloadFileTaskAsync(Url, save); }
+                }
             }
         }
         public static void Plan1(string Url = null, string save = null, bool model = true)
@@ -57,15 +64,22 @@ namespace BianCore.Tools
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(save));
                 }
-                if (model == false)
+                if (File.Exists(save))
                 {
-                    for (int i = 0; i < DList.Count; i++)
-                    {
-                        web.DownloadFile(DList[i], DPath[i]);
-                    }
-                    ClearList();
+
                 }
-                else { web.DownloadFile(Url, save); }
+                else
+                {
+                    if (model == false)
+                    {
+                        for (int i = 0; i < DList.Count; i++)
+                        {
+                            web.DownloadFile(DList[i], DPath[i]);
+                        }
+                        ClearList();
+                    }
+                    else { web.DownloadFile(Url, save); }
+                }
             }
         }
     }
