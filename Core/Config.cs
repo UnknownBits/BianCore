@@ -39,7 +39,7 @@ namespace BianCore.Core
         {
             return RootPath() + Project_Name + '/';
         }
-        public static string ConfigPath { set; get; } = WorkPath() + "Config.king";
+        public static string ConfigPath { set; get; } = WorkPath() + "Config.bian";
         public static string Background = WorkPath() + "Backgroud/";
         public static string BackgroundFile = Background + "Background.png";
         public static string Music = WorkPath() + "Music/";
@@ -47,7 +47,6 @@ namespace BianCore.Core
         internal static class Hiper
         {
             public static string WorkPath = WorkPath() + "Hiper/";
-            public static string CertsPath = WorkPath + "certs/";
             public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
             public const string HashMap_URL = Download_URL + "packages.sha1";
         }
