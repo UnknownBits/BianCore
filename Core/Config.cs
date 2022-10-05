@@ -19,7 +19,7 @@ namespace BianCore.Core
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + '\\';
+                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + '/';
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
             {
