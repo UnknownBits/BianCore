@@ -44,7 +44,7 @@ namespace BianCore.Tools
                     {
                         for (int i = 0; i < DList.Count; i++)
                         {
-                            if (!File.Exists(DHash[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
+                            if (!File.Exists(DPath[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
                             {
                                 web.DownloadFile(DList[i], DPath[i]);
                             }
@@ -70,11 +70,14 @@ namespace BianCore.Tools
                 {
                     for (int i = 0; i < DList.Count; i++)
                     {
-                        if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
+                        if (!File.Exists(DPath[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
                         {
-                            Directory.CreateDirectory(Path.GetDirectoryName(DPath[i]));
+                            if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(DPath[i]));
+                            }
+                            await web.DownloadFileTaskAsync(DList[i], DPath[i]);
                         }
-                        await web.DownloadFileTaskAsync(DList[i], DPath[i]);
                     }
                     ClearList();
                 }
