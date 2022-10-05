@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BianCore.Tools.Hiper
 {
@@ -11,10 +12,13 @@ namespace BianCore.Tools.Hiper
         public static void Launch(string code)
         {
             Architecture architecture = SystemTools.GetArchitecture();
-            string content = DownloadHelper.DownloadHiper(architecture);
+            string path = DownloadHelper.DownloadHiper(architecture);
             DownloadHelper.DownloadCert(code);
 
-            Process.Start(content);
+            Process process = new Process();
+            process.StartInfo.FileName = path;
+            process.StartInfo.Verb = "runas";
+            process.Start();
         }
     }
 }
