@@ -60,15 +60,22 @@ namespace BianCore.Tools
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(save));
                 }
-                if (model == false)
+                if (File.Exists(save))
                 {
-                    for (int i = 0; i < DList.Count; i++)
-                    {
-                        web.DownloadFile(DList[i], DPath[i]);
-                    }
-                    ClearList();
+
                 }
-                else { web.DownloadFile(Url, save); }
+                else
+                {
+                    if (model == false)
+                    {
+                        for (int i = 0; i < DList.Count; i++)
+                        {
+                            web.DownloadFile(DList[i], DPath[i]);
+                        }
+                        ClearList();
+                    }
+                    else { web.DownloadFile(Url, save); }
+                }
             }
         }
     }
