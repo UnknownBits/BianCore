@@ -17,7 +17,10 @@ namespace BianCore.Tools.Hiper
 
             Process process = new Process();
             process.StartInfo.FileName = path;
-            process.StartInfo.Verb = "runas";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                process.StartInfo.Verb = "runas";
+            }
             process.Start();
         }
     }

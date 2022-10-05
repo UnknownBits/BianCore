@@ -14,20 +14,23 @@ namespace BianCore.Tools
     {
         private static List<string> DList = new List<string>();
         private static List<string> DPath = new List<string>();
+        private static List<string> DHash = new List<string>();
 
-        public static void AddDList(string link, string path)
+        public static void AddDList(string link, string path, string hash = null)
         {
             DPath.Add(path);
             DList.Add(link);
+            DHash.Add(hash);
         }
 
         public static void ClearList()
         {
             DPath.Clear();
             DList.Clear();
+            DHash.Clear();
         }
 
-        public static void Plan1(string Url = null, string save = null, bool model = true)
+        public static void Plan1(string Url = null, string save = null, string hash = null, bool model = true)
         {
             using (var web = new WebClient())
             {
@@ -35,26 +38,31 @@ namespace BianCore.Tools
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(save));
                 }
-                if (File.Exists(save))
-                {
-
-                }
                 else
                 {
                     if (model == false)
                     {
                         for (int i = 0; i < DList.Count; i++)
                         {
-                            web.DownloadFile(DList[i], DPath[i]);
+                            if (!File.Exists(DHash[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
+                            {
+                                web.DownloadFile(DList[i], DPath[i]);
+                            }
                         }
                         ClearList();
                     }
-                    else { web.DownloadFile(Url, save); }
+                    else
+                    {
+                        if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
+                        {
+                            web.DownloadFile(Url, save);
+                        }
+                    }
                 }
             }
         }
 
-        public static async Task Async(string Url = null, string save = null, bool model = true)
+        public static async Task Async(string Url = null, string save = null, string hash = null, bool model = true)
         {
             using (var web = new WebClient())
             {
@@ -72,11 +80,14 @@ namespace BianCore.Tools
                 }
                 else
                 {
-                    if (!Directory.Exists(Path.GetDirectoryName(save)))
+                    if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(save));
+                        if (!Directory.Exists(Path.GetDirectoryName(save)))
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(save));
+                        }
+                        await web.DownloadFileTaskAsync(Url, save);
                     }
-                    await web.DownloadFileTaskAsync(Url, save);
                 }
             }
         }
