@@ -22,7 +22,7 @@ namespace BianCore.Core
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
             {
-                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + '/';
+                return $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/";
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
             {
@@ -39,10 +39,10 @@ namespace BianCore.Core
         /// </summary>
         /// <returns>工作目录。</returns>
         public static string WorkPath = $"{RootPath()}{Project_Name}/";
-        public static string ConfigPath { set; get; } = WorkPath + "Config.bian";
-        public static string Background = WorkPath + "Backgroud/";
-        public static string BackgroundFile = Background + "Background.png";
-        public static string Music = WorkPath + "Music/";
+        public static string ConfigPath { get; } = $"{WorkPath}Config.bian";
+        public static string Background = $"{WorkPath}Backgroud/";
+        public static string BackgroundFile = $"{Background}Background.png";
+        public static string Music = $"{WorkPath}Music/";
         public static JObject BingBackGroud_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         public static string InfoFile { get; } = $"{WorkPath}Info/{SystemTools.GetTimestamp("hh:mm:ss")}";
 
