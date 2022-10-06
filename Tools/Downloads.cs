@@ -30,38 +30,53 @@ namespace BianCore.Tools
             DHash.Clear();
         }
 
-        public static void Plan1(string Url = null, string save = null, string hash = null, bool model = true)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url">下载地址</param>
+        /// <param name="save">保存路径（带文件名）</param>
+        /// <param name="hash">哈希校验（可选）</param>
+        /// <param name="model">批量下载（可选）</param>
+        public static void Plan1(string url = null, string save = null, string hash = null, bool model = true)
         {
             using (var web = new WebClient())
             {
-                if (!Directory.Exists(Path.GetDirectoryName(save)))
+                if (model == false)
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(save));
+                    for (int i = 0; i < DList.Count; i++)
+                    {
+                        if (!File.Exists(DPath[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
+                        {
+                            if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(DPath[i]));
+                            }
+                            web.DownloadFile(DList[i], DPath[i]);
+                        }
+                    }
+                    ClearList();
                 }
                 else
                 {
-                    if (model == false)
+                    if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
                     {
-                        for (int i = 0; i < DList.Count; i++)
+                        if (!Directory.Exists(Path.GetDirectoryName(save)))
                         {
-                            if (!File.Exists(DPath[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
-                            {
-                                web.DownloadFile(DList[i], DPath[i]);
-                            }
+                            Directory.CreateDirectory(Path.GetDirectoryName(save));
                         }
-                        ClearList();
-                    }
-                    else
-                    {
-                        if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
-                        {
-                            web.DownloadFile(Url, save);
-                        }
+                        web.DownloadFile(url, save);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url">下载地址</param>
+        /// <param name="save">保存路径（带文件名）</param>
+        /// <param name="hash">哈希校验（可选）</param>
+        /// <param name="model">批量下载（可选）</param>
         public static async Task Async(string Url = null, string save = null, string hash = null, bool model = true)
         {
             using (var web = new WebClient())
