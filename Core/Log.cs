@@ -1,4 +1,4 @@
-﻿using BianCore.Tools;
+﻿using Newtonsoft;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,9 +14,9 @@ namespace BianCore.Core
 
         public Log(string logPath)
         {
-            fileStream = new FileStream(logPath, FileMode.CreateNew);
-        }
-
+             
+   
+        private Dictionary<string, string> _log = new Dictionary<string, string>();
         /// <summary>
         /// 写入日志。
         /// </summary>
@@ -27,7 +27,8 @@ namespace BianCore.Core
         {
             lock (fileStream)
             {
-                byte[] buffer = Encoding.UTF8.GetBytes($"[{SystemTools.GetTimestamp("HH:MM:SS")}] [{level}] [{moduleName}] {content}\n");
+                byte[] buffer = Encoding.UTF8.GetBytes(J);
+                    Encoding.UTF8.GetBytes($"[{SystemTools.GetTimestamp("HH:MM:SS")}] [{level}] [{moduleName}] {content}\n");
                 fileStream.Write(buffer, 0, buffer.Length);
             }
         }
