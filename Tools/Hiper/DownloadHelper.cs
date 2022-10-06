@@ -56,8 +56,8 @@ namespace BianCore.Tools.Hiper
             {
                 // 下载
 
-                Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper.exe", Config.Hiper.WorkPath + "hiper.exe");
-                Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/wintun.dll", Config.Hiper.WorkPath + "wintun.dll");
+                Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper.exe", Config.Hiper.WorkPath + "hiper.exe", HashMap[$"{OSMap[os]}-{arc}/hiper.exe"]);
+                Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/wintun.dll", Config.Hiper.WorkPath + "wintun.dll", HashMap[$"{OSMap[os]}-{arc}/wintun.dll"]);
                 Downloads.Async(model: false).Wait();
 
                 // 校验
@@ -82,7 +82,7 @@ namespace BianCore.Tools.Hiper
             {
                 // 下载本体
                 string remotePath = Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper";
-                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "hiper");
+                Downloads.Plan1(remotePath, Config.Hiper.WorkPath + "hiper", $"{OSMap[os]}-{arc}/hiper");
                 string hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "hiper");
                 if (vaildHash)
                 {
