@@ -25,7 +25,7 @@ namespace BianCore.Tools.Hiper
             Process process = new Process();
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.CreateNoWindow = true;
+
             process.StartInfo.FileName = path;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {

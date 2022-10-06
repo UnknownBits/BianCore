@@ -49,6 +49,7 @@ namespace BianCore.Core
             public static string WorkPath = WorkPath() + "Hiper/";
             public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
             public const string HashMap_URL = Download_URL + "packages.sha1";
+            public static string InfoFile = WorkPath + ""
         }
 
     }
