@@ -45,7 +45,7 @@ namespace BianCore.Tools
                 {
                     for (int i = 0; i < DList.Count; i++)
                     {
-                        if (!File.Exists(DPath[i]) && hash != HashTools.GetFileSHA1(DHash[i]))
+                        if (!File.Exists(DPath[i]) && DHash[i] != HashTools.GetFileSHA1(DPath[i]))
                         {
                             if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
                             {
