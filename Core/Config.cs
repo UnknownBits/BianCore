@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -40,6 +41,7 @@ namespace BianCore.Core
         /// <returns>工作目录。</returns>
         public static string WorkPath = $"{RootPath()}{Project_Name}/";
         public static string ConfigPath { get; } = $"{WorkPath}Config.bian";
+        private static FileStream fileStream = new FileStream(logPath, FileMode.CreateNew);
         public static string Background = $"{WorkPath}Backgroud/";
         public static string BackgroundFile = $"{Background}Background.png";
         public static string Music = $"{WorkPath}Music/";
