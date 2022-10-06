@@ -11,6 +11,7 @@ namespace BianCore.Tools.Hiper
     public static class HiperLauncher
     {
         public static Part Progress;
+        public static StreamReader StandardOutput;
 
         public static void Launch(string code)
         {
@@ -31,7 +32,7 @@ namespace BianCore.Tools.Hiper
                 process.StartInfo.Verb = "runas";
             }
             process.Start();
-            // process.StandardOutput;
+            StandardOutput = process.StandardOutput;
         }
 
         public static void Stop()
