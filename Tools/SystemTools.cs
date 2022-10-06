@@ -12,6 +12,10 @@ namespace BianCore.Tools
 {
     public static class SystemTools
     {
+        public static string GetTimestamp()
+        {
+            return DateTime.Now.Date.ToString("hh:mm:ss");
+        }
         /// <summary>
         /// 获取Windows系统版本
         /// </summary>
