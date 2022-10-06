@@ -12,10 +12,16 @@ namespace BianCore.Tools
 {
     public static class SystemTools
     {
-        public static string GetTimestamp()
+        /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <param name="model">YYYY:xxxx年 MM:xx月 DD:xx日 HH:xx时 MM:xx分 SS:xx秒</param>
+        /// <returns>model格式的日期</returns>
+        public static string GetTimestamp(string model)
         {
-            return DateTime.Now.Date.ToString("hh:mm:ss");
+            return DateTime.Now.Date.ToString(model);
         }
+
         /// <summary>
         /// 获取Windows系统版本
         /// </summary>

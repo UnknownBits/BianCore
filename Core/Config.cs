@@ -9,6 +9,9 @@ namespace BianCore.Core
 {
     public static class Config
     {
+        /// <summary>
+        /// 项目名称（动态，可更改）
+        /// </summary>
         public static string Project_Name { get; set; } = "Bian_Core";
 
         /// <summary>
@@ -44,6 +47,9 @@ namespace BianCore.Core
         public static string BackgroundFile = Background + "Background.png";
         public static string Music = WorkPath() + "Music/";
         public static JObject BingBackGroud_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
+        public static string InfoFile { get; } = $"{WorkPath()}Info/{Tools.SystemTools.GetTimestamp("hh:mm:ss")}";
+
+
         internal static class Hiper
         {
             public static string WorkPath = WorkPath() + "Hiper/";
