@@ -51,7 +51,14 @@ namespace BianCore.Tools
                             {
                                 Directory.CreateDirectory(Path.GetDirectoryName(DPath[i]));
                             }
-                            web.DownloadFile(DList[i], DPath[i]);
+                            try
+                            {
+                                web.DownloadFile(DList[i], DPath[i]);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
                         }
                     }
                     ClearList();
@@ -64,7 +71,14 @@ namespace BianCore.Tools
                         {
                             Directory.CreateDirectory(Path.GetDirectoryName(save));
                         }
-                        web.DownloadFile(url, save);
+                        try
+                        {
+                            web.DownloadFile(url, save);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                 }
             }
@@ -85,13 +99,21 @@ namespace BianCore.Tools
                 {
                     for (int i = 0; i < DList.Count; i++)
                     {
+                        
                         if (!File.Exists(DPath[i]) || DHash[i] != HashTools.GetFileSHA1(DPath[i]))
                         {
                             if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
                             {
                                 Directory.CreateDirectory(Path.GetDirectoryName(DPath[i]));
                             }
-                            await web.DownloadFileTaskAsync(DList[i], DPath[i]);
+                            try
+                            {
+                                await web.DownloadFileTaskAsync(DList[i], DPath[i]);
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
                         }
                     }
                     ClearList();
@@ -104,7 +126,14 @@ namespace BianCore.Tools
                         {
                             Directory.CreateDirectory(Path.GetDirectoryName(save));
                         }
-                        await web.DownloadFileTaskAsync(Url, save);
+                        try
+                        {
+                            await web.DownloadFileTaskAsync(Url, save);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                 }
             }
