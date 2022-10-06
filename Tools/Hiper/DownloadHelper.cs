@@ -9,6 +9,8 @@ namespace BianCore.Tools.Hiper
 {
     public static class DownloadHelper
     {
+        public static HiperLauncher.Part Progress;
+
         public static Dictionary<Architecture, string> ArchitectureMap = new Dictionary<Architecture, string>()
         {
             { Architecture.X86, "386" },
@@ -51,11 +53,11 @@ namespace BianCore.Tools.Hiper
             string hashListStr = Network.HttpGet(Config.Hiper.HashMap_URL);
             GetHashMap(hashListStr);
 
+            Progress = HiperLauncher.Part.Downloading_Hiper;
             // 下载 Hiper 本体并验证哈希
             if (os == "Windows")
             {
                 // 下载
-
                 Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper.exe", Config.Hiper.WorkPath + "hiper.exe", HashMap[$"{OSMap[os]}-{arc}/hiper.exe"]);
                 Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/wintun.dll", Config.Hiper.WorkPath + "wintun.dll", HashMap[$"{OSMap[os]}-{arc}/wintun.dll"]);
                 Downloads.Async(model: false).Wait();
@@ -69,6 +71,7 @@ namespace BianCore.Tools.Hiper
                         throw new NotImplementedException("Hiper 主程序哈希值错误");
                     }
 
+                    Progress = HiperLauncher.Part.Downloading_WinTun;
                     hash = HashTools.GetFileSHA1(Config.Hiper.WorkPath + "wintun.dll");
                     if (hash != HashMap[$"{OSMap[os]}-{arc}/wintun.dll"])
                     {
