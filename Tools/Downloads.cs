@@ -45,7 +45,7 @@ namespace BianCore.Tools
                 {
                     for (int i = 0; i < DList.Count; i++)
                     {
-                        if (!File.Exists(DPath[i]) && DHash[i] != HashTools.GetFileSHA1(DPath[i]))
+                        if (!File.Exists(DPath[i]) || DHash[i] != HashTools.GetFileSHA1(DPath[i]))
                         {
                             if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
                             {
@@ -58,7 +58,7 @@ namespace BianCore.Tools
                 }
                 else
                 {
-                    if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
+                    if (!File.Exists(save) || hash != HashTools.GetFileSHA1(save))
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(save)))
                         {
@@ -85,7 +85,7 @@ namespace BianCore.Tools
                 {
                     for (int i = 0; i < DList.Count; i++)
                     {
-                        if (!File.Exists(DPath[i]) && DHash[i] != HashTools.GetFileSHA1(DPath[i]))
+                        if (!File.Exists(DPath[i]) || DHash[i] != HashTools.GetFileSHA1(DPath[i]))
                         {
                             if (!Directory.Exists(Path.GetDirectoryName(DPath[i])))
                             {
@@ -98,7 +98,7 @@ namespace BianCore.Tools
                 }
                 else
                 {
-                    if (!File.Exists(save) && hash != HashTools.GetFileSHA1(save))
+                    if (!File.Exists(save) || hash != HashTools.GetFileSHA1(save))
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(save)))
                         {
