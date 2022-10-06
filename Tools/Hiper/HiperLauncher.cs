@@ -12,7 +12,7 @@ namespace BianCore.Tools.Hiper
     {
         public static Part Progress;
 
-        public static StreamReader Launch(string code)
+        public static void Launch(string code)
         {
             Architecture architecture = SystemTools.GetArchitecture();
             Progress = DownloadHelper.Progress;
@@ -31,7 +31,7 @@ namespace BianCore.Tools.Hiper
                 process.StartInfo.Verb = "runas";
             }
             process.Start();
-            return process.StandardOutput;
+            // process.StandardOutput;
         }
 
         public static void Stop()
