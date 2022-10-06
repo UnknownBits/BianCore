@@ -55,10 +55,7 @@ namespace BianCore.Tools
                             {
                                 web.DownloadFile(DList[i], DPath[i]);
                             }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            catch { }
                         }
                     }
                     ClearList();
@@ -75,10 +72,7 @@ namespace BianCore.Tools
                         {
                             web.DownloadFile(url, save);
                         }
-                        catch (Exception ex)
-                        {
-
-                        }
+                        catch { }
                     }
                 }
             }
@@ -110,10 +104,7 @@ namespace BianCore.Tools
                             {
                                 await web.DownloadFileTaskAsync(DList[i], DPath[i]);
                             }
-                            catch (Exception ex)
-                            {
-
-                            }
+                            catch { }
                         }
                     }
                     ClearList();
@@ -130,10 +121,7 @@ namespace BianCore.Tools
                         {
                             await web.DownloadFileTaskAsync(Url, save);
                         }
-                        catch (Exception ex)
-                        {
-
-                        }
+                        catch { }
                     }
                 }
             }
