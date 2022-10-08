@@ -1,4 +1,5 @@
-﻿using Newtonsoft;
+﻿using BianCore.Tools;
+using Newtonsoft;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,23 +15,25 @@ namespace BianCore.Core
 
         public Log(string logPath)
         {
-             
-   
-        private Dictionary<string, string> _log = new Dictionary<string, string>();
+            fileStream = new FileStream(logPath, FileMode.CreateNew);
+        }
+
         /// <summary>
         /// 写入日志。
         /// </summary>
         /// <param name="level">日志等级。</param>
         /// <param name="moduleName">模块名称（例如 "Net"）。</param>
         /// <param name="content">日志内容。</param>
-        public async Task WriteLine(Level level, string moduleName, string content)
+        public void WriteLine(Level level, string moduleName, string content)
         {
-            lock (fileStream)
+            Task.Run(() =>
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(J);
-                    Encoding.UTF8.GetBytes($"[{SystemTools.GetTimestamp("HH:MM:SS")}] [{level}] [{moduleName}] {content}\n");
-                fileStream.Write(buffer, 0, buffer.Length);
-            }
+                lock (fileStream)
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes($"[{SystemTools.GetTimestamp("HH:MM:SS")}] [{level}] [{moduleName}] {content}\n");
+                    fileStream.Write(buffer, 0, buffer.Length);
+                }
+            });
         }
 
         public enum Level
