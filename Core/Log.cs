@@ -1,6 +1,4 @@
-﻿using BianCore.Tools;
-using Newtonsoft;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,23 +13,30 @@ namespace BianCore.Core
 
         public Log(string logPath)
         {
-            fileStream = new FileStream(logPath, FileMode.CreateNew);
+            if (!Directory.Exists(Path.GetDirectoryName(logPath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+            }
+            fileStream = new FileStream(logPath, FileMode.Create);
         }
-
+             
+   
+        private Dictionary<string, string> _log = new Dictionary<string, string>();
         /// <summary>
         /// 写入日志。
         /// </summary>
         /// <param name="level">日志等级。</param>
         /// <param name="moduleName">模块名称（例如 "Net"）。</param>
         /// <param name="content">日志内容。</param>
-        public void WriteLine(Level level, string moduleName, string content)
+        public async Task WriteLine(Level level, string moduleName, string content)
         {
-            Task.Run(() =>
+            await Task.Run(() =>
             {
                 lock (fileStream)
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes($"[{SystemTools.GetTimestamp("HH:MM:SS")}] [{level}] [{moduleName}] {content}\n");
+                    byte[] buffer = Encoding.UTF8.GetBytes($"[{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}] [{level}] [{moduleName}] {content}\n");
                     fileStream.Write(buffer, 0, buffer.Length);
+                    fileStream.Flush();
                 }
             });
         }
