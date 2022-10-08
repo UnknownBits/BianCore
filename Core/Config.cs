@@ -41,8 +41,8 @@ namespace BianCore.Core
         /// <returns>工作目录。</returns>
         public static string WorkPath = $"{RootPath()}{Project_Name}/";
         public static string ConfigPath { get; } = $"{WorkPath}Config.bian";
-        private static FileStream fileStream = new FileStream(logPath, FileMode.CreateNew);
         public static string Background = $"{WorkPath}Backgroud/";
+        public static Log Log = new Log("logs/log1.log");
         public static string BackgroundFile = $"{Background}Background.png";
         public static string Music = $"{WorkPath}Music/";
         public static JObject BingBackGroud_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
