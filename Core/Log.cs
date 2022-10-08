@@ -20,8 +20,6 @@ namespace BianCore.Core
             fileStream = new FileStream(logPath, FileMode.Create);
         }
              
-   
-        private Dictionary<string, string> _log = new Dictionary<string, string>();
         /// <summary>
         /// 写入日志。
         /// </summary>
