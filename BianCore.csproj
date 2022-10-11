@@ -5,11 +5,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Title>BianCore</Title>
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
-    <PackageTags>Bian,Core,MC</PackageTags>
+    <PackageTags>Bian,Core</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.1.0-Alpha</Version>
+    <Version>1.0.2.0-Alpha</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
+    <Company>Bian Studio</Company>
+    <Authors>Bian Studio</Authors>
+    <Copyright>Bian Studio 所有</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
