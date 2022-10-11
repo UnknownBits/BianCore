@@ -13,12 +13,27 @@ namespace BianCore.Tools
     public static class SystemTools
     {
         /// <summary>
+        /// 获取时间戳
+        /// </summary>
+        /// <param name="model">YYYY:xxxx年 MM:xx月 DD:xx日 HH:xx时 MM:xx分 SS:xx秒</param>
+        /// <returns>model格式的日期</returns>
+        public static string GetTimestamp(string model)
+        {
+            return DateTime.Now.Date.ToString(model);
+        }
+
+        /// <summary>
         /// 获取Windows系统版本
         /// </summary>
         /// <returns>Windows系统版本字符串</returns>
         public static string GetWindowsVersion()
         {
             return (string)Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion").GetValue("ProductName");
+        }
+
+        public static Architecture GetArchitecture()
+        {
+            return RuntimeInformation.ProcessArchitecture;
         }
 
         public static string GetOSVersion()
