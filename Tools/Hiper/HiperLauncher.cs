@@ -56,7 +56,6 @@ namespace BianCore.Tools.Hiper
             process.Start();
             process.StandardInput.WriteLine(command);
             process.StandardInput.AutoFlush = true;
-            process.WaitForExit();
             process.Close();
         }
 
