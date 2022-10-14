@@ -23,6 +23,7 @@ namespace BianCore.Tools.Hiper
 
             Progress = Part.Launching_Hiper;
             Process process = new Process();
+            process.StartInfo.CreateNoWindow = true;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
 
