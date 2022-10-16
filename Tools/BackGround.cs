@@ -9,10 +9,6 @@ namespace BianCore.Tools
     {
         public static class Bing
         {
-            public string Get()
-            {
-
-            }
         }
     }
 }
