@@ -18,7 +18,7 @@ namespace BianCore.Tools.API
             }
             catch (Exception ex)
             {
-
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Url", ex.ToString());
                 return null;
             }
 
@@ -31,6 +31,7 @@ namespace BianCore.Tools.API
             } 
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Urlbase", ex.ToString());
                 return null;
             }
         }
@@ -42,6 +43,7 @@ namespace BianCore.Tools.API
             }
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Copyright", ex.ToString());
                 return null;
             }
         }
@@ -55,6 +57,7 @@ namespace BianCore.Tools.API
             }
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Title", ex.ToString());
                 return null;
             }
         }
