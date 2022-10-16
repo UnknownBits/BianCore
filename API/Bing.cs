@@ -13,12 +13,12 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGroud_Data["images"][0]["url"];
+                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["url"];
 
             }
             catch (Exception ex)
             {
-
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Url", ex.ToString());
                 return null;
             }
 
@@ -27,10 +27,11 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGroud_Data["images"][0]["urlbase"];
+                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["urlbase"];
             } 
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Urlbase", ex.ToString());
                 return null;
             }
         }
@@ -38,10 +39,11 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGroud_Data["images"][0]["copyright"];
+                return (string)Config.Bing.BackGround_Data["images"][0]["copyright"];
             }
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Copyright", ex.ToString());
                 return null;
             }
         }
@@ -50,11 +52,12 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGroud_Data["images"][0]["title"];
+                return (string)Config.Bing.BackGround_Data["images"][0]["title"];
 
             }
             catch (Exception ex)
             {
+                Config.Log.WriteLine(Log.Level.ERROR, "Bing.Title", ex.ToString());
                 return null;
             }
         }
