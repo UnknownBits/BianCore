@@ -54,7 +54,6 @@ namespace BianCore.Tools
                 {
                     fileStream.Close();
                 }
-
                 disposedValue = true;
             }
         }

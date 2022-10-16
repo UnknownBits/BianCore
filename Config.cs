@@ -41,7 +41,7 @@ namespace BianCore
         /// <returns>工作目录。</returns>
         public static string Work_Path { get; } = $"{RootPath()}{Project_Name}/";
         public static string Config_Path { get; } = $"{Work_Path}Config.bian";
-        public static string Background_Path { get; } = $"{Work_Path}Backgroud/";
+        public static string BackGround_Path { get; } = $"{Work_Path}Backgroud/";
         public static string Music_Path { get; } = $"{Work_Path}Music/";
 
         public static string Log_File { get; } = $"{Work_Path}Info/{SystemTools.GetTimestamp("hh:mm:ss")}.Log";
@@ -49,8 +49,9 @@ namespace BianCore
 
         internal static class Bing
         {
-            public static string BackGroud_File { get; } = $"{Background_Path}Bing_{DateTime.Now.Date.ToString("yyyy-MM-dd")}";
-            public static JObject BackGroud_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
+            public static string BackGround_File { get; } = $"{BackGround_Path}Bing.jpg";
+            public static string BackGround_Hash { get; } = $"{BackGround_Path}Bing.hash";
+            public static JObject BackGround_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         }
         internal static class Hiper
         {
