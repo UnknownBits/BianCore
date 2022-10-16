@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BianCore.Core
+namespace BianCore.Tools
 {
     public class Log : IDisposable
     {
@@ -19,9 +19,9 @@ namespace BianCore.Core
             }
             fileStream = new FileStream(logPath, FileMode.Create);
         }
-             
+
         /// <summary>
-        /// 写入日志。
+        /// 输出日志。
         /// </summary>
         /// <param name="level">日志等级。</param>
         /// <param name="moduleName">模块名称（例如 "Net"）。</param>
@@ -32,7 +32,7 @@ namespace BianCore.Core
             {
                 lock (fileStream)
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes($"[{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}] [{level}] [{moduleName}] {content}\n");
+                    byte[] buffer = Encoding.UTF8.GetBytes($"[{DateTime.Now.ToString("HH:mm:ss")}] [{level}] [{moduleName}] {content}\n");
                     fileStream.Write(buffer, 0, buffer.Length);
                     fileStream.Flush();
                 }

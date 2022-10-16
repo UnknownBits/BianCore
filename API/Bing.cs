@@ -13,7 +13,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Core.Config.BingBackGroud_Data["images"][0]["url"];
+                return "https://cn.bing.com" + (string)Config.Bing.BackGroud_Data["images"][0]["url"];
 
             }
             catch (Exception ex)
@@ -27,7 +27,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Core.Config.BingBackGroud_Data["images"][0]["urlbase"];
+                return "https://cn.bing.com" + (string)Config.Bing.BackGroud_Data["images"][0]["urlbase"];
             } 
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Core.Config.BingBackGroud_Data["images"][0]["copyright"];
+                return (string)Config.Bing.BackGroud_Data["images"][0]["copyright"];
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Core.Config.BingBackGroud_Data["images"][0]["title"];
+                return (string)Config.Bing.BackGroud_Data["images"][0]["title"];
 
             }
             catch (Exception ex)
