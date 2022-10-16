@@ -17,7 +17,7 @@ namespace BianCore.Tools
                 Tools.Downloads.Plan1($"{API.Bing.Urlbase()}{resolution}",Config.Bing.BackGround_File);
                 Task.Run(() =>
                 {
-                    FileStream fileStream = new FileStream(Config.Bing.BackGround_Hash, FileMode.OpenOrCreate);
+                    FileStream fileStream = new FileStream(Config.Bing.BackGround_Hash, FileMode.Create);
                     lock (fileStream)
                     {
                         byte[] buffer = Encoding.UTF8.GetBytes(Tools.HashTools.GetFileSHA1(Config.Bing.BackGround_File));
