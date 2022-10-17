@@ -21,11 +21,11 @@ namespace BianCore
         /// <returns>App 数据根路径。（带 '\' 或 '/' 后缀）</returns>
         public static string RootPath()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/";
             }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return @"/Applications/";
             }
