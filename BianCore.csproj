@@ -13,16 +13,24 @@
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <SignAssembly>False</SignAssembly>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>False</IncludeSymbols>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>embedded</DebugType>
     <WarningLevel>9999</WarningLevel>
+    <NoWarn>1701;1702;CS4014</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
     <WarningLevel>9999</WarningLevel>
+    <NoWarn>1701;1702;CS4014</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,23 +40,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098">
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
     <PackageReference Include="System.Management" Version="6.0.2-mauipre.1.22102.15" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\Microsoft.VisualBasic.dll</HintPath>
-    </Reference>
+    <Folder Include=".github\workflows\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include=".github\workflows\" />
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
