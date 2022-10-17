@@ -20,17 +20,4 @@ jobs:
       run: |
         dotnet build --configuration Release
         dotnet pack --configuration Release
-        
-    - name: Install Nuget
-      uses: nuget/setup-nuget@v1
-      with:
-        nuget-version: '5.x'
-
-    - name: Add private GitHub registry to NuGet
-      run: |
-        nuget sources add -name "Github" -Source https://nuget.pkg.github.com/HuaJiKing402/index.json -Username HuaJiKing402 -Password ${{ secrets.GITHUBTOKEN }}
-        
-    - name: Push generated package to GitHub registry and NuGet
-      run: |
-        nuget push .\bin\Release\*.nupkg -Source github 
-        nuget push .\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGETKEY }}
+        dotnet nuget push .\bin\Release\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGETKEY }} --skip-duplicate
