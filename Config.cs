@@ -42,6 +42,7 @@ namespace BianCore
         public static string Work_Path { get; } = $"{RootPath()}{Project_Name}/";
         public static string Config_Path { get; } = $"{Work_Path}Config.bian";
         public static string BackGround_Path { get; } = $"{Work_Path}Backgroud/";
+        public static string BackGround_File { get; set; } = Bing.BackGround_File; // 默认Bing壁纸
         public static string Music_Path { get; } = $"{Work_Path}Music/";
 
         public static string Log_File { get; } = $"{Work_Path}Info/{SystemTools.GetTimestamp("hh:mm:ss")}.Log";
