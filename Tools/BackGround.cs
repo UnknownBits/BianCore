@@ -14,17 +14,21 @@ namespace BianCore.Tools
         {
             public static void Get(Resolution resolution)
             {
-                Tools.Downloads.Plan1($"{API.Bing.Urlbase()}{resolution}",Config.Bing.BackGround_File);
-                Task.Run(() =>
+                if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date)!= DateTime.Now.ToString("d"))
                 {
-                    FileStream fileStream = new FileStream(Config.Bing.BackGround_Hash, FileMode.Create);
-                    lock (fileStream)
+                    Tools.Downloads.Plan1($"{API.Bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File);
+                    Task.Run(() =>
                     {
-                        byte[] buffer = Encoding.UTF8.GetBytes(Tools.HashTools.GetFileSHA1(Config.Bing.BackGround_File));
-                        fileStream.Write(buffer, 0, buffer.Length);
-                        fileStream.Flush();
-                    }
-                });
+                        FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);
+                        lock (fileStream)
+                        {
+                            byte[] buffer = Encoding.UTF8.GetBytes(DateTime.Now.ToString("d"));
+                            fileStream.Write(buffer, 0, buffer.Length);
+                            fileStream.Flush();
+                        }
+                    });
+                }
+                
             }
             public enum Resolution
             {
