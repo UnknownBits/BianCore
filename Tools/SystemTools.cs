@@ -6,7 +6,6 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Win32;
 
 namespace BianCore.Tools
 {
@@ -26,9 +25,9 @@ namespace BianCore.Tools
         /// 获取Windows系统版本
         /// </summary>
         /// <returns>Windows系统版本字符串</returns>
-        public static string GetWindowsVersion()
+        public static string GetOSVersion()
         {
-            return (string)Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion").GetValue("ProductName");
+            return RuntimeInformation.OSDescription;
         }
 
         public static Architecture GetArchitecture()
@@ -36,21 +35,17 @@ namespace BianCore.Tools
             return RuntimeInformation.ProcessArchitecture;
         }
 
-        public static string GetOSVersion()
+        public static OSPlatform GetOSPlatform()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
             {
-                return "Windows";
-            }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) == true)
-            {
-                return "Linux";
+                return OSPlatform.Windows;
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
             {
-                return "MacOS";
+                return OSPlatform.OSX;
             }
-            else return "Error";
+            else return OSPlatform.Linux;
         }
 
         public static string GetCPUID()
