@@ -9,11 +9,12 @@ namespace BianCore.Tools.API
 {
     public static class Bing
     {
+        public static JObject BackGround_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         public static string Url()
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["url"];
+                return "https://cn.bing.com" + (string)BackGround_Data["images"][0]["url"];
 
             }
             catch (Exception ex)
@@ -27,7 +28,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["urlbase"];
+                return "https://cn.bing.com" + (string)BackGround_Data["images"][0]["urlbase"];
             } 
             catch (Exception ex)
             {
@@ -39,7 +40,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGround_Data["images"][0]["copyright"];
+                return (string)BackGround_Data["images"][0]["copyright"];
             }
             catch (Exception ex)
             {
@@ -52,7 +53,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGround_Data["images"][0]["title"];
+                return (string)BackGround_Data["images"][0]["title"];
 
             }
             catch (Exception ex)
