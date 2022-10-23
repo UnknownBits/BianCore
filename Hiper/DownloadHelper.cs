@@ -45,7 +45,7 @@ namespace BianCore.Tools.Hiper
         public static string DownloadHiper(Architecture architecture, bool vaildHash = true)
         {
             // 获取架构，版本信息
-            string os = SystemTools.GetOSVersion();
+            SystemTools.OSPlatform os = SystemTools.GetOSPlatform();
             string arc = ArchitectureMap[architecture];
 
             // 获取哈希信息
@@ -54,7 +54,7 @@ namespace BianCore.Tools.Hiper
 
             Progress = HiperLauncher.Part.Downloading_Hiper;
             // 下载 Hiper 本体并验证哈希
-            if (os == "Windows")
+            if (os == SystemTools.OSPlatform.Windows)
             {
                 // 下载
                 Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper.exe", Config.Hiper.Work_Path + "hiper.exe", HashMap[$"{OSMap[os]}-{arc}/hiper.exe"]);
