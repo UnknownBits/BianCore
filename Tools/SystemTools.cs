@@ -48,6 +48,13 @@ namespace BianCore.Tools
             else return OSPlatform.Linux;
         }
 
+        public enum OSPlatform
+        {
+            Windows,
+            Linux,
+            MacOS
+        }
+
         public static string GetCPUID()
         {
             try
