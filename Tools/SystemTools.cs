@@ -37,13 +37,13 @@ namespace BianCore.Tools
 
         public static OSPlatform GetOSPlatform()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+            if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) == true)
             {
                 return OSPlatform.Windows;
             }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
+            if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX) == true)
             {
-                return OSPlatform.OSX;
+                return OSPlatform.MacOS;
             }
             else return OSPlatform.Linux;
         }
@@ -59,7 +59,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementClass mc = new ManagementClass("win32_processor");
                     ManagementObjectCollection moc = mc.GetInstances();
@@ -82,7 +82,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementClass mc = new ManagementClass("win32_processor");
                     ManagementObjectCollection moc = mc.GetInstances();
@@ -105,7 +105,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
                     string date = null;
@@ -127,7 +127,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
                     string date = null;

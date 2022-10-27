@@ -17,11 +17,11 @@ namespace BianCore.Tools.Hiper
             { Architecture.Arm, "arm-7" },
             { Architecture.Arm64, "arm64" }
         };
-        public static Dictionary<string, string> OSMap = new Dictionary<string, string>()
+        public static Dictionary<SystemTools.OSPlatform, string> OSMap = new Dictionary<SystemTools.OSPlatform, string>()
         {
-            { "Windows", "windows" },
-            { "Linux", "linux" },
-            { "MacOS", "darwin" }
+            { SystemTools.OSPlatform.Windows, "windows" },
+            { SystemTools.OSPlatform.Linux, "linux" },
+            { SystemTools.OSPlatform.MacOS, "darwin" }
         };
         public static Dictionary<string, string> HashMap = new Dictionary<string, string>();
 
