@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using BianCore.Tools;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace BianCore.Tools.API
+namespace BianCore.API
 {
     public static class Bing
     {
-        public static JObject BackGround_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
+        public static JObject BackGround_Data = Tools.Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         public static string Url()
         {
             try

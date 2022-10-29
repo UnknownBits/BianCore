@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace BianCore.Tools
 {
@@ -25,13 +26,44 @@ namespace BianCore.Tools
             request.Accept = "application/json";
             request.UserAgent = null;
             request.Timeout = Timeout;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream myResponseStream = response.GetResponseStream();
-            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-            string retString = myStreamReader.ReadToEnd();  
-            myStreamReader.Close();
-            myResponseStream.Close();
-            return retString;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream myResponseStream = response.GetResponseStream())
+                {
+                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8")))
+                    {
+                        string retString = myStreamReader.ReadToEnd();
+                        return retString;
+                    }
+                }
+            }
+        }
+
+        public static string HttpPost(string url, object content, WebHeaderCollection collection = null, int timeout = 120000)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            using (Stream stream = request.GetRequestStream())
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write(content);
+                }
+            }
+            request.Headers = collection;
+            request.Timeout = timeout;
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream myResponseStream = response.GetResponseStream())
+                {
+                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8")))
+                    {
+                        string retString = myStreamReader.ReadToEnd();
+                        return retString;
+                    }
+                }
+            }
         }
 
         public static string ListenServer()

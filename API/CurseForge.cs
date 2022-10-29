@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.Tools.API
+namespace BianCore.API
 {
     internal class CurseForge
     {

@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using BianCore.Tools;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BianCore.Tools.API
+namespace BianCore.API
 {
     public static class Modrinth
     {
@@ -13,7 +14,7 @@ namespace BianCore.Tools.API
         {
             public JToken Search()
             {
-                var JsData = Json.Str_to_Json(Network.HttpGet("https://api.modrinth.com/v2/search"))["hits"];
+                var JsData = Tools.Json.Str_to_Json(Network.HttpGet("https://api.modrinth.com/v2/search"))["hits"];
                 return JsData;
             }
         }
