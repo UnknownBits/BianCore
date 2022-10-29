@@ -39,7 +39,7 @@ namespace BianCore.Tools
             }
         }
 
-        public static string HttpPost(string url, object content, WebHeaderCollection collection = null, int timeout = 120000)
+        public static string HttpPost(string url, object content, string content_type = "application/json", WebHeaderCollection collection = null, int timeout = 120000)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
@@ -50,8 +50,12 @@ namespace BianCore.Tools
                     writer.Write(content);
                 }
             }
-            request.Headers = collection;
+            if (collection != null)
+            {
+                request.Headers = collection;
+            }
             request.Timeout = timeout;
+            request.ContentType = content_type;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {

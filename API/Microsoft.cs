@@ -21,9 +21,7 @@ namespace BianCore.API
                 { "scope", "user.read" }
             };
             FormUrlEncodedContent form = new FormUrlEncodedContent(param);
-            WebHeaderCollection collection = new WebHeaderCollection();
-            collection.Add("Content-Type", "application/x-www-form-urlencoded");
-            string responseStr = Network.HttpPost(url, await form.ReadAsStringAsync(), collection);
+            string responseStr = Network.HttpPost(url, await form.ReadAsStringAsync(), "application/x-www-form-urlencoded");
             var response = JsonConvert.DeserializeObject<Json.DeviceAuthorizationResponse>(responseStr);
             return response;
         }
@@ -38,9 +36,7 @@ namespace BianCore.API
                 { "device_code", device_code }
             };
             FormUrlEncodedContent form = new FormUrlEncodedContent(param);
-            WebHeaderCollection collection = new WebHeaderCollection();
-            collection.Add("Content-Type", "application/x-www-form-urlencoded");
-            string responseStr = Network.HttpPost(url, await form.ReadAsStringAsync(), collection);
+            string responseStr = Network.HttpPost(url, await form.ReadAsStringAsync(), "application/x-www-form-urlencoded");
             JObject jObject = Tools.Json.Str_to_Json(responseStr);
             if (jObject["error"] != null)
             {
