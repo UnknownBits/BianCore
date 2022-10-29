@@ -43,6 +43,10 @@ namespace BianCore.Tools
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
+            request.Accept = content_type;
+            request.UserAgent = null;
+            request.Timeout = Timeout;
+            request.Headers = collection;
             using (Stream stream = request.GetRequestStream())
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -50,12 +54,8 @@ namespace BianCore.Tools
                     writer.Write(content);
                 }
             }
-            if (collection != null)
-            {
-                request.Headers = collection;
-            }
+            request.Headers = collection;
             request.Timeout = timeout;
-            request.ContentType = content_type;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
