@@ -46,7 +46,7 @@ namespace BianCore.Tools
             request.Accept = content_type;
             request.UserAgent = null;
             request.Timeout = timeout;
-            request.Headers = collection;
+            if (collection != null) request.Headers = collection;
             using (Stream stream = request.GetRequestStream())
             {
                 using (StreamWriter writer = new StreamWriter(stream))
