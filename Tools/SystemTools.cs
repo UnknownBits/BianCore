@@ -37,16 +37,26 @@ namespace BianCore.Tools
 
         public static OSPlatform GetOSPlatform()
         {
-            if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) == true)
+            // 判断是否调用过方法，若调用过则直接返回缓存
+            if (_platform != null) return (OSPlatform)_platform;
+            else if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) == true)
             {
+                _platform = OSPlatform.Windows;
                 return OSPlatform.Windows;
             }
-            if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX) == true)
+            else if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX) == true)
             {
+                _platform = OSPlatform.MacOS;
                 return OSPlatform.MacOS;
             }
-            else return OSPlatform.Linux;
+            else
+            {
+                _platform = OSPlatform.Linux;
+                return OSPlatform.Linux;
+            }
         }
+
+        private static OSPlatform? _platform;
 
         public enum OSPlatform
         {
