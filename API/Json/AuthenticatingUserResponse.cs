@@ -16,7 +16,9 @@ namespace BianCore.API.Json
             [JsonProperty("bad_verification_code")]
             Bad_Verification_Code,
             [JsonProperty("expired_token")]
-            Expired_Token
+            Expired_Token,
+            [JsonProperty("invalid_grant")]
+            Invalid_Grant
         }
 
         [JsonProperty("error")]

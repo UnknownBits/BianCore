@@ -28,7 +28,7 @@ namespace BianCore.API
             return response;
         }
 
-        public static async Task<Json.AuthenticatingUserResponse> AuthenticatingUserRequest(string client_id, string device_code)
+        public static async Task<Json.AuthenticatingUserResponse> DeviceAuthenticatingUserRequest(string client_id, string device_code)
         {
             string url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
             Dictionary<string, string> param = new Dictionary<string, string>()
@@ -41,6 +41,22 @@ namespace BianCore.API
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             string responseStr = await Network.HttpPost(url, content);
             var response = JsonConvert.DeserializeObject<Json.AuthenticatingUserResponse>(responseStr);
+            return response;
+        }
+
+        public static async Task<Json.RefreshTokenResponse> RefreshTokenRequest(string refresh_token)
+        {
+            string url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
+            Dictionary<string, string> param = new Dictionary<string, string>()
+            {
+                { "client_id", "00000000402b5328" },
+                { "refresh_token", refresh_token },
+                { "grant_type", "refresh_token" }
+            };
+            FormUrlEncodedContent content = new FormUrlEncodedContent(param);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            string responseStr = await Network.HttpPost(url, content);
+            var response = JsonConvert.DeserializeObject<Json.RefreshTokenResponse>(responseStr);
             return response;
         }
     }
