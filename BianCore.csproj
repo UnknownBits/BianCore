@@ -19,6 +19,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>False</IncludeSymbols>
     <ErrorReport>prompt</ErrorReport>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

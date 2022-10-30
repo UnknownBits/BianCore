@@ -12,9 +12,9 @@ namespace BianCore.API
     {
         public class V2
         {
-            public JToken Search()
+            public async Task<JToken> Search()
             {
-                var JsData = Tools.Json.Str_to_Json(Network.HttpGet("https://api.modrinth.com/v2/search"))["hits"];
+                var JsData = Tools.Json.Str_to_Json(await Network.HttpGet("https://api.modrinth.com/v2/search"))["hits"];
                 return JsData;
             }
         }

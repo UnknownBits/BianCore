@@ -10,7 +10,7 @@ namespace BianCore.API
 {
     public static class Bing
     {
-        public static JObject BackGround_Data = Tools.Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
+        public static JObject BackGround_Data = Tools.Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").Result);
         public static string Url()
         {
             try

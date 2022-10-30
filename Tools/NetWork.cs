@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Net.Http.Headers;
 
 namespace BianCore.Tools
 {
@@ -19,55 +21,27 @@ namespace BianCore.Tools
         /// <param name="url">请求地址</param>
         /// <param name="Timeout">超时时间(可选)</param>
         /// <returns></returns>
-        public static string HttpGet(string url, int Timeout = 120000)
+        public static async Task<string> HttpGet(string url, int timeout = 10000)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.Accept = "application/json";
-            request.UserAgent = null;
-            request.Timeout = Timeout;
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (Stream myResponseStream = response.GetResponseStream())
-                {
-                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8")))
-                    {
-                        string retString = myStreamReader.ReadToEnd();
-                        return retString;
-                    }
-                }
-            }
+            HttpClient client = new HttpClient();
+            client.Timeout = new TimeSpan(0, 0, 0, 0, timeout);
+            using var response = await client.GetAsync(url);
+            return await response.Content.ReadAsStringAsync();
         }
 
-        public static string HttpPost(string url, object content, string content_type = "application/json", WebHeaderCollection collection = null, int timeout = 120000)
+        public static async Task<string> HttpPost(string url, HttpContent content, int timeout = 10000)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
-            request.Accept = content_type;
-            request.UserAgent = null;
-            request.Timeout = timeout;
-            if (collection != null) request.Headers = collection;
-            using (Stream stream = request.GetRequestStream())
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.Write(content);
-                }
-            }
-            request.Headers = collection;
-            request.Timeout = timeout;
+            HttpClient client = new HttpClient();
+            client.Timeout = new TimeSpan(0, 0, 0, 0, timeout);
+            using var response = await client.PostAsync(url, content);
+            return await response.Content.ReadAsStringAsync();
+        }
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (Stream myResponseStream = response.GetResponseStream())
-                {
-                    using (StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8")))
-                    {
-                        string retString = myStreamReader.ReadToEnd();
-                        return retString;
-                    }
-                }
-            }
+        public static async Task<string> HttpPost(string url, string content, string content_type = "application/json", int timeout = 10000)
+        {
+            using var content1 = new StringContent(content);
+            content1.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            return await HttpPost(url, content1);
         }
 
         public static string ListenServer()

@@ -42,14 +42,14 @@ namespace BianCore.Tools.Hiper
         /// <param name="architecture">系统架构。</param>
         /// <param name="vaildHash">是否验证哈希。</param>
         /// <returns>Hiper 主文件路径。</returns>
-        public static string DownloadHiper(Architecture architecture, bool vaildHash = true)
+        public static async Task<string> DownloadHiper(Architecture architecture, bool vaildHash = true)
         {
             // 获取架构，版本信息
             SystemTools.OSPlatform os = SystemTools.GetOSPlatform();
             string arc = ArchitectureMap[architecture];
 
             // 获取哈希信息
-            string hashListStr = Network.HttpGet(Config.Hiper.HashMap_URL);
+            string hashListStr = await Network.HttpGet(Config.Hiper.HashMap_URL);
             GetHashMap(hashListStr);
 
             Progress = HiperLauncher.Part.Downloading_Hiper;

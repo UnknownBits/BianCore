@@ -15,11 +15,11 @@ namespace BianCore.Tools.Hiper
         public static StreamReader StandardOutput;
         public static StatusEnum Status = StatusEnum.Stoped;
 
-        public static void Launch(string code)
+        public static async Task Launch(string code)
         {
             Architecture architecture = SystemTools.GetArchitecture();
             Progress = DownloadHelper.Progress;
-            string path = DownloadHelper.DownloadHiper(architecture);
+            string path = await DownloadHelper.DownloadHiper(architecture);
             Progress = Part.Downloading_Cert;
             DownloadHelper.DownloadCert(code);
 
