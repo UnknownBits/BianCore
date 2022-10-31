@@ -34,7 +34,8 @@ namespace BianCore.Tools
             return await response.Content.ReadAsStringAsync();
         }
 
-        public static async Task<string> HttpPost(string url, HttpContent content, int timeout = 10000)
+        public static async Task<string> HttpPost(string url, HttpContent content,
+            Dictionary<string, string> headers = null, int timeout = 10000)
         {
             HttpClientHandler handler = new HttpClientHandler
             {
@@ -43,6 +44,7 @@ namespace BianCore.Tools
 
             HttpClient client = new HttpClient(handler);
             client.Timeout = TimeSpan.FromMilliseconds(timeout);
+            foreach (var header in headers ?? new()) client.DefaultRequestHeaders.Add(header.Key, header.Value);
             using var response = await client.PostAsync(url, content);
             return await response.Content.ReadAsStringAsync();
         }
@@ -51,7 +53,7 @@ namespace BianCore.Tools
         {
             using var content1 = new StringContent(content);
             content1.Headers.ContentType = new MediaTypeHeaderValue(content_type);
-            return await HttpPost(url, content1, timeout);
+            return await HttpPost(url, content1, timeout: timeout);
         }
 
         public static string ListenServer()
