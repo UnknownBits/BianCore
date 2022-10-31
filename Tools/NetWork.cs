@@ -23,16 +23,26 @@ namespace BianCore.Tools
         /// <returns></returns>
         public static async Task<string> HttpGet(string url, int timeout = 10000)
         {
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 0, 0, timeout);
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip
+            };
+
+            HttpClient client = new HttpClient(handler);
+            client.Timeout = TimeSpan.FromMilliseconds(timeout);
             using var response = await client.GetAsync(url);
             return await response.Content.ReadAsStringAsync();
         }
 
         public static async Task<string> HttpPost(string url, HttpContent content, int timeout = 10000)
         {
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 0, 0, timeout);
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip
+            };
+
+            HttpClient client = new HttpClient(handler);
+            client.Timeout = TimeSpan.FromMilliseconds(timeout);
             using var response = await client.PostAsync(url, content);
             return await response.Content.ReadAsStringAsync();
         }
@@ -41,7 +51,7 @@ namespace BianCore.Tools
         {
             using var content1 = new StringContent(content);
             content1.Headers.ContentType = new MediaTypeHeaderValue(content_type);
-            return await HttpPost(url, content1);
+            return await HttpPost(url, content1, timeout);
         }
 
         public static string ListenServer()
