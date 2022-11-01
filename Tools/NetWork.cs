@@ -21,11 +21,11 @@ namespace BianCore.Tools
         /// <param name="url">请求地址</param>
         /// <param name="Timeout">超时时间(可选)</param>
         /// <returns></returns>
-        public static async Task<string> HttpGet(string url, int timeout = 10000)
+        public static async Task<string> HttpGet(string url, DecompressionMethods decompression = DecompressionMethods.None, int timeout = 10000)
         {
             HttpClientHandler handler = new HttpClientHandler
             {
-                AutomaticDecompression = DecompressionMethods.GZip
+                AutomaticDecompression = decompression
             };
 
             HttpClient client = new HttpClient(handler);
@@ -35,11 +35,11 @@ namespace BianCore.Tools
         }
 
         public static async Task<string> HttpPost(string url, HttpContent content,
-            Dictionary<string, string> headers = null, int timeout = 10000)
+            Dictionary<string, string> headers = null, DecompressionMethods decompression = DecompressionMethods.None, int timeout = 10000)
         {
             HttpClientHandler handler = new HttpClientHandler
             {
-                AutomaticDecompression = DecompressionMethods.GZip
+                AutomaticDecompression = decompression
             };
 
             HttpClient client = new HttpClient(handler);
