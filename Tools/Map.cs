@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API
+namespace BianCore.Tools
 {
-    internal class CurseForge
+    internal class Map
     {
+
     }
 }

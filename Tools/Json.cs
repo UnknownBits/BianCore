@@ -13,7 +13,7 @@ namespace BianCore.Tools
             {
                 return JObject.Parse(data);
             }
-            catch(Exception ex)
+            catch
             {
                 return null;
             }

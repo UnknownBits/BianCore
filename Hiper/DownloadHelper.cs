@@ -17,11 +17,11 @@ namespace BianCore.Tools.Hiper
             { Architecture.Arm, "arm-7" },
             { Architecture.Arm64, "arm64" }
         };
-        public static Dictionary<string, string> OSMap = new Dictionary<string, string>()
+        public static Dictionary<SystemTools.OSPlatform, string> OSMap = new Dictionary<SystemTools.OSPlatform, string>()
         {
-            { "Windows", "windows" },
-            { "Linux", "linux" },
-            { "MacOS", "darwin" }
+            { SystemTools.OSPlatform.Windows, "windows" },
+            { SystemTools.OSPlatform.Linux, "linux" },
+            { SystemTools.OSPlatform.MacOS, "darwin" }
         };
         public static Dictionary<string, string> HashMap = new Dictionary<string, string>();
 
@@ -42,19 +42,20 @@ namespace BianCore.Tools.Hiper
         /// <param name="architecture">系统架构。</param>
         /// <param name="vaildHash">是否验证哈希。</param>
         /// <returns>Hiper 主文件路径。</returns>
-        public static string DownloadHiper(Architecture architecture, bool vaildHash = true)
+        public static async Task<string> DownloadHiper(Architecture architecture, bool vaildHash = true)
         {
+            Network network = new Network();
             // 获取架构，版本信息
-            string os = SystemTools.GetOSVersion();
+            SystemTools.OSPlatform os = SystemTools.GetOSPlatform();
             string arc = ArchitectureMap[architecture];
 
             // 获取哈希信息
-            string hashListStr = Network.HttpGet(Config.Hiper.HashMap_URL);
+            string hashListStr = await (await network.HttpGetAsync(Config.Hiper.HashMap_URL)).Content.ReadAsStringAsync();
             GetHashMap(hashListStr);
 
             Progress = HiperLauncher.Part.Downloading_Hiper;
             // 下载 Hiper 本体并验证哈希
-            if (os == "Windows")
+            if (os == SystemTools.OSPlatform.Windows)
             {
                 // 下载
                 Downloads.AddDList(Config.Hiper.Download_URL + $"{OSMap[os]}-{arc}/hiper.exe", Config.Hiper.Work_Path + "hiper.exe", HashMap[$"{OSMap[os]}-{arc}/hiper.exe"]);

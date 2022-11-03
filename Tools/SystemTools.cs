@@ -37,22 +37,39 @@ namespace BianCore.Tools
 
         public static OSPlatform GetOSPlatform()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+            // 判断是否调用过方法，若调用过则直接返回缓存
+            if (_platform != null) return (OSPlatform)_platform;
+            else if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows) == true)
             {
+                _platform = OSPlatform.Windows;
                 return OSPlatform.Windows;
             }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == true)
+            else if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX) == true)
             {
-                return OSPlatform.OSX;
+                _platform = OSPlatform.MacOS;
+                return OSPlatform.MacOS;
             }
-            else return OSPlatform.Linux;
+            else
+            {
+                _platform = OSPlatform.Linux;
+                return OSPlatform.Linux;
+            }
+        }
+
+        private static OSPlatform? _platform;
+
+        public enum OSPlatform
+        {
+            Windows,
+            Linux,
+            MacOS
         }
 
         public static string GetCPUID()
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementClass mc = new ManagementClass("win32_processor");
                     ManagementObjectCollection moc = mc.GetInstances();
@@ -75,7 +92,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementClass mc = new ManagementClass("win32_processor");
                     ManagementObjectCollection moc = mc.GetInstances();
@@ -98,7 +115,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
                     string date = null;
@@ -120,7 +137,7 @@ namespace BianCore.Tools
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == true)
+                if (GetOSPlatform() == OSPlatform.Windows)
                 {
                     ManagementObjectSearcher FlashDevice = new ManagementObjectSearcher("Select * from win32_VideoController");
                     string date = null;

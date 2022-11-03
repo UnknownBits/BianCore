@@ -52,9 +52,8 @@ namespace BianCore
         {
             public static string BackGround_File { get; } = $"{BackGround_Path}Bing.jpg";
             public static string BackGround_Date { get; } = $"{BackGround_Path}Bing.date";
-            public static JObject BackGround_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN"));
         }
-        internal static class Hiper
+        public static class Hiper
         {
             public static string Work_Path = RootPath() + "Hiper/";
             public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";

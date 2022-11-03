@@ -1,19 +1,28 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using BianCore.Tools;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading.Tasks;
 
-namespace BianCore.Tools.API
+namespace BianCore.API
 {
     public static class Bing
     {
-        public static string Url()
+        internal static Network network = new Network();
+
+        internal static JObject BackGround_Data = Data().Result;
+        private static async Task<JObject> Data()
+        {
+            return Json.Str_to_Json(await (await network.HttpGetAsync("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN")).Content.ReadAsStringAsync());
+        }
+        public static string Url ()
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["url"];
+                return "https://cn.bing.com" + (string)BackGround_Data["images"][0]["url"];
 
             }
             catch (Exception ex)
@@ -27,7 +36,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return "https://cn.bing.com" + (string)Config.Bing.BackGround_Data["images"][0]["urlbase"];
+                return "https://cn.bing.com" + (string)BackGround_Data["images"][0]["urlbase"];
             } 
             catch (Exception ex)
             {
@@ -39,7 +48,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGround_Data["images"][0]["copyright"];
+                return (string)BackGround_Data["images"][0]["copyright"];
             }
             catch (Exception ex)
             {
@@ -52,7 +61,7 @@ namespace BianCore.Tools.API
         {
             try
             {
-                return (string)Config.Bing.BackGround_Data["images"][0]["title"];
+                return (string)BackGround_Data["images"][0]["title"];
 
             }
             catch (Exception ex)

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API
+namespace BianCore.BianNetwork
 {
-    internal class CurseForge
+    internal class WebSoket
     {
     }
 }

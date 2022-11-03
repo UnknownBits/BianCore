@@ -7,91 +7,69 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Runtime.Serialization;
+using System.Net.Http.Headers;
 
 namespace BianCore.Tools
 {
-    public static class Network
+    public class Network
     {
-        /// <summary>
-        /// HttpGet请求
-        /// </summary>
-        /// <param name="url">请求地址</param>
-        /// <param name="Timeout">超时时间(可选)</param>
-        /// <returns></returns>
-        public static string HttpGet(string url, int Timeout = 120000)
+        private HttpClient HttpClient = new HttpClient();
+        public async Task<HttpResponseMessage> HttpGetAsync(string url, string ContentType = "application/json", Tuple<string, string> AuthTuple = default)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.Accept = "application/json";
-            request.UserAgent = null;
-            request.Timeout = Timeout;
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream myResponseStream = response.GetResponseStream();
-            StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
-            string retString = myStreamReader.ReadToEnd();  
-            myStreamReader.Close();
-            myResponseStream.Close();
-            return retString;
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url); ;
+            if (AuthTuple != null)
+            {
+                message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(AuthTuple.Item1, AuthTuple.Item2);
+            }
+            var responseMessage = await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+            if (responseMessage.StatusCode.Equals(HttpStatusCode.Found))
+            {
+                string redirectUrl = responseMessage.Headers.Location.AbsoluteUri;
+                responseMessage.Dispose();
+                GC.Collect();
+                return await HttpGetAsync(redirectUrl, AuthTuple: AuthTuple, ContentType: ContentType);
+            }
+            return responseMessage;
+        }
+        public Network()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
+        public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string ContentType = "application/json")
+        {
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            var PostContent = new StringContent(content);
+            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
+            message.Content = PostContent;
+            var res = await HttpClient.SendAsync(message);
+            message.Dispose();
+            PostContent.Dispose();
+            return res;
         }
 
-        public static string ListenServer()
+        public async Task<HttpResponseMessage> HttpPostAsync(string url, string ContentType = "application/json")
         {
-            HttpListener listener = new HttpListener();
-            string[] prefixes = new string[] { "http://localhost:12000/" }; 
-            while (true)
-            {
-                try
-                {
-                    listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;//指定身份验证 Anonymous匿名访问
-                    foreach (string s in prefixes)
-                    {
-                        listener.Prefixes.Add(s);
-                    }
-                    listener.Start();
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-
-                //线程池
-                int minThreadNum;
-                int portThreadNum;
-                int maxThreadNum;
-                ThreadPool.GetMaxThreads(out maxThreadNum, out portThreadNum);
-                ThreadPool.GetMinThreads(out minThreadNum, out portThreadNum);
-                while (true)
-                {
-                    //等待请求连接
-                    //没有请求则GetContext处于阻塞状态
-                    HttpListenerContext ctx = listener.GetContext();
-                    string a = ServerCore(ctx);
-                    Console.Write(a);
-                    return a;
-                }
-            }
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            var PostContent = new StringContent("");
+            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
+            message.Content = PostContent;
+            var res = await HttpClient.SendAsync(message);
+            message.Dispose();
+            PostContent.Dispose();
+            return res;
         }
-
-        public static string ServerCore(object o)
+        public async Task<HttpResponseMessage> HttpPostAsync(string url, Dictionary<string, string> content, string ContentType = "application/x-www-form-urlencoded")
         {
-            HttpListenerContext ctx = (HttpListenerContext)o;
-
-            ctx.Response.StatusCode = 200;//设置返回给客服端http状态代码
-
-            //接收Get参数
-            string code = ctx.Request.QueryString["code"];
-
-            //接收POST参数
-            Stream stream = ctx.Request.InputStream;
-            System.IO.StreamReader reader = new System.IO.StreamReader(stream, Encoding.UTF8);
-            String body = reader.ReadToEnd();
-
-            //使用Writer输出http响应代码,UTF8格式
-            using (StreamWriter writer = new StreamWriter(ctx.Response.OutputStream, Encoding.UTF8))
-            {
-                writer.Write(code);
-                return code;
-            }
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            var PostContent = new FormUrlEncodedContent(content);
+            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
+            message.Content = PostContent;
+            var res = await HttpClient.SendAsync(message);
+            message.Dispose();
+            PostContent.Dispose();
+            return res;
         }
 
         /// <summary>
