@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API.DataType.Microsoft
+namespace BianCore.DataType.API.Microsoft
 {
     public struct DeviceAuthorizationResponse
     {

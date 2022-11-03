@@ -3,10 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API.DataType.Microsoft
+namespace BianCore.DataType.Minecraft
 {
-    public struct RefreshTokenResponse
+    public struct AuthenticateMinecraftResponse
     {
+        [JsonProperty("error")]
+        public string Error { get; set; }
+
+        [JsonProperty("username")]
+        public string Username { get; set; }
+
         [JsonProperty("access_token")]
         public string Access_Token { get; set; }
 
@@ -15,14 +21,5 @@ namespace BianCore.API.DataType.Microsoft
 
         [JsonProperty("expires_in")]
         public int Expires { get; set; }
-
-        [JsonProperty("scope")]
-        public string Scope { get; set; }
-
-        [JsonProperty("refresh_token")]
-        public string Refresh_Token { get; set; }
-
-        [JsonProperty("id_token")]
-        public string ID_Token { get; set; }
     }
 }

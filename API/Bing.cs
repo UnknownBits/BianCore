@@ -2,15 +2,23 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace BianCore.API
 {
     public static class Bing
     {
-        public static JObject BackGround_Data = Json.Str_to_Json(Network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").Result);
-        public static string Url()
+        internal static Network network = new Network();
+
+        internal static JObject BackGround_Data = Data().Result;
+        private static async Task<JObject> Data()
+        {
+            return Json.Str_to_Json(await (await network.HttpGetAsync("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN")).Content.ReadAsStringAsync());
+        }
+        public static string Url ()
         {
             try
             {

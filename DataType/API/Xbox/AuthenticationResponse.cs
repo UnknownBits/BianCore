@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API.DataType.Xbox
+namespace BianCore.DataType.API.Xbox
 {
     public struct AuthenticationResponse
     {

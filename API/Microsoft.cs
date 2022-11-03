@@ -1,4 +1,4 @@
-﻿using BianCore.API.DataType.Microsoft;
+﻿using BianCore.DataType.API.Microsoft;
 using BianCore.Tools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,6 +16,7 @@ namespace BianCore.API
     {
         public static class OAuth
         {
+            private static Network network = new Network();
             public static async Task<DeviceAuthorizationResponse> DeviceAuthorizationRequest(string client_id)
             {
                 string url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
@@ -24,9 +25,7 @@ namespace BianCore.API
                     { "client_id", client_id },
                     { "scope", "XboxLive.signin offline_access" }
                 };
-                using FormUrlEncodedContent content = new FormUrlEncodedContent(param);
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                string responseStr = await Network.HttpPost(url, content);
+                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<DeviceAuthorizationResponse>(responseStr);
                 return response;
             }
@@ -40,9 +39,7 @@ namespace BianCore.API
                     { "client_id", client_id },
                     { "device_code", device_code }
                 };
-                using FormUrlEncodedContent content = new FormUrlEncodedContent(param);
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                string responseStr = await Network.HttpPost(url, content);
+                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<AuthenticatingUserResponse>(responseStr);
                 return response;
             }
@@ -56,9 +53,7 @@ namespace BianCore.API
                     { "refresh_token", refresh_token },
                     { "grant_type", "refresh_token" }
                 };
-                using FormUrlEncodedContent content = new FormUrlEncodedContent(param);
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                string responseStr = await Network.HttpPost(url, content);
+                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<RefreshTokenResponse>(responseStr);
                 return response;
             }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.API.DataType.Minecraft
+namespace BianCore.DataType.Minecraft
 {
     public struct GetProfileResponse
     {

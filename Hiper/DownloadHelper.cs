@@ -44,12 +44,13 @@ namespace BianCore.Tools.Hiper
         /// <returns>Hiper 主文件路径。</returns>
         public static async Task<string> DownloadHiper(Architecture architecture, bool vaildHash = true)
         {
+            Network network = new Network();
             // 获取架构，版本信息
             SystemTools.OSPlatform os = SystemTools.GetOSPlatform();
             string arc = ArchitectureMap[architecture];
 
             // 获取哈希信息
-            string hashListStr = await Network.HttpGet(Config.Hiper.HashMap_URL);
+            string hashListStr = await (await network.HttpGetAsync(Config.Hiper.HashMap_URL)).Content.ReadAsStringAsync();
             GetHashMap(hashListStr);
 
             Progress = HiperLauncher.Part.Downloading_Hiper;
