@@ -25,7 +25,9 @@ namespace BianCore.API
                     { "client_id", client_id },
                     { "scope", "XboxLive.signin offline_access" }
                 };
-                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
+                using var content = new FormUrlEncodedContent(param);
+                using var httpResponse = await network.HttpPostAsync(url, content);
+                string responseStr = await httpResponse.Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<DeviceAuthorizationResponse>(responseStr);
                 return response;
             }
@@ -39,7 +41,9 @@ namespace BianCore.API
                     { "client_id", client_id },
                     { "device_code", device_code }
                 };
-                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
+                using var content = new FormUrlEncodedContent(param);
+                using var httpResponse = await network.HttpPostAsync(url, content);
+                string responseStr = await httpResponse.Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<AuthenticatingUserResponse>(responseStr);
                 return response;
             }
@@ -53,7 +57,9 @@ namespace BianCore.API
                     { "refresh_token", refresh_token },
                     { "grant_type", "refresh_token" }
                 };
-                string responseStr = await (await network.HttpPostAsync(url, param)).Content.ReadAsStringAsync();
+                using var content = new FormUrlEncodedContent(param);
+                using var httpResponse = await network.HttpPostAsync(url, content);
+                string responseStr = await httpResponse.Content.ReadAsStringAsync();
                 var response = JsonConvert.DeserializeObject<RefreshTokenResponse>(responseStr);
                 return response;
             }

@@ -17,7 +17,8 @@ namespace BianCore.API
         {
             string url = "https://user.auth.xboxlive.com/user/authenticate";
             string param = "{\"Properties\":{\"AuthMethod\":\"RPS\",\"SiteName\":\"user.auth.xboxlive.com\",\"RpsTicket\":\"d=" + access_token + "\"},\"RelyingParty\":\"http://auth.xboxlive.com\",\"TokenType\":\"JWT\"}";
-            string responseStr = (await (await network.HttpPostAsync(url, content:param)).Content.ReadAsStringAsync());
+            using var httpResponse = await network.HttpPostAsync(url, param, headerPairs: new Dictionary<string, string>() { { "Accept", "application/json" } });
+            string responseStr = await httpResponse.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<AuthenticationResponse>(responseStr);
             return response;
         }
@@ -26,7 +27,8 @@ namespace BianCore.API
         {
             string url = "https://xsts.auth.xboxlive.com/xsts/authorize";
             string param = "{\"Properties\":{\"SandboxId\":\"RETAIL\",\"UserTokens\":[\"" + xbl_token + "\"]},\"RelyingParty\":\"rp://api.minecraftservices.com/\",\"TokenType\":\"JWT\"}";
-            string responseStr = (await (await network.HttpPostAsync(url, content:param)).Content.ReadAsStringAsync());
+            using var httpResponse = await network.HttpPostAsync(url, param, headerPairs: new Dictionary<string, string>() { { "Accept", "application/json" } });
+            string responseStr = await httpResponse.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<AuthenticationResponse>(responseStr);
             return response;
         }
