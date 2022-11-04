@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.Minecraft
+namespace BianCore.Module.Minecraft
 {
     public static class JavaHelper
     {

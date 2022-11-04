@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.Minecraft
+namespace BianCore.Module.BianNetwork
 {
-    internal class Launcher
+    internal class WebSoket
     {
     }
 }

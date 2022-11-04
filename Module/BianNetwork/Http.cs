@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 
-namespace BianCore.BianNetwork
+namespace BianCore.Module.BianNetwork
 {
     public class Http
     {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace BianCore.Tools.Hiper
+using BianCore.Tools;
+namespace BianCore.Module.Hiper
 {
     public static class DownloadHelper
     {
