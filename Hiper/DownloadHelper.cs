@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BianCore.Tools;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BianCore.Tools.Hiper
+namespace BianCore.Hiper
 {
     public static class DownloadHelper
     {
