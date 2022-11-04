@@ -16,59 +16,35 @@ namespace BianCore.Tools
     public class Network
     {
         private HttpClient HttpClient = new HttpClient();
-        public async Task<HttpResponseMessage> HttpGetAsync(string url, string ContentType = "application/json", Tuple<string, string> AuthTuple = default)
+        public async Task<HttpResponseMessage> HttpGetAsync(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url); ;
-            if (AuthTuple != null)
+            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url); ;
+            message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            if (headerPairs != null)
             {
-                message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(AuthTuple.Item1, AuthTuple.Item2);
+                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
             }
-            var responseMessage = await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
-            if (responseMessage.StatusCode.Equals(HttpStatusCode.Found))
-            {
-                string redirectUrl = responseMessage.Headers.Location.AbsoluteUri;
-                responseMessage.Dispose();
-                GC.Collect();
-                return await HttpGetAsync(redirectUrl, AuthTuple: AuthTuple, ContentType: ContentType);
-            }
+            var responseMessage = await HttpClient.SendAsync(message);
             return responseMessage;
         }
-        public Network()
+        public Network() { }
+
+        public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-        }
-        public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string ContentType = "application/json")
-        {
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
-            var PostContent = new StringContent(content);
-            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
-            message.Content = PostContent;
-            var res = await HttpClient.SendAsync(message);
-            message.Dispose();
-            PostContent.Dispose();
-            return res;
+            using var strContent = new StringContent(content);
+            strContent.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            return await HttpPostAsync(url, strContent, headerPairs);
         }
 
-        public async Task<HttpResponseMessage> HttpPostAsync(string url, string ContentType = "application/json")
+        public async Task<HttpResponseMessage> HttpPostAsync(string url, HttpContent content, Dictionary<string, string> headerPairs = null)
         {
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
-            var PostContent = new StringContent("");
-            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
-            message.Content = PostContent;
+            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            message.Content = content;
+            if (headerPairs != null)
+            {
+                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
+            }
             var res = await HttpClient.SendAsync(message);
-            message.Dispose();
-            PostContent.Dispose();
-            return res;
-        }
-        public async Task<HttpResponseMessage> HttpPostAsync(string url, Dictionary<string, string> content, string ContentType = "application/x-www-form-urlencoded")
-        {
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
-            var PostContent = new FormUrlEncodedContent(content);
-            PostContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(ContentType);
-            message.Content = PostContent;
-            var res = await HttpClient.SendAsync(message);
-            message.Dispose();
-            PostContent.Dispose();
             return res;
         }
 
