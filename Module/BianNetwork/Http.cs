@@ -14,7 +14,7 @@ namespace BianCore.Module.BianNetwork
         public string Listen()
         {
             HttpListener listener = new HttpListener();
-            string[] prefixes = new string[] { "http://localhost:12000/" };
+            string[] prefixes = new string[] { "http://localhost:8080/" };
 
             while (true)
             {
