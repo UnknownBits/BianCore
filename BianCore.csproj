@@ -5,11 +5,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Title>BianCore</Title>
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
-    <PackageTags>Bian,Core</PackageTags>
+    <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3003</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.2000.3004</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -35,8 +33,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dev Log\**" />
     <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="Dev Log\**" />
     <EmbeddedResource Remove="obj\**" />
+    <None Remove="Dev Log\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
@@ -52,7 +53,7 @@
 
   <ItemGroup>
     <Folder Include=".github\workflows\" />
-    <Folder Include="Dev Log\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,17 @@ using System.Text;
 
 namespace BianCore.Module.BianNetwork
 {
-    internal class WebSoket
+    public class WebSoket
     {
+        public dynamic CreateClient()
+        {
+
+            return null;
+        }
+        public dynamic CreateServer()
+        {
+
+            return null;
+        }
     }
 }
