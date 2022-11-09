@@ -4,9 +4,9 @@ BianStudio（彼岸工作室）自主研发的基于.NET的平台化开发依赖
 
 # 关于 About
 ## 开发者名单
-[工程师] HuaJiKing
-[工程师] Lzr
+### [工程师] HuaJiKing
+### [工程师] Lzr
 ## 鸣谢
-TT702、龙腾猫跃、以及 MC启动器交流群（MCLauncher(China) Foundation ） 内的全体成员
+TT702、龙腾猫跃、Advanced_Killer、zijinshanren 以及 MC启动器交流群（MCLauncher(China) Foundation ）、彼岸计划 Bian Project开发群 内的全体成员
 # 引用
 ## Newtonsoft.Json
