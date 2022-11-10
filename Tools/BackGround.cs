@@ -12,11 +12,12 @@ namespace BianCore.Tools
     {
         public static class Bing
         {
+            public static API.Bing bing = new API.Bing();
             public static void Get(Resolution resolution)
             {
                 if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date)!= DateTime.Now.ToString("d"))
                 {
-                    Tools.Downloads.Plan1($"{API.Bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File);
+                    Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File);
                     Task.Run(() =>
                     {
                         FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);
