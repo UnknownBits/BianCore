@@ -53,6 +53,7 @@
 
   <ItemGroup>
     <Folder Include=".github\workflows\" />
+    <Folder Include="Module\OpenFrp\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 

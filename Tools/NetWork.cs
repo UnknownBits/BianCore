@@ -38,7 +38,10 @@ namespace BianCore.Tools
             var responseMessage =  HttpClient.SendAsync(message).Result;
             return responseMessage;
         }
-        public Network() { }
+        public Network()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
