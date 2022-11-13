@@ -1,4 +1,4 @@
-﻿# 彼岸核心 BianCore
+# 彼岸核心 BianCore
 ![Alt pic](http://source.biannetwork.top/1.png,"彼岸计划")
 ## 简介
 [BianStudio （彼岸工作室）](https://space.bilibili.com/495639032 "B站")
