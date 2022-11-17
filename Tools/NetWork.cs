@@ -19,6 +19,7 @@ namespace BianCore.Tools
         public async Task<HttpResponseMessage> HttpGetAsync(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
             using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            message.Content = new StringContent("");
             message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
             if (headerPairs != null)
             {
@@ -29,7 +30,8 @@ namespace BianCore.Tools
         }
         public HttpResponseMessage HttpGet(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
-            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            message.Content = new StringContent("");
             message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
             if (headerPairs != null)
             {
