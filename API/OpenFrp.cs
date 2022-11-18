@@ -21,8 +21,10 @@ namespace BianCore.API
             user_login.send send = new user_login.send();
             send.user = user;
             send.password = password;
-            using var httpResponse = await Network.HttpPostAsync($"{APIURI}/user/login");
-            string responseStr = await httpResponse.Content.ReadAsStringAsync();
+            var receive = new user_login.receive();
+            throw null;
+            //using var httpResponse = await Network.HttpPostAsync($"{APIURI}/user/login");
+            //string responseStr = await httpResponse.Content.ReadAsStringAsync();
         }
     }
 }
