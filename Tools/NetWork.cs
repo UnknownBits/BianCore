@@ -52,6 +52,9 @@ namespace BianCore.Tools
             return await HttpPostAsync(url, strContent, headerPairs);
         }
 
+        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+            => HttpPostAsync(url, content, content_type, headerPairs).Result;
+
         public async Task<HttpResponseMessage> HttpPostAsync(string url, HttpContent content, Dictionary<string, string> headerPairs = null)
         {
             using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
@@ -63,6 +66,8 @@ namespace BianCore.Tools
             var res = await HttpClient.SendAsync(message);
             return res;
         }
+
+        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null) => HttpPostAsync(url, content, headerPairs).Result;
 
         /// <summary>
         /// Get 请求
