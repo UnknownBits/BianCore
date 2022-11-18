@@ -1,8 +1,34 @@
 # 彼岸核心 BianCore
-![Alt pic](http://source.biannetwork.top/1.png,"彼岸计划")
+![彼岸计划](/Resources/1.png)
 ## 简介
-[BianStudio （彼岸工作室）](https://space.bilibili.com/495639032 "B站")
-自主研发的基于.NET的平台化开发依赖库 BianCore（简称彼岸核心）融合了平台化，集成化等诸多优势，高度模块化的架构充分满足各种功能需求，采用自主研发的彼岸节点化用户认证系统（Bian Auth System），高并发事务处理，实现傻瓜化简单易用的功能开发，为开发者提供了优秀的框架，是MC开发者的不二之选。
+[BianStudio （彼岸工作室）](https://space.bilibili.com/495639032 "B站")自主研发的基于.NET的平台化开发依赖库 BianCore（简称彼岸核心）融合了平台化，集成化等诸多优势，高度模块化的架构充分满足各种功能需求，采用自主研发的彼岸节点化用户认证系统（Bian Auth System），高并发事务处理，实现傻瓜化简单易用的功能开发，为开发者提供了优秀的框架，是MC开发者的不二之选。
+## 开发进度
+- [x] Module
+  - [ ] Minecraft
+  - [ ] OpenFrp
+  - [ ] BianNetWork
+- [x] Tools
+  - [x] BackGround
+  - [x] Downloads
+  - [x] HashTools
+  - [x] Json
+  - [x] Log
+  - [ ] Map
+  - [x] Network（v1.0.2000.3005-dev+暂停使用）
+  - [x] SystemTools
+- [ ] API（v1.0.2000.3005-dev+暂停使用）
+  - [x] Bing
+  - [x] Microsoft
+  - [x] Minecraft
+  - [ ] CurseForge 
+  - [ ] Modrinth
+  - [ ] News
+  - [ ] OpenFrp
+  - [ ] Xbox
+- [ ] DataType
+- [ ] Resources
+- [x] Config
+
 ## 关于
 ### 开发者名单
 - [ 工程师 ] HuaJiKing
