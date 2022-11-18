@@ -33,24 +33,7 @@ namespace BianCore.Tools
             var responseMessage = HttpClient.SendAsync(message).Result;
             return responseMessage;
         }
-        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
-        {
-            using var strContent = new StringContent(content);
-            strContent.Headers.ContentType = new MediaTypeHeaderValue(content_type);
-            return HttpPost(url, strContent, headerPairs);
-        }
 
-        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null)
-        {
-            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
-            message.Content = content;
-            if (headerPairs != null)
-            {
-                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
-            }
-            var responseMessage = HttpClient.SendAsync(message).Result;
-            return responseMessage;
-        }
         public async Task<HttpResponseMessage> HttpGetAsync(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
             using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
