@@ -16,6 +16,41 @@ namespace BianCore.Tools
     public class Network
     {
         private HttpClient HttpClient = new HttpClient();
+        public Network()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
+
+        public HttpResponseMessage HttpGet(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+        {
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            message.Content = new StringContent("");
+            message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            if (headerPairs != null)
+            {
+                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
+            }
+            var responseMessage = HttpClient.SendAsync(message).Result;
+            return responseMessage;
+        }
+        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+        {
+            using var strContent = new StringContent(content);
+            strContent.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            return HttpPost(url, strContent, headerPairs);
+        }
+
+        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null)
+        {
+            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, url);
+            message.Content = content;
+            if (headerPairs != null)
+            {
+                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
+            }
+            var responseMessage = HttpClient.SendAsync(message).Result;
+            return responseMessage;
+        }
         public async Task<HttpResponseMessage> HttpGetAsync(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
             using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
@@ -27,22 +62,6 @@ namespace BianCore.Tools
             }
             var responseMessage = await HttpClient.SendAsync(message);
             return responseMessage;
-        }
-        public HttpResponseMessage HttpGet(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
-        {
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
-            message.Content = new StringContent("");
-            message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
-            if (headerPairs != null)
-            {
-                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
-            }
-            var responseMessage =  HttpClient.SendAsync(message).Result;
-            return responseMessage;
-        }
-        public Network()
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
         }
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
