@@ -48,9 +48,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include=".github\workflows\" />
     <Folder Include="Module\OpenFrp\" />
     <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".github\ISSUE_TEMPLATE\Bug反馈.md" />
+    <None Include=".github\ISSUE_TEMPLATE\新意见.md" />
+    <None Include=".github\workflows\dotnet-desktop.yml" />
   </ItemGroup>
 
   <ItemGroup>
