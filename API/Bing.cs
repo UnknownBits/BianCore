@@ -9,16 +9,19 @@ using System.Threading.Tasks;
 
 namespace BianCore.API
 {
-    public static class Bing
+    public class Bing
     {
-        internal static Network network = new Network();
-
-        internal static JObject BackGround_Data = Data().Result;
-        private static async Task<JObject> Data()
+        internal Network network = new Network();
+        public async Task<JObject> Data()
         {
             return Json.Str_to_Json(await (await network.HttpGetAsync("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN")).Content.ReadAsStringAsync());
         }
-        public static string Url ()
+        internal static JObject BackGround_Data;
+        public Bing()
+        {
+            BackGround_Data = Data().Result;
+        }
+        public string Url ()
         {
             try
             {
@@ -32,7 +35,7 @@ namespace BianCore.API
             }
 
         }
-        public static string Urlbase()
+        public string Urlbase()
         {
             try
             {
@@ -44,7 +47,7 @@ namespace BianCore.API
                 return null;
             }
         }
-        public static string Copyright()
+        public string Copyright()
         {
             try
             {
@@ -57,7 +60,7 @@ namespace BianCore.API
             }
         }
 
-        public static string Title()
+        public string Title()
         {
             try
             {

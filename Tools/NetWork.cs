@@ -16,9 +16,28 @@ namespace BianCore.Tools
     public class Network
     {
         private HttpClient HttpClient = new HttpClient();
+        public Network()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
+
+        public HttpResponseMessage HttpGet(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+        {
+            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            message.Content = new StringContent("");
+            message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
+            if (headerPairs != null)
+            {
+                foreach (var pair in headerPairs) message.Headers.Add(pair.Key, pair.Value);
+            }
+            var responseMessage = HttpClient.SendAsync(message).Result;
+            return responseMessage;
+        }
+
         public async Task<HttpResponseMessage> HttpGetAsync(string url, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
-            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url); ;
+            using HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
+            message.Content = new StringContent("");
             message.Content.Headers.ContentType = new MediaTypeHeaderValue(content_type);
             if (headerPairs != null)
             {
@@ -27,7 +46,9 @@ namespace BianCore.Tools
             var responseMessage = await HttpClient.SendAsync(message);
             return responseMessage;
         }
-        public Network() { }
+
+        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+            =>HttpPostAsync(url, content, content_type, headerPairs).Result;
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
@@ -47,6 +68,8 @@ namespace BianCore.Tools
             var res = await HttpClient.SendAsync(message);
             return res;
         }
+
+        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null) => HttpPostAsync(url, content, headerPairs).Result;
 
         /// <summary>
         /// Get 请求

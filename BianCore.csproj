@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3004</Version>
+    <Version>1.0.2000.3005-Dev</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -42,10 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
     <PackageReference Include="System.Management" Version="6.0.2-mauipre.1.22102.15" />
@@ -53,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include=".github\workflows\" />
+    <Folder Include="Module\OpenFrp\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 
