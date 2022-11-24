@@ -8,24 +8,39 @@ using System.Threading.Tasks;
 
 namespace BianCore.Tools
 {
-    public static class Downloads
+    public  class Downloads
     {
-        private static List<string> DList = new List<string>();
-        private static List<string> DPath = new List<string>();
-        private static List<string> DHash = new List<string>();
-
-        public static void AddDList(string link, string path, string hash = null)
+        /// <summary>
+        /// 下载
+        /// </summary>
+        /// <param name="url">下载地址</param>
+        /// <param name="save">保存路径</param>
+        /// <param name="model">覆盖模式</param>
+        public void Plan1(string url,string save,bool model)
         {
-            DPath.Add(path);
-            DList.Add(link);
-            DHash.Add(hash);
+            using (var web = new WebClient())
+            {
+                if (!File.Exists(save) || model)
+                {
+                    if (!Directory.Exists(Path.GetDirectoryName(save)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(save));
+                    }
+                    try
+                    {
+                        web.DownloadFile(url, save);
+                    }
+                    catch { }
+                }
+            }
         }
 
-        public static void ClearList()
+        public void Plan1(Dictionary<string,string> value,bool model)
         {
-            DPath.Clear();
-            DList.Clear();
-            DHash.Clear();
+            using (var web = new WebClient())
+            {
+
+            }
         }
 
         /// <summary>

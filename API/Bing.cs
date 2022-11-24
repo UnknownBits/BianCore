@@ -11,15 +11,11 @@ namespace BianCore.API
 {
     public class Bing
     {
-        internal Network network = new Network();
-        public async Task<JObject> Data()
-        {
-            return Json.Str_to_Json(await (await network.HttpGetAsync("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN")).Content.ReadAsStringAsync());
-        }
-        internal static JObject BackGround_Data;
+        private Network network = new Network();
+        private static JObject BackGround_Data;
         public Bing()
         {
-            BackGround_Data = Data().Result;
+            BackGround_Data = Json.Str_to_Json(network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").Content.ReadAsStringAsync().Result.ToString());
         }
         public string Url ()
         {
