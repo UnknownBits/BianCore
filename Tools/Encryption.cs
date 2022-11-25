@@ -8,6 +8,7 @@ namespace BianCore.Tools
 {
     public static class HashTools
     {
+
         /// <summary>
         /// 对文件进行 SHA1 哈希运算。
         /// </summary>

@@ -25,6 +25,14 @@ namespace BianCore.API
                 var response = JsonConvert.DeserializeObject<SearchResponse>(responseStr);
                 return response;
             }
+            public SearchResponse Search(string content)
+            {
+                string url = "https://api.modrinth.com/v2/search";
+                using var httpResponse = network.HttpGetAsync(url);
+                string responseStr = httpResponse.Result.Content.ReadAsStringAsync().Result;
+                var response = JsonConvert.DeserializeObject<SearchResponse>(responseStr);
+                return response;
+            }
         }
     }
 }

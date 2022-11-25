@@ -41,7 +41,7 @@ namespace BianCore.Tools
         {
             using (var web = new WebClient())
             {
-                if (!File.Exists(save) || hash != HashTools.GetFileSHA1(save))
+                if (!File.Exists(save) || hash != Encryption.GetFileSHA1(save))
                 {
                     if (!Directory.Exists(Path.GetDirectoryName(save)))
                     {
@@ -99,7 +99,7 @@ namespace BianCore.Tools
         {
             using (var web = new WebClient())
             {
-                if (!File.Exists(save) || hash != HashTools.GetFileSHA1(save))
+                if (!File.Exists(save) || hash != Encryption.GetFileSHA1(save))
                 {
                     if (!Directory.Exists(Path.GetDirectoryName(save)))
                     {
