@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -8,9 +9,9 @@ namespace BianCore.Tools
 {
     public static class Encryption
     {
-        public struct RSASecretKey
+        public struct RSAKey
         {
-            public RSASecretKey(string privateKey, string publicKey)
+            public RSAKey(string privateKey, string publicKey)
             {
                 PrivateKey = privateKey;
                 PublicKey = publicKey;
@@ -19,26 +20,53 @@ namespace BianCore.Tools
             public string PrivateKey { get; set; }
             public override string ToString()
             {
-                return string.Format(
-                    "PrivateKey: {0}\r\nPublicKey: {1}", PrivateKey, PublicKey);
+                return $"PrivateKey: {PrivateKey}{Environment.CommandLine}PublicKey: {PublicKey}";
             }
         }
 
         /// <summary>
-        /// generate RSA secret key
+        /// RSA 加密
         /// </summary>
-        /// <param name="keySize">the size of the key,must from 384 bits to 16384 bits in increments of 8 </param>
+        /// <param name="content">加密内容</param>
+        /// <param name="xmlRSAKey">RSA 密钥</param>
         /// <returns></returns>
-        public static RSASecretKey GenerateRSASecretKey(int keySize)
+        public static byte[] RSAEncrypt(byte[] content, string xmlRSAKey)
         {
-            RSASecretKey rsaKey = new RSASecretKey();
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(keySize))
+            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.FromXmlString(xmlRSAKey);
+            byte[] encryptedData = rsa.Encrypt(content, false);
+            return encryptedData;
+        }
+
+        /// <summary>
+        /// RSA 解密
+        /// </summary>
+        /// <param name="content">解密内容</param>
+        /// <param name="xmlRSAKey">RSA 密钥</param>
+        /// <returns></returns>
+        public static byte[] RSADecrypt(byte[] content, string xmlRSAKey)
+        {
+            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.FromXmlString(xmlRSAKey);
+            byte[] decryptedData = rsa.Decrypt(content, false);
+            return decryptedData;
+        }
+
+        /// <summary>
+        /// 生成 RSA 密钥（XML）
+        /// </summary>
+        /// <returns></returns>
+        public static RSAKey GenerateRSAKey()
+        {
+            RSAKey rsaKey = new RSAKey();
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048))
             {
                 rsaKey.PrivateKey = rsa.ToXmlString(true);
                 rsaKey.PublicKey = rsa.ToXmlString(false);
             }
             return rsaKey;
         }
+
         /// <summary>
         /// 对文件进行 SHA1 哈希运算。
         /// </summary>
@@ -60,6 +88,11 @@ namespace BianCore.Tools
             }
         }
 
+        /// <summary>
+        /// 对文件进行 SHA256 哈希运算。
+        /// </summary>
+        /// <param name="filePath">文件路径。</param>
+        /// <returns>全小写哈希值。</returns>
         public static string GetFileSHA256(string filePath)
         {
             using (SHA256 sha256 = SHA256.Create())
