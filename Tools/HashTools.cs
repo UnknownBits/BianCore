@@ -28,5 +28,20 @@ namespace BianCore.Tools
                 }
             }
         }
+        public static string GetFileSHA256(string filePath)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                using (FileStream file = File.OpenRead(filePath))
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (var data in sha256.ComputeHash(file))
+                    {
+                        stringBuilder.Append(data.ToString("x2"));
+                    }
+                    return stringBuilder.ToString();
+                }
+            }
+        }
     }
 }

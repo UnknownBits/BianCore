@@ -47,15 +47,15 @@ namespace BianCore.Tools
             return responseMessage;
         }
 
+        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
+            =>HttpPostAsync(url, content, content_type, headerPairs).Result;
+
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
             using var strContent = new StringContent(content);
             strContent.Headers.ContentType = new MediaTypeHeaderValue(content_type);
             return await HttpPostAsync(url, strContent, headerPairs);
         }
-
-        public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
-            => HttpPostAsync(url, content, content_type, headerPairs).Result;
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, HttpContent content, Dictionary<string, string> headerPairs = null)
         {
