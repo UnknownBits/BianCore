@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3005-Dev</Version>
+    <Version>1.0.2000.3005-Alpha</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -18,12 +18,17 @@
     <IncludeSymbols>False</IncludeSymbols>
     <ErrorReport>prompt</ErrorReport>
     <LangVersion>10.0</LangVersion>
+    <Nullable>warnings</Nullable>
+    <PackageLicenseExpression>apache2.0</PackageLicenseExpression>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>embedded</DebugType>
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -34,21 +39,23 @@
 
   <ItemGroup>
     <Compile Remove="Dev Log\**" />
+    <Compile Remove="Module\OpenFrp\**" />
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="Dev Log\**" />
+    <EmbeddedResource Remove="Module\OpenFrp\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="Dev Log\**" />
+    <None Remove="Module\OpenFrp\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
-    <PackageReference Include="System.Management" Version="6.0.2-mauipre.1.22102.15" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Module\OpenFrp\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 

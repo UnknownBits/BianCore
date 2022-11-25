@@ -11,25 +11,26 @@ namespace BianCore.Tools
     public static class BackGround
     {
         public static class Bing
-        {
-            public static API.Bing bing = new API.Bing();
+        { 
             public static void Get(Resolution resolution)
             {
-                if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date)!= DateTime.Now.ToString("d"))
+                using (API.Bing bing = new API.Bing())
                 {
-                    Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File);
-                    Task.Run(() =>
+                    if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date) != DateTime.Now.ToString("d"))
                     {
-                        FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);
-                        lock (fileStream)
+                        Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File,true);
+                        Task.Run(() =>
                         {
-                            byte[] buffer = Encoding.UTF8.GetBytes(DateTime.Now.ToString("d"));
-                            fileStream.Write(buffer, 0, buffer.Length);
-                            fileStream.Flush();
-                        }
-                    });
+                            FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);
+                            lock (fileStream)
+                            {
+                                byte[] buffer = Encoding.UTF8.GetBytes(DateTime.Now.ToString("d"));
+                                fileStream.Write(buffer, 0, buffer.Length);
+                                fileStream.Flush();
+                            }
+                        });
+                    }
                 }
-                
             }
             public enum Resolution
             {
