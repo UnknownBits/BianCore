@@ -13,9 +13,11 @@ using System.Net.Http.Headers;
 
 namespace BianCore.Tools
 {
-    public class Network
+    public class Network : IDisposable
     {
         private HttpClient HttpClient = new HttpClient();
+        private bool disposedValue;
+
         public Network()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
@@ -84,6 +86,25 @@ namespace BianCore.Tools
                 return pingReplys;
             });
             return pingReply;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    HttpClient?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
