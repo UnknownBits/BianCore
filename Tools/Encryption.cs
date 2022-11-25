@@ -6,9 +6,39 @@ using System.Text;
 
 namespace BianCore.Tools
 {
-    public static class HashTools
+    public static class Encryption
     {
+        public struct RSASecretKey
+        {
+            public RSASecretKey(string privateKey, string publicKey)
+            {
+                PrivateKey = privateKey;
+                PublicKey = publicKey;
+            }
+            public string PublicKey { get; set; }
+            public string PrivateKey { get; set; }
+            public override string ToString()
+            {
+                return string.Format(
+                    "PrivateKey: {0}\r\nPublicKey: {1}", PrivateKey, PublicKey);
+            }
+        }
 
+        /// <summary>
+        /// generate RSA secret key
+        /// </summary>
+        /// <param name="keySize">the size of the key,must from 384 bits to 16384 bits in increments of 8 </param>
+        /// <returns></returns>
+        public static RSASecretKey GenerateRSASecretKey(int keySize)
+        {
+            RSASecretKey rsaKey = new RSASecretKey();
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(keySize))
+            {
+                rsaKey.PrivateKey = rsa.ToXmlString(true);
+                rsaKey.PublicKey = rsa.ToXmlString(false);
+            }
+            return rsaKey;
+        }
         /// <summary>
         /// 对文件进行 SHA1 哈希运算。
         /// </summary>
@@ -29,6 +59,7 @@ namespace BianCore.Tools
                 }
             }
         }
+
         public static string GetFileSHA256(string filePath)
         {
             using (SHA256 sha256 = SHA256.Create())
