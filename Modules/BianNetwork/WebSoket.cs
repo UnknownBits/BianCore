@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.Module.BianNetwork
+namespace BianCore.Modules.BianNetwork
 {
     public class WebSoket
     {

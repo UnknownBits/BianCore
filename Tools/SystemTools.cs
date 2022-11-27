@@ -88,6 +88,7 @@ namespace BianCore.Tools
                 return null;
             }
         }
+
         public static string GetCPUName()
         {
             try
@@ -111,6 +112,7 @@ namespace BianCore.Tools
                 return null;
             }
         }
+
         public static string GetHardDiskID()
         {
             try
@@ -133,6 +135,7 @@ namespace BianCore.Tools
                 return null;
             }
         }
+
         public static string GetDisplayName()
         {
             try
@@ -155,6 +158,5 @@ namespace BianCore.Tools
                 return null;
             }
         }
-
     }
 }

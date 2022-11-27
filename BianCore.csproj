@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3005-Dev</Version>
+    <Version>1.0.2000.3005-rc1</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -18,12 +18,20 @@
     <IncludeSymbols>False</IncludeSymbols>
     <ErrorReport>prompt</ErrorReport>
     <LangVersion>10.0</LangVersion>
+    <Nullable>warnings</Nullable>
+    <PackageLicenseExpression>apache2.0</PackageLicenseExpression>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <AssemblyOriginatorKeyFile>D:\360MoveData\Users\Admin\Documents\Tencent Files\3376492320\FileRecv\awa.pfx</AssemblyOriginatorKeyFile>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>embedded</DebugType>
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -31,26 +39,34 @@
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
   </PropertyGroup>
-
+		
   <ItemGroup>
     <Compile Remove="Dev Log\**" />
+    <Compile Remove="Modules\OpenFrp\**" />
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="Dev Log\**" />
+    <EmbeddedResource Remove="Modules\OpenFrp\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="Dev Log\**" />
+    <None Remove="Modules\OpenFrp\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
-    <PackageReference Include="System.Management" Version="6.0.2-mauipre.1.22102.15" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+    <PackageReference Include="System.Management" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include=".github\workflows\" />
-    <Folder Include="Module\OpenFrp\" />
     <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".github\ISSUE_TEMPLATE\Bug反馈.md" />
+    <None Include=".github\ISSUE_TEMPLATE\新意见.md" />
+    <None Include=".github\workflows\dotnet-desktop.yml" />
   </ItemGroup>
 
   <ItemGroup>

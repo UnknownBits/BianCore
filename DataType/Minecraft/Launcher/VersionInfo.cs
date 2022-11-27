@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BianCore.Tools;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,34 +10,25 @@ namespace BianCore.DataType.Minecraft.Launcher
 {
     public struct VersionInfo
     {
-        public struct ArgumentsStruct
-        {
-            [JsonIgnore]
-            public string[] Game { get; set; }
+        [JsonProperty("arguments")]
+        public ArgumentsStruct Arguments { get; set; }
 
-            [JsonIgnore]
-            public string[] JVM { get; set; }
+        [JsonProperty("assetIndex")]
+        public AssetIndexStruct AssetIndex { get; set; }
 
-            private JToken game;
+        [JsonProperty("assets")]
+        public string AssetName { get; set; }
 
-            private JToken jvm;
+        [JsonProperty("complianceLevel")]
+        public int ComplianceLevel { get; set; }
 
-            [OnDeserialized]
-            private void OnDeserialized()
-            {
-                List<string> strings = new List<string>();
-                foreach (var item in game)
-                {
-                    if (item.Type == JTokenType.String)
-                    {
-                        strings.Add(item.ToString());
-                    }
-                    else
-                    {
-                        bool isAllow = (string)item["$.rules[0].action"] == "allow";
-                    }
-                }
-            }
-        }
+        [JsonProperty("downloads")]
+        public DownloadsStruct Downloads { get; set; }
+
+        [JsonProperty("id")]
+        public string ID { get; set; }
+
+        [JsonProperty("javaVersion")]
+        public JavaVersionStruct JavaVersion { get; set; }
     }
 }
