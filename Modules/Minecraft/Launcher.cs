@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BianCore.Module.Minecraft
+namespace BianCore.Modules.Minecraft
 {
     public class Launcher
     {

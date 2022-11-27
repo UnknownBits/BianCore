@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Crypto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -23,33 +22,29 @@ namespace BianCore.Tools
                 return $"PrivateKey: {PrivateKey}{Environment.CommandLine}PublicKey: {PublicKey}";
             }
         }
-
-        /// <summary>
-        /// RSA 加密
-        /// </summary>
-        /// <param name="content">加密内容</param>
-        /// <param name="xmlRSAKey">RSA 密钥</param>
-        /// <returns></returns>
-        public static byte[] RSAEncrypt(byte[] content, string xmlRSAKey)
+        
+        public static string RSAEncrypt(string xmlPublicKey, string content)
         {
-            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.FromXmlString(xmlRSAKey);
-            byte[] encryptedData = rsa.Encrypt(content, false);
-            return encryptedData;
+            string encryptedContent = string.Empty;
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            {
+                rsa.FromXmlString(xmlPublicKey);
+                byte[] encryptedData = rsa.Encrypt(Encoding.Default.GetBytes(content), false);
+                encryptedContent = Convert.ToBase64String(encryptedData);
+            }
+            return encryptedContent;
         }
 
-        /// <summary>
-        /// RSA 解密
-        /// </summary>
-        /// <param name="content">解密内容</param>
-        /// <param name="xmlRSAKey">RSA 密钥</param>
-        /// <returns></returns>
-        public static byte[] RSADecrypt(byte[] content, string xmlRSAKey)
+        public static string RSADecrypt(string xmlPrivateKey, string content)
         {
-            using RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-            rsa.FromXmlString(xmlRSAKey);
-            byte[] decryptedData = rsa.Decrypt(content, false);
-            return decryptedData;
+            string decryptedContent = string.Empty;
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            {
+                rsa.FromXmlString(xmlPrivateKey);
+                byte[] decryptedData = rsa.Decrypt(Convert.FromBase64String(content), false);
+                decryptedContent = Encoding.UTF8.GetString(decryptedData);
+            }
+            return decryptedContent;
         }
 
         /// <summary>

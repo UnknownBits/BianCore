@@ -14,7 +14,7 @@ namespace BianCore
         /// 项目名称（动态，可更改）
         /// </summary>
         public static string Project_Name { get; set; } = "Bian_Core";
-
+        public static Version Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         /// <summary>
         /// 获取 App 数据根路径。（带 '\' 或 '/' 后缀）
         /// </summary>

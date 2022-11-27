@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3005-Alpha</Version>
+    <Version>1.0.2000.3005-rc1</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -22,6 +22,9 @@
     <PackageLicenseExpression>apache2.0</PackageLicenseExpression>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <AssemblyOriginatorKeyFile>D:\360MoveData\Users\Admin\Documents\Tencent Files\3376492320\FileRecv\awa.pfx</AssemblyOriginatorKeyFile>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,16 +39,16 @@
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
   </PropertyGroup>
-
+		
   <ItemGroup>
     <Compile Remove="Dev Log\**" />
-    <Compile Remove="Module\OpenFrp\**" />
+    <Compile Remove="Modules\OpenFrp\**" />
     <Compile Remove="obj\**" />
     <EmbeddedResource Remove="Dev Log\**" />
-    <EmbeddedResource Remove="Module\OpenFrp\**" />
+    <EmbeddedResource Remove="Modules\OpenFrp\**" />
     <EmbeddedResource Remove="obj\**" />
     <None Remove="Dev Log\**" />
-    <None Remove="Module\OpenFrp\**" />
+    <None Remove="Modules\OpenFrp\**" />
     <None Remove="obj\**" />
   </ItemGroup>
 
