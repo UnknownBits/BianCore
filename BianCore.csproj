@@ -19,7 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <LangVersion>10.0</LangVersion>
     <Nullable>warnings</Nullable>
-    <PackageLicenseExpression>apache2.0</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <AssemblyOriginatorKeyFile>D:\360MoveData\Users\Admin\Documents\Tencent Files\3376492320\FileRecv\awa.pfx</AssemblyOriginatorKeyFile>
