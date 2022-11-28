@@ -7,7 +7,7 @@ namespace BianCore.DataType.OpenFrp
 {
     public static class user_login
     {
-        public class send
+        public class Send
         {
             [JsonProperty("user")]
             public string user { get; set; }
@@ -15,7 +15,7 @@ namespace BianCore.DataType.OpenFrp
             [JsonProperty("password")]
             public string password { get; set; }
         }
-        public class receive
+        public class Receive
         {
             [JsonProperty("data")]
             public string data { get; set; }

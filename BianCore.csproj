@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/HuaJiKing402/BianCore</PackageProjectUrl>
     <PackageTags>Bian,Core,BianCore</PackageTags>
     <RepositoryUrl>https://github.com/HuaJiKing402/BianCore.git</RepositoryUrl>
-    <Version>1.0.2000.3005-rc1</Version>
+    <Version>1.1.1.1</Version>
     <Company>Bian Studio</Company>
     <Authors>Bian Studio</Authors>
     <Copyright>Bian Studio 所有</Copyright>
@@ -22,7 +22,6 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <AssemblyOriginatorKeyFile>D:\360MoveData\Users\Admin\Documents\Tencent Files\3376492320\FileRecv\awa.pfx</AssemblyOriginatorKeyFile>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>

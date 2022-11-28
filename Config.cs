@@ -53,14 +53,5 @@ namespace BianCore
             public static string BackGround_File { get; } = $"{BackGround_Path}Bing.jpg";
             public static string BackGround_Date { get; } = $"{BackGround_Path}Bing.date";
         }
-        public static class Hiper
-        {
-            public static string Work_Path = RootPath() + "Hiper/";
-            public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
-            public const string HashMap_URL = Download_URL + "packages.sha1";
-            public static string Log_File = Work_Path + $"Log/{DateTime.Now.ToString("HH-mm")}.Log";
-            public static Log Log = new Log(Log_File);
-        }
-
     }
 }
