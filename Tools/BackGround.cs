@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static BianCore.Tools.Log;
 
 namespace BianCore.Tools
 {
     public static class BackGround
     {
         public static class Bing
-        { 
+        {
             public static void Get(Resolution resolution)
             {
                 using (API.Bing bing = new API.Bing())
                 {
                     if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date) != DateTime.Now.ToString("d"))
                     {
-                        Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File,true);
+                        Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File, true);
                         Task.Run(() =>
                         {
                             FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);

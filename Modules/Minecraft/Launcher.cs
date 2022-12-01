@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BianCore.Modules.Minecraft
+﻿namespace BianCore.Modules.Minecraft
 {
     public class Launcher
     {

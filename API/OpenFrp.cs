@@ -1,9 +1,6 @@
 ﻿using BianCore.DataType.OpenFrp;
 using BianCore.Tools;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BianCore.API
@@ -15,7 +12,7 @@ namespace BianCore.API
         [Obsolete("未开发完整")]
         public Task<user_login.Receive> user_login(string user, string password)
         {
-            if(user.Length >3 || password.Length > 3)
+            if (user.Length > 3 || password.Length > 3)
             {
                 throw new ArgumentException("长度不足");
             }

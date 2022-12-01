@@ -1,10 +1,6 @@
 ﻿using BianCore.Tools;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace BianCore
 {
@@ -49,7 +45,7 @@ namespace BianCore
         public static Log Log = new Log(Log_File);
 
         public static class Bing
-        {   
+        {
             public static string BackGround_File { get; } = $"{BackGround_Path}Bing.jpg";
             public static string BackGround_Date { get; } = $"{BackGround_Path}Bing.date";
         }

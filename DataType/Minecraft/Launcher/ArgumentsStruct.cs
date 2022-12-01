@@ -1,12 +1,7 @@
-﻿using BianCore.Tools;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace BianCore.DataType.Minecraft.Launcher
 {

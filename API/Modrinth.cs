@@ -1,14 +1,6 @@
-﻿using BianCore.DataType.API.Microsoft;
-using BianCore.DataType.API.Modrinth;
+﻿using BianCore.DataType.API.Modrinth;
 using BianCore.Tools;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BianCore.API
 {
