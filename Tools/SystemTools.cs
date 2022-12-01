@@ -1,11 +1,6 @@
-﻿using System.Runtime.InteropServices;
-using System.Runtime;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace BianCore.Tools
 {
@@ -152,7 +147,7 @@ namespace BianCore.Tools
                 }
                 else return null;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message.ToString());
                 return null;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,7 +21,7 @@ namespace BianCore.Tools
                 return $"PrivateKey: {PrivateKey}{Environment.CommandLine}PublicKey: {PublicKey}";
             }
         }
-        
+
         public static string RSAEncrypt(string xmlPublicKey, string content)
         {
             string encryptedContent = string.Empty;

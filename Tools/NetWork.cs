@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.NetworkInformation;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using Newtonsoft.Json;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace BianCore.Tools
 {
@@ -50,7 +45,7 @@ namespace BianCore.Tools
         }
 
         public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
-            =>HttpPostAsync(url, content, content_type, headerPairs).Result;
+            => HttpPostAsync(url, content, content_type, headerPairs).Result;
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
@@ -80,7 +75,8 @@ namespace BianCore.Tools
         /// <returns> PingReply </returns>
         public static async Task<PingReply> Ping(string IP)
         {
-            var pingReply = await Task.Run(() => {
+            var pingReply = await Task.Run(() =>
+            {
                 Ping ping = new Ping();
                 PingReply pingReplys = ping.Send(IP, 1000);
                 return pingReplys;

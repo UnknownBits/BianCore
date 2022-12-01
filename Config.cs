@@ -1,10 +1,6 @@
 ﻿using BianCore.Tools;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace BianCore
 {
@@ -49,18 +45,9 @@ namespace BianCore
         public static Log Log = new Log(Log_File);
 
         public static class Bing
-        {   
+        {
             public static string BackGround_File { get; } = $"{BackGround_Path}Bing.jpg";
             public static string BackGround_Date { get; } = $"{BackGround_Path}Bing.date";
         }
-        public static class Hiper
-        {
-            public static string Work_Path = RootPath() + "Hiper/";
-            public const string Download_URL = "https://gitcode.net/to/hiper/-/raw/master/";
-            public const string HashMap_URL = Download_URL + "packages.sha1";
-            public static string Log_File = Work_Path + $"Log/{DateTime.Now.ToString("HH-mm")}.Log";
-            public static Log Log = new Log(Log_File);
-        }
-
     }
 }

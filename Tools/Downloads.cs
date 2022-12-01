@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BianCore.Tools
@@ -16,7 +12,7 @@ namespace BianCore.Tools
         /// <param name="url">下载地址</param>
         /// <param name="save">保存路径</param>
         /// <param name="model">覆盖模式</param>
-        public static void Plan1(string url,string save,bool model)
+        public static void Plan1(string url, string save, bool model)
         {
             using (var web = new WebClient())
             {
@@ -37,7 +33,7 @@ namespace BianCore.Tools
                 }
             }
         }
-        public static void Plan1(string url,string save,string hash)
+        public static void Plan1(string url, string save, string hash)
         {
             using (var web = new WebClient())
             {
@@ -95,7 +91,7 @@ namespace BianCore.Tools
         /// <param name="save">保存路径（带文件名）</param>
         /// <param name="hash">哈希校验（可选）</param>
         /// <param name="model">批量下载（可选）</param>
-        public static async Task Async(string url, string save , string hash)
+        public static async Task Async(string url, string save, string hash)
         {
             using (var web = new WebClient())
             {
