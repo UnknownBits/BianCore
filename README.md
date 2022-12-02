@@ -50,5 +50,10 @@
 * 彼岸计划Bian Project开发群 全体成员
 # 引用
 ## Newtonsoft.Json
-
+https://www.newtonsoft.com/json
+https://github.com/JamesNK/Newtonsoft.Json
+Copyright (c) 2007 James Newton-King
+Json.NET is a popular high-performance JSON framework for .NET
+Licensed under the MIT License(MIT);
+https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
 
