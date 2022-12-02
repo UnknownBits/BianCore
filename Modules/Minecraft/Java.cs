@@ -8,7 +8,7 @@ using System.IO;
 
 namespace SeaMinecraftLauncherCore.Tools
 {
-    public static class JavaHelper
+    public static class Java
     {
         /// <summary>
         /// 寻找计算机中的 Java。(可能不全)
