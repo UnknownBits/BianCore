@@ -12,6 +12,7 @@ namespace BianCore.API
         public static class OAuth
         {
             private static Network network = new Network();
+
             public static async Task<DeviceAuthorizationResponse> DeviceAuthorizationRequest(string client_id)
             {
                 string url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";

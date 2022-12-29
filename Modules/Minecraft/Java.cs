@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace SeaMinecraftLauncherCore.Tools
+namespace BianCore.Modules.Minecraft
 {
     public static class Java
     {

@@ -17,7 +17,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IncludeSymbols>False</IncludeSymbols>
     <ErrorReport>queue</ErrorReport>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>11.0</LangVersion>
     <Nullable>warnings</Nullable>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
