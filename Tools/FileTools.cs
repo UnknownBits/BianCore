@@ -11,7 +11,12 @@ namespace BianCore.Tools
         public static FileInfo[] SearchFile(string directoryPath, string pattern)
         {
             DirectoryInfo info = new DirectoryInfo(directoryPath);
-            FileInfo[] fileInfos = info.EnumerateFiles(pattern, SearchOption.AllDirectories).ToArray();
+            DirectoryInfo[] directoryInfos = info.GetDirectories();
+            List<FileInfo> fileInfos = new List<FileInfo>();
+            foreach (var directory in directoryInfos)
+            {
+                fileInfos.AddRange(directory.GetFiles());
+            }
             List<FileInfo> results = new List<FileInfo>();
             foreach (FileInfo file in fileInfos)
             {

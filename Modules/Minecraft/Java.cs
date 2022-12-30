@@ -97,7 +97,7 @@ namespace BianCore.Modules.Minecraft
         public static JavaInfo AutoSelectJava(VersionInfo versionInfo, JavaInfo[] javaInfos)
         {
             int dstJavaMajor;
-            Version version = Version.Parse(versionInfo.AssetName);
+            Version version = Version.Parse(versionInfo.AssetsIndexName);
             if (version.Minor <= 16 && version.Major == 1)
             {
                 dstJavaMajor = 8;

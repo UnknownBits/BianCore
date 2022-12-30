@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BianCore.API;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -59,18 +60,19 @@ namespace BianCore.DataType.Minecraft.Launcher
             [JsonIgnore]
             public bool IsAllow { get; set; }
 
+#nullable enable
             [JsonIgnore]
-            public string OSName { get; set; }
+            public string? OSName { get; set; }
 
-            public string action;
+            private string action;
 
-            public JToken os;
+            private JToken os;
 
             [OnDeserialized]
-            public void OnDeserialized()
+            public void OnDeserialized(StreamingContext context)
             {
                 IsAllow = action == "allow" || action == null;
-                OSName = os["name"]?.ToString();
+                OSName = os?["name"]?.ToString();
             }
         }
 

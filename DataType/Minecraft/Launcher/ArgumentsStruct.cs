@@ -11,13 +11,12 @@ namespace BianCore.DataType.Minecraft.Launcher
         {
             public struct RuleStruct
             {
+#nullable enable
                 public bool IsAllow { get; set; }
 
-                public string OS_Name { get; set; }
+                public string? OS_Name { get; set; }
 
-                public string OS_Version { get; set; }
-
-                public string OS_Arch { get; set; }
+                public string? OS_Arch { get; set; }
             }
 
             public string[] Values { get; set; }
@@ -31,91 +30,82 @@ namespace BianCore.DataType.Minecraft.Launcher
         [JsonIgnore]
         public ArgumentStruct[] JVM { get; set; }
 
+        [JsonProperty("game")]
         private JToken game;
 
+        [JsonProperty("jvm")]
         private JToken jvm;
 
         [OnDeserialized]
-        private void OnDeserialized()
+        private void OnDeserialized(StreamingContext context)
         {
             List<ArgumentStruct> args = new List<ArgumentStruct>();
 
             // game 参数
-            foreach (var item in game)
+            if (game != null)
             {
-                if (item.Type == JTokenType.String)
+                foreach (var item in game)
                 {
-                    ArgumentStruct arg = new ArgumentStruct
+                    if (item.Type == JTokenType.String)
                     {
-                        Values = new string[1] { item.ToString() }
-                    };
-                    args.Add(arg);
-                }
-                else
-                {
-                    ArgumentStruct arg = new ArgumentStruct();
-                    if (item["value"].Type == JTokenType.String)
-                    {
-                        arg.Values = new string[1] { item["value"].ToString() };
-                    }
-                    else
-                    {
-                        List<string> strings = new List<string>();
-                        foreach (var value in item["value"])
+                        ArgumentStruct arg = new ArgumentStruct
                         {
-                            strings.Add(value.ToString());
-                        }
-                        arg.Values = strings.ToArray();
-                    }
-
-                    List<ArgumentStruct.RuleStruct> rules = new List<ArgumentStruct.RuleStruct>();
-                    foreach (var rule in item["rules"])
-                    {
-                        var ruleData = new ArgumentStruct.RuleStruct
-                        {
-                            IsAllow = rule["action"].ToString() == "allow",
-                            OS_Name = rule["$.os.name"].ToString(),
-                            OS_Version = rule["$.os.version"].ToString(),
-                            OS_Arch = rule["$.os.arch"].ToString()
+                            Values = new string[1] { item.ToString() }
                         };
-                        rules.Add(ruleData);
+                        args.Add(arg);
                     }
-                    arg.Rules = rules.ToArray();
-
-                    args.Add(arg);
                 }
+                Game = args.ToArray();
+                args.Clear();
             }
-            Game = args.ToArray();
-            args.Clear();
 
-            // jvm 参数
-            foreach (var item in jvm)
+            // JVM 参数
+            if (jvm != null)
             {
-                if (item.Type == JTokenType.String)
+                foreach (var item in jvm)
                 {
-                    ArgumentStruct arg = new ArgumentStruct
+                    if (item.Type == JTokenType.String)
                     {
-                        Values = new string[1] { item.ToString() }
-                    };
-                    args.Add(arg);
-                }
-                else
-                {
-                    ArgumentStruct arg = new ArgumentStruct();
-                    if (item["value"].Type == JTokenType.String)
-                    {
-                        arg.Values = new string[1] { item["value"].ToString() };
+                        ArgumentStruct arg = new ArgumentStruct
+                        {
+                            Values = new string[1] { item.ToString() }
+                        };
+                        args.Add(arg);
                     }
                     else
                     {
-                        List<string> strings = new List<string>();
-                        foreach (var value in item["value"])
+                        ArgumentStruct arg = new ArgumentStruct();
+                        if (item["value"].Type == JTokenType.String)
                         {
-                            strings.Add(value.ToString());
+                            arg.Values = new string[1] { item["value"].ToString() };
                         }
-                        arg.Values = strings.ToArray();
+                        else
+                        {
+                            List<string> strings = new List<string>();
+                            foreach (var value in item["value"])
+                            {
+                                strings.Add(value.ToString());
+                            }
+                            arg.Values = strings.ToArray();
+                        }
+
+                        List<ArgumentStruct.RuleStruct> rules = new List<ArgumentStruct.RuleStruct>();
+                        foreach (var rule in item["rules"])
+                        {
+                            var ruleData = new ArgumentStruct.RuleStruct
+                            {
+                                IsAllow = rule["action"]?.ToString() == "allow" || rule["action"]?.ToString() == null,
+                                OS_Name = rule["$.os.name"]?.ToString(),
+                                OS_Arch = rule["$.os.arch"]?.ToString()
+                            };
+                            rules.Add(ruleData);
+                        }
+                        arg.Rules = rules.ToArray();
+
+                        args.Add(arg);
                     }
                 }
+                JVM = args.ToArray();
             }
         }
     }

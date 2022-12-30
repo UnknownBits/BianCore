@@ -6,6 +6,21 @@ namespace BianCore
 {
     public static class Config
     {
+        public static char ClassPath_Separator
+        {
+            get
+            {
+                if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.Windows)
+                {
+                    return ';';
+                }
+                else
+                {
+                    return ':';
+                }
+            }
+        }
+
         /// <summary>
         /// 项目名称（动态，可更改）
         /// </summary>

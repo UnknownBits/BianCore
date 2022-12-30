@@ -33,7 +33,7 @@
     <DebugType>embedded</DebugType>
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
@@ -42,6 +42,7 @@
     <WarningLevel>9999</WarningLevel>
     <NoWarn>1701;1702;CS4014</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Optimize>False</Optimize>
   </PropertyGroup>
 		
   <ItemGroup>

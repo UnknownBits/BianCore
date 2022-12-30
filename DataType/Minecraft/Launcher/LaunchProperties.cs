@@ -6,7 +6,7 @@ namespace BianCore.DataType.Minecraft.Launcher
 {
     public struct LaunchProperties
     {
-        public struct JVMPropertiesStruct
+        public class JVMPropertiesStruct
         {
             public int MaxHeapSize { get; set; }
 
@@ -14,9 +14,15 @@ namespace BianCore.DataType.Minecraft.Launcher
 
             public GCTypeEnum GCType { get; set; } = GCTypeEnum.G1GC;
 
-            public bool UseAdaptiveSizePolicy = true;
+            public bool UseAdaptiveSizePolicy { get; set; } = false;
 
-            public bool OmitStackTraceInFastThrow = true;
+            public bool OmitStackTraceInFastThrow { get; set; } = false;
+
+            public bool FML_IgnoreInvalidMinecraftCertificates { get; set; } = true;
+
+            public bool FML_IgnorePatchDiscrepancies { get; set; } = true;
+
+            public string JVMPath { get; set; } = "java";
 
             public enum GCTypeEnum
             {
@@ -29,17 +35,9 @@ namespace BianCore.DataType.Minecraft.Launcher
             public JVMPropertiesStruct() { }
         }
 
-        public struct GamePropertiesStruct
+        public class GamePropertiesStruct
         {
             public string Username { get; set; }
-
-            public string Version { get; set; }
-
-            public string GameDir { get; set; }
-
-            public string AssetsDir { get; set; }
-
-            public string AssetIndex { get; set; }
 
             public string UUID { get; set; }
 
@@ -68,9 +66,11 @@ namespace BianCore.DataType.Minecraft.Launcher
             public GamePropertiesStruct() { }
         }
 
-        public JVMPropertiesStruct JVMProperties = default;
+        public JVMPropertiesStruct JVMProperties { get; set; } = new JVMPropertiesStruct();
 
-        public GamePropertiesStruct GameProperties = default;
+        public GamePropertiesStruct GameProperties { get; set; } = new GamePropertiesStruct();
+
+        public VersionInfo LaunchVersion { get; set; }
 
         public LaunchProperties() { }
     }

@@ -5,17 +5,24 @@ namespace BianCore.DataType.Minecraft.Launcher
 {
     public struct VersionInfo
     {
+#nullable enable
+        /// <summary>
+        /// 1.12 及以下版本的启动参数（无 JVM 参数）
+        /// </summary>
         [JsonProperty("minecraftArguments")]
-        public string MinecraftArguments { get; set; }
+        public string? MinecraftArguments { get; set; }
 
+        /// <summary>
+        /// 1.13 及以上版本的启动参数
+        /// </summary>
         [JsonProperty("arguments")]
-        public ArgumentsStruct Arguments { get; set; }
+        public ArgumentsStruct? Arguments { get; set; }
 
         [JsonProperty("assetIndex")]
         public AssetIndexStruct AssetIndex { get; set; }
 
         [JsonProperty("assets")]
-        public string AssetsName { get; set; }
+        public string AssetsIndexName { get; set; }
 
         [JsonProperty("complianceLevel")]
         public int ComplianceLevel { get; set; }
