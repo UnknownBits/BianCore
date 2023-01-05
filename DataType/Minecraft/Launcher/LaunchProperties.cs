@@ -22,8 +22,6 @@ namespace BianCore.DataType.Minecraft.Launcher
 
             public bool FML_IgnorePatchDiscrepancies { get; set; } = true;
 
-            public string JVMPath { get; set; } = "java";
-
             public enum GCTypeEnum
             {
                 G1GC,

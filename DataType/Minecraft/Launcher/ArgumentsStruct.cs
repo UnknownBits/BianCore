@@ -95,8 +95,8 @@ namespace BianCore.DataType.Minecraft.Launcher
                             var ruleData = new ArgumentStruct.RuleStruct
                             {
                                 IsAllow = rule["action"]?.ToString() == "allow" || rule["action"]?.ToString() == null,
-                                OS_Name = rule["$.os.name"]?.ToString(),
-                                OS_Arch = rule["$.os.arch"]?.ToString()
+                                OS_Name = rule["os"]?["name"]?.ToString(),
+                                OS_Arch = rule["os"]?["arch"]?.ToString()
                             };
                             rules.Add(ruleData);
                         }

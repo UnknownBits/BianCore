@@ -78,7 +78,7 @@ namespace BianCore.Modules.Minecraft
                 case SystemTools.OSPlatform.Linux:
                     throw new NotImplementedException("暂不支持寻找 Linux Java。");
                     break;
-                case SystemTools.OSPlatform.MacOS:
+                case SystemTools.OSPlatform.OSX:
                     throw new NotImplementedException("暂不支持寻找 MacOS Java。");
                     break;
             }

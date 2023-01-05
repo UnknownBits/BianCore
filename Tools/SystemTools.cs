@@ -49,8 +49,8 @@ namespace BianCore.Tools
             }
             else if (RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX) == true)
             {
-                _platform = OSPlatform.MacOS;
-                return OSPlatform.MacOS;
+                _platform = OSPlatform.OSX;
+                return OSPlatform.OSX;
             }
             else
             {
@@ -65,7 +65,7 @@ namespace BianCore.Tools
         {
             Windows,
             Linux,
-            MacOS
+            OSX
         }
 
         public static string GetCPUID()
