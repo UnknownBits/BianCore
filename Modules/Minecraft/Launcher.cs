@@ -49,6 +49,61 @@ namespace BianCore.Modules.Minecraft
             return Versions;
         }
 
+        private void GetJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
+        {
+            foreach (var arg in prop.LaunchVersion.Arguments.Value.JVM)
+            {
+                bool allow = true;
+                if (arg.Rules != null)
+                {
+                    foreach (var rule in arg.Rules)
+                    {
+                        if (rule.OS_Name != null)
+                        {
+                            if (rule.IsAllow) allow = rule.OS_Name == SystemTools.GetOSPlatform().ToString().ToLower();
+                            else allow = rule.OS_Name != SystemTools.GetOSPlatform().ToString().ToLower();
+                            if (!allow) break;
+                        }
+                        if (rule.OS_Arch != null)
+                        {
+                            if (rule.IsAllow) allow = rule.OS_Arch == SystemTools.GetArchitecture().ToString().ToLower();
+                            else allow = rule.OS_Arch == SystemTools.GetArchitecture().ToString().ToLower();
+                            if (!allow) break;
+                        }
+                    }
+                }
+                if (allow)
+                {
+                    foreach (string value in arg.Values)
+                    {
+                        if (value == "-Dos.name=Windows 10")
+                        {
+                            jvmSb.Append(' ' + "-Dos.name=\"Windows 10\"");
+                            continue;
+                        }
+                        jvmSb.Append(' ' + value.Replace(" ", ""));
+                    }
+                }
+            }
+        }
+
+        private void GetOldJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
+        {
+            if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.Windows)
+            {
+                jvmSb.Append(" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
+            }
+            else if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.OSX)
+            {
+                jvmSb.Append(" -XstartOnFirstThread");
+                jvmSb.Append(" -Xss1M");
+            }
+            jvmSb.Append(" -Djava.library.path=${natives_directory}");
+            jvmSb.Append(" -Dminecraft.launcher.brand=${launcher_name}");
+            jvmSb.Append(" -Dminecraft.launcher.version=${launcher_version}");
+            jvmSb.Append(" -cp ${classpath}");
+        }
+
         public string BuildLaunchScript(LaunchProperties prop)
         {
             // JVM 参数
@@ -69,56 +124,11 @@ namespace BianCore.Modules.Minecraft
             // JVM 参数
             if (prop.LaunchVersion.Arguments.HasValue) // 1.13 及以上版本参数
             {
-                foreach (var arg in prop.LaunchVersion.Arguments.Value.JVM)
-                {
-                    bool allow = true;
-                    if (arg.Rules != null)
-                    {
-                        foreach (var rule in arg.Rules)
-                        {
-                            if (rule.OS_Name != null)
-                            {
-                                if (rule.IsAllow) allow = rule.OS_Name == SystemTools.GetOSPlatform().ToString().ToLower();
-                                else allow = rule.OS_Name != SystemTools.GetOSPlatform().ToString().ToLower();
-                                if (!allow) break;
-                            }
-                            if (rule.OS_Arch != null)
-                            {
-                                if (rule.IsAllow) allow = rule.OS_Arch == SystemTools.GetArchitecture().ToString().ToLower();
-                                else allow = rule.OS_Arch == SystemTools.GetArchitecture().ToString().ToLower();
-                                if (!allow) break;
-                            }
-                        }
-                    }
-                    if (allow)
-                    {
-                        foreach (string value in arg.Values)
-                        {
-                            if (value == "-Dos.name=Windows 10")
-                            {
-                                jvmSb.Append(' ' + "-Dos.name=\"Windows 10\"");
-                                continue;
-                            }
-                            jvmSb.Append(' ' + value.Replace(" ", ""));
-                        }
-                    }
-                }
+                GetJVMArguments(ref jvmSb, prop);
             }
             else // 1.12 及以下版本参数
             {
-                if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.Windows)
-                {
-                    jvmSb.Append(" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
-                }
-                else if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.OSX)
-                {
-                    jvmSb.Append(" -XstartOnFirstThread");
-                    jvmSb.Append(" -Xss1M");
-                }
-                jvmSb.Append(" -Djava.library.path=${natives_directory}");
-                jvmSb.Append(" -Dminecraft.launcher.brand=${launcher_name}");
-                jvmSb.Append(" -Dminecraft.launcher.version=${launcher_version}");
-                jvmSb.Append(" -cp ${classpath}");
+                GetOldJVMArguments(ref jvmSb, prop);
             }
 
             // 替换 JVM 参数填充符
