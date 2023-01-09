@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BianCore.Modules.Minecraft
 {
@@ -25,7 +26,7 @@ namespace BianCore.Modules.Minecraft
             MinecraftPath = Path.GetFullPath(minecraftRootPath);
         }
 
-        public VersionInfo GetVersionInfoFromFile(string jsonPath)
+        public static VersionInfo GetVersionInfoFromFile(string jsonPath)
         {
             using StreamReader sr = new StreamReader(jsonPath);
             VersionInfo result = JsonConvert.DeserializeObject<VersionInfo>(sr.ReadToEnd());
@@ -118,6 +119,8 @@ namespace BianCore.Modules.Minecraft
             jvmSb.Append($" -Dfml.ignoreInvalidMinecraftCertificates={prop.JVMProperties.FML_IgnoreInvalidMinecraftCertificates}");
             jvmSb.Append($" -Dfml.ignorePatchDiscrepancies={prop.JVMProperties.FML_IgnorePatchDiscrepancies}");
             jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); // log4j CVE-2021-44228
+
+            // 内存参数
             jvmSb.Append($" -Xmn{prop.JVMProperties.NewGenHeapSize}M");
             jvmSb.Append($" -Xmx{prop.JVMProperties.MaxHeapSize}M");
 
@@ -132,12 +135,23 @@ namespace BianCore.Modules.Minecraft
             }
 
             // 替换 JVM 参数填充符
-            jvmSb.Replace("${natives_directory}"
-                , '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
             var libs = GetLibraries(prop.LaunchVersion);
             var libStrs = LibrariesToPaths(libs).ToList();
-            libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
+            VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
+                MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
+            if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
+            {
+                libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
+                jvmSb.Replace("${natives_directory}"
+                    , '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
+            }
+            else // 继承版本
+            {
+                libStrs.Add(Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}.jar"));
+                jvmSb.Replace("${natives_directory}"
+                    , '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
+            }
             jvmSb.Replace("${classpath}", '\"'
                 + string.Join(Path.PathSeparator.ToString()
                 , libStrs) + '\"');
@@ -166,42 +180,99 @@ namespace BianCore.Modules.Minecraft
             gameSb.Append($" --height {prop.GameProperties.WindowHeight}");
 
             // 替换游戏参数填充符
+            bool hasOptifine = false;
+            if (string.IsNullOrEmpty(prop.GameProperties.VersionType))
+                gameSb.Replace(" --versionType ${version_type}", "");
+            if (gameSb.ToString().Contains(" --tweakClass optifine.OptiFineForgeTweaker"))
+            {
+                gameSb.Replace(" --tweakClass optifine.OptiFineForgeTweaker", "");
+                hasOptifine = true;
+            }
+
             gameSb.Replace("${auth_player_name}", prop.GameProperties.Username);
             gameSb.Replace("${version_name}", '\"' + prop.LaunchVersion.ID + '\"');
             gameSb.Replace("${game_directory}", '\"' + prop.LaunchVersion.VersionPath + '\"');
             gameSb.Replace("${assets_root}", '\"' + Path.Combine(MinecraftPath, "assets") + '\"');
-            gameSb.Replace("${assets_index_name}", prop.LaunchVersion.AssetsIndexName);
+            if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
+                gameSb.Replace("${assets_index_name}", prop.LaunchVersion.AssetsIndexName);
+            else // 继承版本
+                gameSb.Replace("${assets_index_name}", inheritsVer.AssetsIndexName);
             gameSb.Replace("${auth_uuid}", prop.GameProperties.UUID.Replace("-", ""));
             gameSb.Replace("${auth_access_token}", prop.GameProperties.AccessToken);
             gameSb.Replace("${user_type}", prop.GameProperties.UserType.ToString());
             gameSb.Replace("${version_type}", '\"' + prop.GameProperties.VersionType + '\"');
 
+            // 加入后置参数
+            if (hasOptifine)
+            {
+                gameSb.Append(" --tweakClass optifine.OptiFineForgeTweaker");
+            }
+
             return jvmSb.Append(gameSb.ToString()).ToString().Trim();
         }
 
-        public static LibraryStruct[] GetLibraries(VersionInfo ver)
+        public LibraryStruct[] GetLibraries(VersionInfo ver)
         {
             List<LibraryStruct> libs = new List<LibraryStruct>();
-            foreach (var lib in ver.Libraries)
+            List<string> libNames = new List<string>(); // 判断是否重复
+            Dictionary<string, string> hashMap = new Dictionary<string, string>();
+            List<LibraryStruct> todoLibs = new List<LibraryStruct>(); // 需在最后加入的 Lib
+
+            void IterateLibraries(VersionInfo version)
             {
-                bool allow = true;
-                if (lib.Rules != null)
+                foreach (var lib in version.Libraries)
                 {
-                    foreach (var rule in lib.Rules)
+                    bool allow = true;
+                    if (lib.Rules != null)
                     {
-                        if (rule.OSName != null)
+                        foreach (var rule in lib.Rules)
                         {
-                            if (rule.IsAllow) allow = rule.OSName == SystemTools.GetOSPlatform().ToString().ToLower();
-                            else allow = rule.OSName != SystemTools.GetOSPlatform().ToString().ToLower();
-                            if (!allow) break;
+                            if (rule.OSName != null)
+                            {
+                                if (rule.IsAllow) allow = rule.OSName == SystemTools.GetOSPlatform().ToString().ToLower();
+                                else allow = rule.OSName != SystemTools.GetOSPlatform().ToString().ToLower();
+                                if (!allow) break;
+                            }
                         }
                     }
+
+                    if (allow && !libs.Contains(lib)) // 判断是否重复
+                    {
+                        string libVer = Regex.Match(lib.Name, @"[0-9]\.[0-9]\.?[0-9]?").Value;
+                        string libName;
+                        if (lib.Name.IndexOf(libVer) >= 1)
+                        {
+                            libName = lib.Name.Remove(lib.Name.IndexOf(libVer) - 1);
+                        }
+                        else libName = lib.Name;
+                        if (hashMap.ContainsKey(libName) && Version.Parse(libVer)
+                            > Version.Parse(hashMap[libName]))
+                        {
+                            libs[libNames.IndexOf(libName)] = lib;
+                            continue;
+                        }
+                        if (libName.Contains("optifine"))
+                        {
+                            todoLibs.Add(lib);
+                            continue;
+                        }
+                        libs.Add(lib);
+                        libNames.Add(libName);
+                        hashMap.Add(libName, libVer);
+                    }
                 }
-                
-                if (allow)
-                {
-                    libs.Add(lib);
-                }
+            }
+
+            // 继承版本的 Libraries
+            string inheritsVerPath = Path.Combine(MinecraftPath, "versions", ver.InheritsFrom, $"{ver.InheritsFrom}.json");
+            VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(inheritsVerPath);
+            IterateLibraries(inheritsVer);
+
+            // 此版本的 Libraries
+            IterateLibraries(ver);
+            foreach (var lib in todoLibs)
+            {
+                libs.Add(lib);
             }
 
             return libs.ToArray();
@@ -212,12 +283,14 @@ namespace BianCore.Modules.Minecraft
             List<string> result = new List<string>();
             foreach (var lib in libs)
             {
-                if (lib.Download?.Artifact.Path != null)
+                if (lib.Download?.Artifact.Path != null) // 直接获取路径
                 {
                     result.Add(Path.Combine(MinecraftPath, "libraries", lib.Download.Value
                         .Artifact.Path.Replace('/', Path.DirectorySeparatorChar)));
                     continue;
                 }
+
+                // 通过 Lib 名称获取路径（可能不准确）
                 string[] name = lib.Name.Split(':');
                 name[0] = name[0].Replace('.', Path.DirectorySeparatorChar);
                 string path = Path.Combine(MinecraftPath, "libraries"
