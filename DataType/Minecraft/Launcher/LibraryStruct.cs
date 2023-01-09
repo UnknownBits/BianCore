@@ -1,12 +1,13 @@
 ﻿using BianCore.API;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace BianCore.DataType.Minecraft.Launcher
 {
-    public struct LibraryStruct
+    public struct LibraryStruct : IEquatable<LibraryStruct>
     {
         public struct DownloadsStruct
         {
@@ -86,5 +87,11 @@ namespace BianCore.DataType.Minecraft.Launcher
 
         [JsonProperty("rules")]
         public RuleStruct[] Rules { get; set; }
+
+        public bool Equals(LibraryStruct other)
+        {
+            if (this.Name == other.Name) return true;
+            return false;
+        }
     }
 }

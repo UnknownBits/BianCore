@@ -13,6 +13,12 @@ namespace BianCore.DataType.Minecraft.Launcher
         public string? MinecraftArguments { get; set; }
 
         /// <summary>
+        /// 分离安装 Mod 加载器的继承版本
+        /// </summary>
+        [JsonProperty("inheritsFrom")]
+        public string? InheritsFrom { get; set; }
+
+        /// <summary>
         /// 1.13 及以上版本的启动参数
         /// </summary>
         [JsonProperty("arguments")]
