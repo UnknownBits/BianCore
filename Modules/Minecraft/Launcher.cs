@@ -266,9 +266,12 @@ namespace BianCore.Modules.Minecraft
             }
 
             // 继承版本的 Libraries
-            string inheritsVerPath = Path.Combine(MinecraftPath, "versions", ver.InheritsFrom, $"{ver.InheritsFrom}.json");
-            VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(inheritsVerPath);
-            IterateLibraries(inheritsVer);
+            if (ver.InheritsFrom != null)
+            {
+                string inheritsVerPath = Path.Combine(MinecraftPath, "versions", ver.InheritsFrom, $"{ver.InheritsFrom}.json");
+                VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(inheritsVerPath);
+                IterateLibraries(inheritsVer);
+            }
 
             // 此版本的 Libraries
             IterateLibraries(ver);
