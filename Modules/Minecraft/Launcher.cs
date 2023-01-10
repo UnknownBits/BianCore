@@ -140,7 +140,8 @@ namespace BianCore.Modules.Minecraft
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
             var libs = GetLibraries(prop.LaunchVersion);
             var libStrs = LibrariesToPaths(libs).ToList();
-            VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
+            VersionInfo inheritsVer = default;
+            if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
                 MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
             if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
             {
