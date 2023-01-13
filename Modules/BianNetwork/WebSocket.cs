@@ -4,7 +4,6 @@
     {
         public dynamic CreateClient()
         {
-
             return null;
         }
         public dynamic CreateServer()
