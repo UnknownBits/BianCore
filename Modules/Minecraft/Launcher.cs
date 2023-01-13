@@ -138,8 +138,8 @@ namespace BianCore.Modules.Minecraft
 
             // 替换 JVM 参数填充符
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
-            var libs = GetLibraries(prop.LaunchVersion);
-            var libStrs = LibrariesToPaths(libs).ToList();
+            var libs = LibrariesCompleter.GetLibraries(prop.LaunchVersion);
+            var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
             VersionInfo inheritsVer = default;
             if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
                 MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
@@ -212,100 +212,6 @@ namespace BianCore.Modules.Minecraft
             }
 
             return jvmSb.Append(gameSb.ToString()).ToString().Trim();
-        }
-
-        public LibraryStruct[] GetLibraries(VersionInfo ver)
-        {
-            List<LibraryStruct> libs = new List<LibraryStruct>();
-            List<string> libNames = new List<string>(); // 判断是否重复
-            Dictionary<string, string> hashMap = new Dictionary<string, string>();
-            List<LibraryStruct> todoLibs = new List<LibraryStruct>(); // 需在最后加入的 Lib
-
-            void IterateLibraries(VersionInfo version)
-            {
-                foreach (var lib in version.Libraries)
-                {
-                    bool allow = true;
-                    if (lib.Rules != null)
-                    {
-                        foreach (var rule in lib.Rules)
-                        {
-                            if (rule.OSName != null)
-                            {
-                                if (rule.IsAllow) allow = rule.OSName == SystemTools.GetOSPlatform().ToString().ToLower();
-                                else allow = rule.OSName != SystemTools.GetOSPlatform().ToString().ToLower();
-                                if (!allow) break;
-                            }
-                        }
-                    }
-
-                    if (allow && !libs.Contains(lib)) // 判断是否重复
-                    {
-                        string libVer = Regex.Match(lib.Name, @"[0-9]\.[0-9]\.?[0-9]?").Value;
-                        string libName;
-                        if (lib.Name.IndexOf(libVer) >= 1)
-                        {
-                            libName = lib.Name.Remove(lib.Name.IndexOf(libVer) - 1);
-                        }
-                        else libName = lib.Name;
-                        if (hashMap.ContainsKey(libName) && Version.Parse(libVer)
-                            > Version.Parse(hashMap[libName]))
-                        {
-                            libs[libNames.IndexOf(libName)] = lib;
-                            continue;
-                        }
-                        if (libName.Contains("optifine"))
-                        {
-                            todoLibs.Add(lib);
-                            continue;
-                        }
-                        libs.Add(lib);
-                        libNames.Add(libName);
-                        hashMap.Add(libName, libVer);
-                    }
-                }
-            }
-
-            // 继承版本的 Libraries
-            if (ver.InheritsFrom != null)
-            {
-                string inheritsVerPath = Path.Combine(MinecraftPath, "versions", ver.InheritsFrom, $"{ver.InheritsFrom}.json");
-                VersionInfo inheritsVer = Launcher.GetVersionInfoFromFile(inheritsVerPath);
-                IterateLibraries(inheritsVer);
-            }
-
-            // 此版本的 Libraries
-            IterateLibraries(ver);
-            foreach (var lib in todoLibs)
-            {
-                libs.Add(lib);
-            }
-
-            return libs.ToArray();
-        }
-
-        public string[] LibrariesToPaths(LibraryStruct[] libs)
-        {
-            List<string> result = new List<string>();
-            foreach (var lib in libs)
-            {
-                if (lib.Download?.Artifact.Path != null) // 直接获取路径
-                {
-                    result.Add(Path.Combine(MinecraftPath, "libraries", lib.Download.Value
-                        .Artifact.Path.Replace('/', Path.DirectorySeparatorChar)));
-                    continue;
-                }
-
-                // 通过 Lib 名称获取路径（可能不准确）
-                string[] name = lib.Name.Split(':');
-                name[0] = name[0].Replace('.', Path.DirectorySeparatorChar);
-                string path = Path.Combine(MinecraftPath, "libraries"
-                    , string.Join(Path.DirectorySeparatorChar.ToString(), name)
-                    , $"{name[name.Length - 2]}-{name.Last()}.jar");
-                if (!result.Contains(path)) result.Add(path);
-            }
-
-            return result.ToArray();
         }
     }
 }
