@@ -1,10 +1,9 @@
 ﻿namespace BianCore.Modules.BianNetwork
 {
-    public class WebSoket
+    public class WebSocket
     {
         public dynamic CreateClient()
         {
-
             return null;
         }
         public dynamic CreateServer()

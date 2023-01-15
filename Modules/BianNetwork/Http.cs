@@ -17,7 +17,7 @@ namespace BianCore.Modules.BianNetwork
             {
                 try
                 {
-                    listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;//指定身份验证 Anonymous匿名访问
+                    listener.AuthenticationSchemes = AuthenticationSchemes.None;//指定身份验证 Anonymous匿名访问
                     foreach (string s in prefixes)
                     {
                         listener.Prefixes.Add(s);
