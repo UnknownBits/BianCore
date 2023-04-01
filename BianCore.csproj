@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DaanV2.UUID.Net" Version="1.1.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="MySqlConnector" Version="2.2.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />

@@ -2,7 +2,7 @@
 
 namespace BianCore.DataType.API.Microsoft
 {
-    public struct AuthenticatingUserResponse
+    public struct AuthorizingUserResponse
     {
         public enum ErrorEnum
         {

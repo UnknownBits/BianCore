@@ -102,8 +102,6 @@ namespace BianCore.Modules.Minecraft
                 jvmSb.Append(" -Xss1M");
             }
             jvmSb.Append(" -Djava.library.path=${natives_directory}");
-            jvmSb.Append(" -Dminecraft.launcher.brand=${launcher_name}");
-            jvmSb.Append(" -Dminecraft.launcher.version=${launcher_version}");
             jvmSb.Append(" -cp ${classpath}");
         }
 
@@ -138,7 +136,7 @@ namespace BianCore.Modules.Minecraft
 
             // 替换 JVM 参数填充符
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
-            var libs = LibrariesCompleter.GetLibraries(prop.LaunchVersion);
+            var libs = LibrariesCompleter.GetLibraries(prop.LaunchVersion, MinecraftPath);
             var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
             VersionInfo inheritsVer = default;
             if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
@@ -186,7 +184,7 @@ namespace BianCore.Modules.Minecraft
             bool hasOptifine = false;
             if (string.IsNullOrEmpty(prop.GameProperties.VersionType))
                 gameSb.Replace(" --versionType ${version_type}", "");
-            if (gameSb.ToString().Contains(" --tweakClass optifine.OptiFineForgeTweaker"))
+            if (gameSb.ToString().Contains(" --tweakClass optifine.OptiFineForgeTweaker")) // 兼容 PCL2 版本 JSON
             {
                 gameSb.Replace(" --tweakClass optifine.OptiFineForgeTweaker", "");
                 hasOptifine = true;
@@ -204,9 +202,10 @@ namespace BianCore.Modules.Minecraft
             gameSb.Replace("${auth_access_token}", prop.GameProperties.AccessToken);
             gameSb.Replace("${user_type}", prop.GameProperties.UserType.ToString());
             gameSb.Replace("${version_type}", '\"' + prop.GameProperties.VersionType + '\"');
+            gameSb.Replace("${user_properties}", "{}");
 
             // 加入 Optifine 参数
-            if (hasOptifine)
+            if (hasOptifine) // 兼容 PCL2 版本 JSON
             {
                 gameSb.Append(" --tweakClass optifine.OptiFineForgeTweaker");
             }

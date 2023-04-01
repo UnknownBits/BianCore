@@ -17,14 +17,6 @@ namespace BianCore.Tools
         }
 
         /// <summary>
-        /// 获取 .minecraft 路径。
-        /// </summary>
-        /// <param name="path">任意路径。</param>
-        /// <returns></returns>
-        public static string GetMinecraftRootPath(string path)
-            => path.Substring(0, path.LastIndexOf(".minecraft") + 10);
-
-        /// <summary>
         /// 获取Windows系统版本
         /// </summary>
         /// <returns>Windows系统版本字符串</returns>

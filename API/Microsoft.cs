@@ -28,7 +28,7 @@ namespace BianCore.API
                 return response;
             }
 
-            public static async Task<AuthenticatingUserResponse> DeviceAuthenticatingUserRequest(string client_id, string device_code)
+            public static async Task<AuthorizingUserResponse> DeviceAuthenticatingUserRequest(string client_id, string device_code)
             {
                 string url = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
                 Dictionary<string, string> param = new Dictionary<string, string>()
@@ -40,7 +40,7 @@ namespace BianCore.API
                 using var content = new FormUrlEncodedContent(param);
                 using var httpResponse = await network.HttpPostAsync(url, content);
                 string responseStr = await httpResponse.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<AuthenticatingUserResponse>(responseStr);
+                var response = JsonConvert.DeserializeObject<AuthorizingUserResponse>(responseStr);
                 return response;
             }
 

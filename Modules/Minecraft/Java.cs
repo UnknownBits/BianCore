@@ -29,51 +29,37 @@ namespace BianCore.Modules.Minecraft
                     }
 
 
-                    RegistryKey javaRootReg;
-                    try
-                    {
-                        javaRootReg = rootReg.OpenSubKey("JavaSoft");
-                    }
-                    catch
-                    {
-                        return new JavaInfo[0];
-                    }
-                    try
-                    {
-                        // 在注册表中寻找 Java
-                        var jreRootReg = javaRootReg.OpenSubKey("Java Runtime Environment");
-                        if (jreRootReg != null)
-                        {
-                            foreach (string jre in jreRootReg.GetSubKeyNames())
-                            {
-                                try
-                                {
-                                    var jreInfo = jreRootReg.OpenSubKey(jre);
-                                    string path = Path.Combine(jreInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
-                                    string version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
-                                    javaList.Add(new JavaInfo(version, path));
-                                }
-                                catch { }
-                            }
-                        }
-                    }
-                    catch { }
+                    RegistryKey javaRootReg = rootReg.OpenSubKey("JavaSoft");
+                    if (javaRootReg == null) return new JavaInfo[0];
 
-                    try
+                    // 在注册表中寻找 Java
+                    var jreRootReg = javaRootReg.OpenSubKey("Java Runtime Environment");
+                    if (jreRootReg != null)
                     {
-                        var jdkRootReg = javaRootReg.OpenSubKey("JDK");
-                        if (jdkRootReg != null)
+                        foreach (string jre in jreRootReg.GetSubKeyNames())
                         {
-                            foreach (string jdk in jdkRootReg.GetSubKeyNames())
+                            try
                             {
-                                var jdkInfo = jdkRootReg.OpenSubKey(jdk);
-                                string path = Path.Combine(jdkInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
+                                var jreInfo = jreRootReg.OpenSubKey(jre);
+                                string path = Path.Combine(jreInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
                                 string version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
                                 javaList.Add(new JavaInfo(version, path));
                             }
+                            catch { }
                         }
                     }
-                    catch { }
+
+                    var jdkRootReg = javaRootReg.OpenSubKey("JDK");
+                    if (jdkRootReg != null)
+                    {
+                        foreach (string jdk in jdkRootReg.GetSubKeyNames())
+                        {
+                            var jdkInfo = jdkRootReg.OpenSubKey(jdk);
+                            string path = Path.Combine(jdkInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
+                            string version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
+                            javaList.Add(new JavaInfo(version, path));
+                        }
+                    }
                     break;
                 case SystemTools.OSPlatform.Linux:
                     throw new NotImplementedException("暂不支持寻找 Linux Java。");
@@ -97,8 +83,12 @@ namespace BianCore.Modules.Minecraft
         public static JavaInfo AutoSelectJava(VersionInfo versionInfo, JavaInfo[] javaInfos)
         {
             int dstJavaMajor;
-            Version version = Version.Parse(versionInfo.AssetsIndexName);
-            if (version.Minor <= 16 && version.Major == 1)
+            Version version = Version.Parse(versionInfo.AssetsIndexName ?? versionInfo.InheritsFrom);
+            if (versionInfo.JavaVersion.MajorVersion != 0)
+            {
+                dstJavaMajor = versionInfo.JavaVersion.MajorVersion;
+            }
+            else if (version.Minor <= 16 && version.Major == 1)
             {
                 dstJavaMajor = 8;
             }
@@ -106,20 +96,13 @@ namespace BianCore.Modules.Minecraft
             {
                 dstJavaMajor = 16;
             }
-            else if (version.Minor >= 18 && version.Major == 1)
+            else if (version.Minor >= 18 && version.Major >= 1)
             {
                 dstJavaMajor = 17;
             }
             else
             {
-                if (versionInfo.JavaVersion.MajorVersion != 0)
-                {
-                    dstJavaMajor = versionInfo.JavaVersion.MajorVersion;
-                }
-                else
-                {
-                    throw new NotImplementedException("不支持此版本的自动选择 Java。");
-                }
+                throw new NotImplementedException("不支持此版本的自动选择 Java。");
             }
             JavaInfo selectJava = null;
             foreach (var javaInfo in javaInfos)
@@ -151,6 +134,7 @@ namespace BianCore.Modules.Minecraft
 
         internal JavaInfo(string version, string javaHome)
         {
+            if (!version.Contains(".")) version += ".0";
             Version javaVersion = Version.Parse(version);
             JavaVersion = javaVersion;
             JavaPath = javaHome;
@@ -160,6 +144,11 @@ namespace BianCore.Modules.Minecraft
         {
             JavaInfo javaInfo = obj as JavaInfo;
             return this == javaInfo;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public static bool operator ==(JavaInfo java1, JavaInfo java2)
