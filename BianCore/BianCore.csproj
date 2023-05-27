@@ -46,12 +46,15 @@
   </PropertyGroup>
 		
   <ItemGroup>
+    <Compile Remove=".github\**" />
     <Compile Remove="Dev Log\**" />
     <Compile Remove="Modules\OpenFrp\**" />
     <Compile Remove="obj\**" />
+    <EmbeddedResource Remove=".github\**" />
     <EmbeddedResource Remove="Dev Log\**" />
     <EmbeddedResource Remove="Modules\OpenFrp\**" />
     <EmbeddedResource Remove="obj\**" />
+    <None Remove=".github\**" />
     <None Remove="Dev Log\**" />
     <None Remove="Modules\OpenFrp\**" />
     <None Remove="obj\**" />
@@ -76,12 +79,6 @@
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".github\ISSUE_TEMPLATE\Bug反馈.md" />
-    <None Include=".github\ISSUE_TEMPLATE\新意见.md" />
-    <None Include=".github\workflows\dotnet-desktop.yml" />
   </ItemGroup>
 
   <ItemGroup>
