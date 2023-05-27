@@ -4,17 +4,19 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BianCore.Tools
 {
     public class Network : IDisposable
     {
-        private HttpClient HttpClient = new HttpClient();
+        private HttpClient HttpClient;
         private bool disposedValue;
 
         public Network()
         {
+            HttpClient = new HttpClient();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
         }
 
@@ -46,6 +48,8 @@ namespace BianCore.Tools
 
         public HttpResponseMessage HttpPost(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
             => HttpPostAsync(url, content, content_type, headerPairs).Result;
+        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null) 
+            => HttpPostAsync(url, content, headerPairs).Result;
 
         public async Task<HttpResponseMessage> HttpPostAsync(string url, string content, string content_type = "application/json", Dictionary<string, string> headerPairs = null)
         {
@@ -66,8 +70,6 @@ namespace BianCore.Tools
             return res;
         }
 
-        public HttpResponseMessage HttpPost(string url, HttpContent content, Dictionary<string, string> headerPairs = null) => HttpPostAsync(url, content, headerPairs).Result;
-
         /// <summary>
         /// Get 请求
         /// </summary>
@@ -79,6 +81,16 @@ namespace BianCore.Tools
             {
                 Ping ping = new Ping();
                 PingReply pingReplys = ping.Send(IP, 1000);
+                return pingReplys;
+            });
+            return pingReply;
+        }
+        public static async Task<PingReply> Ping(string IP,int timeout)
+        {
+            var pingReply = await Task.Run(() =>
+            {
+                Ping ping = new Ping();
+                PingReply pingReplys = ping.Send(IP, timeout);
                 return pingReplys;
             });
             return pingReply;
