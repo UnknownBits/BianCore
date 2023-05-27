@@ -33,10 +33,16 @@ namespace BianCore.Network
             Message_Register,
             Message_Messages,
         }
+        public TcpSocket()
+        {
+            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            this.isLogin = false;
+            this.connected = socket.Connected;
+        }
         public TcpSocket(Socket socket)
         {
-            this.isLogin = false;
             this.socket = socket;
+            this.isLogin = false;
             this.connected = socket.Connected;
         }
     }
@@ -45,6 +51,129 @@ namespace BianCore.Network
         public static readonly Dictionary<int, TcpServerSocket> clients = new();
         public int UID;
         public TcpServerSocket(Socket socket) : base(socket) { }
+
+        public void MessageService()
+        {
+            connected = true; //连接状态为正常
+            Trace.WriteLine("[TcpSocketServer]新客户连接建立");
+            
+            Task.Run(async () => // 登录超时
+            {
+                await Task.Delay(10800);
+                if (!isLogin) Disconnect();
+            });
+
+            while (connected)
+                try
+                {
+                    byte[] buffer = new byte[8193];
+                    int size = socket.Receive(buffer);
+                    if (size <= 0) { throw new Exception(); }
+                    Array.Resize(ref buffer, size);
+
+                    switch ((PacketType)buffer[0])
+                    {
+                        case PacketType.Ping:
+                            UnixTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                            SendPacket(PacketType.Ping, this);
+                            break;
+                        case PacketType.PingBack:
+                            SendPacket(PacketType.PingBack, this, BitConverter.GetBytes(DateTimeOffset.Now.ToUnixTimeMilliseconds() - UnixTime));
+                            break;
+
+                        case PacketType.Message_Login:
+                            string[] loginInfo = Encoding.UTF8.GetString(buffer, 1, buffer.Length - 1).Split('^');
+                            if (loginInfo.Length != 2 | loginInfo[1].Length != 64)
+                            {
+                                SendPacket(PacketType.State_Server_Error, this); // 登录失败：不规范的登录包
+                                Task.Delay(100).Wait();
+                                Disconnect();
+                            }
+                            username = loginInfo[0];
+                            password_sha256 = loginInfo[1];
+                            try
+                            {
+                                using var sql = new SQLite();
+                                if (!(sql.GetUserId(username, out UID) && sql.GetValue(UID, SQLite.ValuesType.Email, out email) && sql.Vaild_Password(UID, password_sha256)) && clients.ContainsKey(UID))
+                                {
+                                    SendPacket(PacketType.State_Account_Error, this); // 登录失败：账号或密码错误或已在线
+                                    Task.Delay(100).Wait();
+                                    Disconnect();
+                                    break;
+                                }
+                            }
+                            catch
+                            {
+                                SendPacket(PacketType.State_Server_Error, this); // 登录失败 未知错误
+                                Task.Delay(100).Wait();
+                                Disconnect();
+                                break;
+                            }
+
+                            Task.Run(async () =>
+                            {
+                                isLogin = true;
+                                SendPacket(PacketType.State_Account_Success, this);
+                                lock (clients) { clients.Add(UID, this); }
+                                await Task.Delay(100);
+                                SendPacket(PacketType.Message_Notice, this, $"{username} 已上线");
+                            });
+                            break;
+                        case PacketType.Message_Register:
+                            string[] registerInfo = Encoding.UTF8.GetString(buffer, 1, buffer.Length - 1).Split('^');
+                            if (registerInfo.Length != 3 | registerInfo[1].Length != 64)
+                            {
+                                SendPacket(PacketType.State_Server_Error, this); // 注册失败：不规范的注册包
+                                Task.Delay(100).Wait();
+                                Disconnect();
+                            }
+
+                            username = registerInfo[0];
+                            password_sha256 = registerInfo[1];
+                            email = registerInfo[2];
+
+                            try
+                            {
+                                using var sql = new SQLite();
+                                if (!sql.AddValue(username, password_sha256, email, out UID) && clients.ContainsKey(UID))
+                                {
+                                    SendPacket(PacketType.State_Account_Error, this); // 注册失败：账号已在线
+                                    Task.Delay(100).Wait();
+                                    Disconnect();
+                                    break;
+                                }
+                            }
+                            catch
+                            {
+                                SendPacket(PacketType.State_Server_Error, this); // 登录失败 未知错误
+                                Task.Delay(100).Wait();
+                                Disconnect();
+                                break;
+                            }
+
+                            Task.Run(async () =>
+                            {
+                                isLogin = true;
+                                SendPacket(PacketType.State_Account_Success, this);
+                                lock (clients) { clients.Add(UID, this); }
+                                await Task.Delay(100);
+                                SendPacket(PacketType.Message_Notice, this, $"{username} 已上线");
+                            });
+
+                            break;
+                        case PacketType.Message_Messages:
+                            if (isLogin)
+                            {
+                                string content = Encoding.UTF8.GetString(buffer, 1, buffer.Length - 1);
+                                BroadcastPacket(PacketType.Message_Messages, $"{username} 说：{content}", this.UID);
+                            }
+                            break;
+                    }
+                }
+                catch { Disconnect(); break; }
+            Disconnect();
+        }
+
         /// <summary>
         /// 广播 type类型 的数据包
         /// </summary>
@@ -165,7 +294,12 @@ namespace BianCore.Network
             public PacketType LoginState { get; set; }
         }
 
-        public TcpClient(Socket socket) : base(socket) { }
+        private readonly Socket socket;
+
+        public TcpClient(Socket socket) : base()
+        {
+
+        }
         public void Dispose(Exception exception)
         {
             try
