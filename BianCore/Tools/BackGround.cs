@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BianCore.Tools
 {
-    public static class BackGround
+    public static class Background
     {
         public static class Bing
         {
@@ -15,7 +15,7 @@ namespace BianCore.Tools
                 {
                     if (!File.Exists(Config.Bing.BackGround_File) || !File.Exists(Config.Bing.BackGround_Date) || File.ReadAllText(Config.Bing.BackGround_Date) != DateTime.Now.ToString("d"))
                     {
-                        Tools.Downloads.Plan1($"{bing.Urlbase()}{resolution}.jpg", Config.Bing.BackGround_File, true);
+                        Tools.Downloads.Plan1($"{bing.UrlBase}{resolution}.jpg", Config.Bing.BackGround_File, true);
                         Task.Run(() =>
                         {
                             FileStream fileStream = new FileStream(Config.Bing.BackGround_Date, FileMode.Create);

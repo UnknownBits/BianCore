@@ -4,7 +4,7 @@ namespace BianCore.Tools
 {
     public class Json
     {
-        public static JObject Str_to_Json(string data)
+        public static JObject ToJson(string data)
         {
             try
             {
