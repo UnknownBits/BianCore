@@ -18,8 +18,8 @@ namespace BianCore.Modules.Minecraft
         public static JavaInfo[] FindJava()
         {
             List<JavaInfo> javaList = new List<JavaInfo>();
-
-            switch (SystemTools.GetOSPlatform())
+            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+            switch (platform)
             {
                 case SystemTools.OSPlatform.Windows:
                     var rootReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32).OpenSubKey("SOFTWARE");
@@ -63,10 +63,8 @@ namespace BianCore.Modules.Minecraft
                     break;
                 case SystemTools.OSPlatform.Linux:
                     throw new NotImplementedException("暂不支持寻找 Linux Java。");
-                    break;
                 case SystemTools.OSPlatform.OSX:
                     throw new NotImplementedException("暂不支持寻找 MacOS Java。");
-                    break;
             }
 
             return javaList.ToArray();

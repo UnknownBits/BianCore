@@ -36,8 +36,9 @@ namespace BianCore.Modules.Minecraft
                         {
                             if (rule.OSName != null)
                             {
-                                if (rule.IsAllow) allow = rule.OSName == SystemTools.GetOSPlatform().ToString().ToLower();
-                                else allow = rule.OSName != SystemTools.GetOSPlatform().ToString().ToLower();
+                                SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+                                if (rule.IsAllow) allow = rule.OSName == platform.ToString().ToLower();
+                                else allow = rule.OSName != platform.ToString().ToLower();
                                 if (!allow) break;
                             }
                         }

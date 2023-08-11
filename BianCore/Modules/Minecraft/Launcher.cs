@@ -62,8 +62,9 @@ namespace BianCore.Modules.Minecraft
                     {
                         if (rule.OS_Name != null)
                         {
-                            if (rule.IsAllow) allow = rule.OS_Name == SystemTools.GetOSPlatform().ToString().ToLower();
-                            else allow = rule.OS_Name != SystemTools.GetOSPlatform().ToString().ToLower();
+                            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+                            if (rule.IsAllow) allow = rule.OS_Name == platform.ToString().ToLower();
+                            else allow = rule.OS_Name != platform.ToString().ToLower();
                             if (!allow) break;
                         }
                         if (rule.OS_Arch != null)
@@ -92,11 +93,12 @@ namespace BianCore.Modules.Minecraft
 
         private void GetOldJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
         {
-            if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.Windows)
+            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+            if (platform == SystemTools.OSPlatform.Windows)
             {
                 jvmSb.Append(" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
             }
-            else if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.OSX)
+            else if (platform == SystemTools.OSPlatform.OSX)
             {
                 jvmSb.Append(" -XstartOnFirstThread");
                 jvmSb.Append(" -Xss1M");
