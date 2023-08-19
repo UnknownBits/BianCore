@@ -66,7 +66,6 @@ namespace BianCore.Modules.Minecraft
                 case SystemTools.OSPlatform.OSX:
                     throw new NotImplementedException("暂不支持寻找 MacOS Java。");
             }
-
             return javaList.ToArray();
         }
 

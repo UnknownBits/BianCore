@@ -17,9 +17,10 @@ namespace BianCore.API
 
         public Bing()
         {
-            JObject Data = Json.ToJson(network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").Content.ReadAsStringAsync().Result.ToString()) ?? throw new NullReferenceException();
-            var JData = Data["images"] ?? throw new NullReferenceException();
-            var image = JData[0] ?? throw new NullReferenceException();
+            var data = network.HttpGet("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN").Content.ReadAsStringAsync().Result;
+            var JT = JObject.Parse(data.ToString())["images"] ?? throw new NullReferenceException();
+            var image = JT[0] ?? throw new NullReferenceException();
+
             Url = "https://cn.bing.com" + (string)image["url"];
             UrlBase = "https://cn.bing.com" + (string)image["urlbase"];
             Copyright = (string)image["copyright"];

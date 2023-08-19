@@ -21,10 +21,7 @@ namespace BianCore.Modules.Minecraft
         /// Launcher 类的构造方法
         /// </summary>
         /// <param name="versionsPath">.minecraft 文件夹的路径 E.g. D:\Minecraft\.minecraft</param>
-        public Launcher(string minecraftRootPath)
-        {
-            MinecraftPath = Path.GetFullPath(minecraftRootPath);
-        }
+        public Launcher(string minecraftRootPath) { MinecraftPath = Path.GetFullPath(minecraftRootPath); }
 
         public static VersionInfo GetVersionInfoFromFile(string jsonPath)
         {
@@ -52,7 +49,7 @@ namespace BianCore.Modules.Minecraft
 
         private void GetJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
         {
-#pragma warning disable CS8629 // 可为 null 的值类型可为 null。
+            #pragma warning disable CS8629 // 可为 null 的值类型可为 null。
             foreach (var arg in prop.LaunchVersion.Arguments.Value.JVM)
             {
                 bool allow = true;
@@ -88,7 +85,7 @@ namespace BianCore.Modules.Minecraft
                     }
                 }
             }
-#pragma warning restore CS8629 // 可为 null 的值类型可为 null。
+            #pragma warning restore CS8629 // 可为 null 的值类型可为 null。
         }
 
         private void GetOldJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
@@ -109,55 +106,45 @@ namespace BianCore.Modules.Minecraft
 
         public string BuildLaunchScript(LaunchProperties prop)
         {
-            // JVM 参数
             StringBuilder jvmSb = new StringBuilder();
 
             // 优化参数
             jvmSb.Append($" -XX:+Use{prop.JVMProperties.GCType}");
-            jvmSb.Append($" -XX:{(prop.JVMProperties.UseAdaptiveSizePolicy
-                ? '+' : '-')}UseAdaptiveSizePolicy");
-            jvmSb.Append($" -XX:{(prop.JVMProperties.OmitStackTraceInFastThrow
-                ? '+' : '-')}OmitStackTraceInFastThrow");
+            jvmSb.Append($" -XX:{(prop.JVMProperties.UseAdaptiveSizePolicy ? '+' : '-')}UseAdaptiveSizePolicy");
+            jvmSb.Append($" -XX:{(prop.JVMProperties.OmitStackTraceInFastThrow ? '+' : '-')}OmitStackTraceInFastThrow");
             jvmSb.Append($" -Dfml.ignoreInvalidMinecraftCertificates={prop.JVMProperties.FML_IgnoreInvalidMinecraftCertificates}");
             jvmSb.Append($" -Dfml.ignorePatchDiscrepancies={prop.JVMProperties.FML_IgnorePatchDiscrepancies}");
-            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); // log4j CVE-2021-44228
+
+            // log4j CVE-2021-44228
+            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); 
 
             // 内存参数
             jvmSb.Append($" -Xmn{prop.JVMProperties.NewGenHeapSize}M");
             jvmSb.Append($" -Xmx{prop.JVMProperties.MaxHeapSize}M");
 
             // JVM 参数
-            if (prop.LaunchVersion.Arguments.HasValue) // 1.13 及以上版本参数
-            {
-                GetJVMArguments(ref jvmSb, prop);
-            }
-            else // 1.12 及以下版本参数
-            {
-                GetOldJVMArguments(ref jvmSb, prop);
-            }
+            if (prop.LaunchVersion.Arguments.HasValue) 
+                GetJVMArguments(ref jvmSb, prop); // 1.13 及以上版本参数
+            else 
+                GetOldJVMArguments(ref jvmSb, prop); // 1.12 及以下版本参数
 
             // 替换 JVM 参数填充符
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
             var libs = LibrariesCompleter.GetLibraries(prop.LaunchVersion, MinecraftPath);
             var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
             VersionInfo inheritsVer = default;
-            if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
-                MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
+            if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = GetVersionInfoFromFile(Path.Combine(MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
             if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
             {
                 libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
-                jvmSb.Replace("${natives_directory}"
-                    , '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
+                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
             }
             else // 继承版本
             {
                 libStrs.Add(Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}.jar"));
-                jvmSb.Replace("${natives_directory}"
-                    , '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
+                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
             }
-            jvmSb.Replace("${classpath}", '\"'
-                + string.Join(Path.PathSeparator.ToString()
-                , libStrs) + '\"');
+            jvmSb.Replace("${classpath}", '\"' + string.Join(Path.PathSeparator.ToString(), libStrs) + '\"');
             jvmSb.Append(' ' + prop.LaunchVersion.MainClass);
             jvmSb.Replace("${library_directory}", '\"' + Path.Combine(MinecraftPath, "libraries") + '\"');
             jvmSb.Replace("${classpath_separator}", Path.PathSeparator.ToString());
@@ -165,20 +152,14 @@ namespace BianCore.Modules.Minecraft
 
             // 游戏参数
             StringBuilder gameSb = new StringBuilder();
+
             if (prop.LaunchVersion.Arguments.HasValue)
-            {
                 foreach (var arg in prop.LaunchVersion.Arguments.Value.Game)
-                {
                     foreach (string value in arg.Values)
-                    {
                         gameSb.Append(' ' + value);
-                    }
-                }
-            }
             else
-            {
                 gameSb.Append(' ' + prop.LaunchVersion.MinecraftArguments);
-            }
+
             gameSb.Append($" --width {prop.GameProperties.WindowWidth}");
             gameSb.Append($" --height {prop.GameProperties.WindowHeight}");
 
@@ -208,9 +189,7 @@ namespace BianCore.Modules.Minecraft
 
             // 加入 Optifine 参数
             if (hasOptifine) // 兼容 PCL2 版本 JSON
-            {
                 gameSb.Append(" --tweakClass optifine.OptiFineForgeTweaker");
-            }
 
             return jvmSb.Append(gameSb.ToString()).ToString().Trim();
         }
