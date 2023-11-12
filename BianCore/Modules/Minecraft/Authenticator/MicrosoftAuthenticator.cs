@@ -26,7 +26,7 @@ namespace BianCore.Modules.Minecraft.Authenticator
         public event EventHandler<AuthenticateSuccessEventArgs> AuthenticateSuccess = delegate { };
         public event EventHandler<AuthenticateFailedEventArgs> AuthenticateFailed = delegate { };
 
-        public MicrosoftAuthenticator(string client_id)
+        public MicrosoftAuthenticator(string client_id = "00000000402b5328")
         {
             Client_ID = client_id;
             CancellationToken = CancellationTokenSource.CreateLinkedTokenSource(new CancellationToken());

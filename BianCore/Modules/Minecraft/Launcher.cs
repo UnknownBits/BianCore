@@ -52,8 +52,12 @@ namespace BianCore.Modules.Minecraft
 
         private void GetJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
         {
-#pragma warning disable CS8629 // 可为 null 的值类型可为 null。
-            foreach (var arg in prop.LaunchVersion.Arguments.Value.JVM)
+            GetJVMArguments(ref jvmSb, prop.LaunchVersion);
+        }
+
+        private void GetJVMArguments(ref StringBuilder jvmSb, VersionInfo ver)
+        {
+            foreach (var arg in ver.Arguments.Value.JVM)
             {
                 bool allow = true;
                 if (arg.Rules != null)
@@ -87,7 +91,6 @@ namespace BianCore.Modules.Minecraft
                     }
                 }
             }
-#pragma warning restore CS8629 // 可为 null 的值类型可为 null。
         }
 
         private void GetOldJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
@@ -125,23 +128,37 @@ namespace BianCore.Modules.Minecraft
             jvmSb.Append($" -Xmx{prop.JVMProperties.MaxHeapSize}M");
 
             // JVM 参数
-            if (prop.LaunchVersion.Arguments.HasValue) // 1.13 及以上版本参数
+            VersionInfo inheritsVer = default;
+            if (prop.LaunchVersion.InheritsFrom != null)
             {
-                GetJVMArguments(ref jvmSb, prop);
+                inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
+                MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
+            }
+            if (prop.LaunchVersion.InheritsFrom == null)
+            {
+                GetJVMArguments(ref jvmSb, inheritsVer);
+                if (prop.LaunchVersion.Arguments?.JVM == null)
+                {
+                    goto SkipJVM;
+                }
+            }
+
+            if (prop.LaunchVersion.Arguments != null) // 1.13 及以上版本参数
+            {
+                if (prop.LaunchVersion.Arguments?.JVM != null) GetJVMArguments(ref jvmSb, prop);
             }
             else // 1.12 及以下版本参数
             {
-                GetOldJVMArguments(ref jvmSb, prop);
+                if (prop.LaunchVersion.MinecraftArguments != null)  GetOldJVMArguments(ref jvmSb, prop);
             }
-
+            
+        SkipJVM:
             // 替换 JVM 参数填充符
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
             var libs = LibrariesCompleter.GetLibraries(prop.LaunchVersion, MinecraftPath);
             var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
-            VersionInfo inheritsVer = default;
-            if (prop.LaunchVersion.InheritsFrom != null) inheritsVer = Launcher.GetVersionInfoFromFile(Path.Combine(
-                MinecraftPath, "versions", prop.LaunchVersion.InheritsFrom, $"{prop.LaunchVersion.InheritsFrom}.json"));
-            if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
+
+            if (prop.LaunchVersion.InheritsFrom == null)
             {
                 libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
                 jvmSb.Replace("${natives_directory}"
