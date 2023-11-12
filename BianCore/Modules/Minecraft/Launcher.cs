@@ -21,10 +21,7 @@ namespace BianCore.Modules.Minecraft
         /// Launcher 类的构造方法
         /// </summary>
         /// <param name="versionsPath">.minecraft 文件夹的路径 E.g. D:\Minecraft\.minecraft</param>
-        public Launcher(string minecraftRootPath)
-        {
-            MinecraftPath = Path.GetFullPath(minecraftRootPath);
-        }
+        public Launcher(string minecraftRootPath) { MinecraftPath = Path.GetFullPath(minecraftRootPath); }
 
         public static VersionInfo GetVersionInfoFromFile(string jsonPath)
         {
@@ -66,8 +63,9 @@ namespace BianCore.Modules.Minecraft
                     {
                         if (rule.OS_Name != null)
                         {
-                            if (rule.IsAllow) allow = rule.OS_Name == SystemTools.GetOSPlatform().ToString().ToLower();
-                            else allow = rule.OS_Name != SystemTools.GetOSPlatform().ToString().ToLower();
+                            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+                            if (rule.IsAllow) allow = rule.OS_Name == platform.ToString().ToLower();
+                            else allow = rule.OS_Name != platform.ToString().ToLower();
                             if (!allow) break;
                         }
                         if (rule.OS_Arch != null)
@@ -95,11 +93,12 @@ namespace BianCore.Modules.Minecraft
 
         private void GetOldJVMArguments(ref StringBuilder jvmSb, LaunchProperties prop)
         {
-            if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.Windows)
+            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+            if (platform == SystemTools.OSPlatform.Windows)
             {
                 jvmSb.Append(" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
             }
-            else if (SystemTools.GetOSPlatform() == SystemTools.OSPlatform.OSX)
+            else if (platform == SystemTools.OSPlatform.OSX)
             {
                 jvmSb.Append(" -XstartOnFirstThread");
                 jvmSb.Append(" -Xss1M");
@@ -110,18 +109,17 @@ namespace BianCore.Modules.Minecraft
 
         public string BuildLaunchScript(LaunchProperties prop)
         {
-            // JVM 参数
             StringBuilder jvmSb = new StringBuilder();
 
             // 优化参数
             jvmSb.Append($" -XX:+Use{prop.JVMProperties.GCType}");
-            jvmSb.Append($" -XX:{(prop.JVMProperties.UseAdaptiveSizePolicy
-                ? '+' : '-')}UseAdaptiveSizePolicy");
-            jvmSb.Append($" -XX:{(prop.JVMProperties.OmitStackTraceInFastThrow
-                ? '+' : '-')}OmitStackTraceInFastThrow");
+            jvmSb.Append($" -XX:{(prop.JVMProperties.UseAdaptiveSizePolicy ? '+' : '-')}UseAdaptiveSizePolicy");
+            jvmSb.Append($" -XX:{(prop.JVMProperties.OmitStackTraceInFastThrow ? '+' : '-')}OmitStackTraceInFastThrow");
             jvmSb.Append($" -Dfml.ignoreInvalidMinecraftCertificates={prop.JVMProperties.FML_IgnoreInvalidMinecraftCertificates}");
             jvmSb.Append($" -Dfml.ignorePatchDiscrepancies={prop.JVMProperties.FML_IgnorePatchDiscrepancies}");
-            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); // log4j CVE-2021-44228
+
+            // log4j CVE-2021-44228
+            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); 
 
             // 内存参数
             jvmSb.Append($" -Xmn{prop.JVMProperties.NewGenHeapSize}M");
@@ -159,20 +157,17 @@ namespace BianCore.Modules.Minecraft
             var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
 
             if (prop.LaunchVersion.InheritsFrom == null)
+            if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
             {
                 libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
-                jvmSb.Replace("${natives_directory}"
-                    , '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
+                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
             }
             else // 继承版本
             {
                 libStrs.Add(Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}.jar"));
-                jvmSb.Replace("${natives_directory}"
-                    , '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
+                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
             }
-            jvmSb.Replace("${classpath}", '\"'
-                + string.Join(Path.PathSeparator.ToString()
-                , libStrs) + '\"');
+            jvmSb.Replace("${classpath}", '\"' + string.Join(Path.PathSeparator.ToString(), libStrs) + '\"');
             jvmSb.Append(' ' + prop.LaunchVersion.MainClass);
             jvmSb.Replace("${library_directory}", '\"' + Path.Combine(MinecraftPath, "libraries") + '\"');
             jvmSb.Replace("${classpath_separator}", Path.PathSeparator.ToString());
@@ -180,20 +175,14 @@ namespace BianCore.Modules.Minecraft
 
             // 游戏参数
             StringBuilder gameSb = new StringBuilder();
+
             if (prop.LaunchVersion.Arguments.HasValue)
-            {
                 foreach (var arg in prop.LaunchVersion.Arguments.Value.Game)
-                {
                     foreach (string value in arg.Values)
-                    {
                         gameSb.Append(' ' + value);
-                    }
-                }
-            }
             else
-            {
                 gameSb.Append(' ' + prop.LaunchVersion.MinecraftArguments);
-            }
+
             gameSb.Append($" --width {prop.GameProperties.WindowWidth}");
             gameSb.Append($" --height {prop.GameProperties.WindowHeight}");
 
@@ -223,9 +212,7 @@ namespace BianCore.Modules.Minecraft
 
             // 加入 Optifine 参数
             if (hasOptifine) // 兼容 PCL2 版本 JSON
-            {
                 gameSb.Append(" --tweakClass optifine.OptiFineForgeTweaker");
-            }
 
             return jvmSb.Append(gameSb.ToString()).ToString().Trim();
         }

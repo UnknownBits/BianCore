@@ -1,4 +1,5 @@
-﻿using BianCore.DataType.Minecraft.Launcher;
+﻿using BianCore.DataType;
+using BianCore.DataType.Minecraft.Launcher;
 using BianCore.Tools;
 using Microsoft.Win32;
 using System;
@@ -17,58 +18,54 @@ namespace BianCore.Modules.Minecraft
         public static JavaInfo[] FindJava()
         {
             List<JavaInfo> javaList = new List<JavaInfo>();
-
-            switch (SystemTools.GetOSPlatform())
+            SystemTools.GetOSPlatform(out SystemTools.OSPlatform platform);
+            switch (platform)
             {
                 case SystemTools.OSPlatform.Windows:
-                    var rootReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, Environment.Is64BitOperatingSystem
-                        ? RegistryView.Registry64 : RegistryView.Registry32).OpenSubKey("SOFTWARE");
-                    if (rootReg == null)
-                    {
-                        return new JavaInfo[0];
-                    }
-
+                    var rootReg = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32).OpenSubKey("SOFTWARE");
+                    if (rootReg == null) return Array.Empty<JavaInfo>();
 
                     RegistryKey javaRootReg = rootReg.OpenSubKey("JavaSoft");
-                    if (javaRootReg == null) return new JavaInfo[0];
+                    if (javaRootReg == null) return Array.Empty<JavaInfo>();
 
                     // 在注册表中寻找 Java
                     var jreRootReg = javaRootReg.OpenSubKey("Java Runtime Environment");
                     if (jreRootReg != null)
-                    {
                         foreach (string jre in jreRootReg.GetSubKeyNames())
                         {
-                            try
-                            {
-                                var jreInfo = jreRootReg.OpenSubKey(jre);
-                                string path = Path.Combine(jreInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
-                                string version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
-                                javaList.Add(new JavaInfo(version, path));
-                            }
-                            catch { }
+                            var jreInfo = jreRootReg.OpenSubKey(jre);
+                            if (jreInfo == null) continue;
+
+                            var value = jreInfo.GetValue("JavaHome");
+                            if (value == null) continue;
+
+                            var path = Path.Combine(value.ToString(), "bin\\java.exe");
+                            var version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
+                            javaList.Add(new JavaInfo(version, path));
+
                         }
-                    }
 
                     var jdkRootReg = javaRootReg.OpenSubKey("JDK");
                     if (jdkRootReg != null)
-                    {
                         foreach (string jdk in jdkRootReg.GetSubKeyNames())
                         {
                             var jdkInfo = jdkRootReg.OpenSubKey(jdk);
-                            string path = Path.Combine(jdkInfo.GetValue("JavaHome").ToString(), "bin\\java.exe");
+                            if (jdkInfo == null) continue;
+
+                            var value = jdkInfo.GetValue("JavaHome");
+                            if (value == null) continue;
+
+                            string path = Path.Combine(value.ToString(), "bin\\java.exe");
                             string version = FileVersionInfo.GetVersionInfo(path).ProductVersion;
                             javaList.Add(new JavaInfo(version, path));
+
                         }
-                    }
                     break;
                 case SystemTools.OSPlatform.Linux:
                     throw new NotImplementedException("暂不支持寻找 Linux Java。");
-                    break;
                 case SystemTools.OSPlatform.OSX:
                     throw new NotImplementedException("暂不支持寻找 MacOS Java。");
-                    break;
             }
-
             return javaList.ToArray();
         }
 
@@ -124,41 +121,6 @@ namespace BianCore.Modules.Minecraft
                 throw new ArgumentException($"不存在 Major 版本为 {dstJavaMajor} 的 Java。");
             }
             return selectJava;
-        }
-    }
-
-    public class JavaInfo
-    {
-        public readonly Version JavaVersion;
-        public readonly string JavaPath;
-
-        internal JavaInfo(string version, string javaHome)
-        {
-            if (!version.Contains(".")) version += ".0";
-            Version javaVersion = Version.Parse(version);
-            JavaVersion = javaVersion;
-            JavaPath = javaHome;
-        }
-
-        public override bool Equals(object obj)
-        {
-            JavaInfo javaInfo = obj as JavaInfo;
-            return this == javaInfo;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public static bool operator ==(JavaInfo java1, JavaInfo java2)
-        {
-            return java1?.JavaPath == java2?.JavaPath;
-        }
-
-        public static bool operator !=(JavaInfo java1, JavaInfo java2)
-        {
-            return !(java1 == java2);
         }
     }
 }

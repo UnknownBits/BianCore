@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BianCore.Network", "BianCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BianCore", "BianCore\BianCore.csproj", "{78C961D6-FC46-4438-B960-27F3A2508845}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UBCL.ConsoleApp", "UBCL.ConsoleApp\UBCL.ConsoleApp.csproj", "{036E4F13-DBC1-4518-BC04-DAEA1E636C74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{78C961D6-FC46-4438-B960-27F3A2508845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78C961D6-FC46-4438-B960-27F3A2508845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78C961D6-FC46-4438-B960-27F3A2508845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036E4F13-DBC1-4518-BC04-DAEA1E636C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036E4F13-DBC1-4518-BC04-DAEA1E636C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036E4F13-DBC1-4518-BC04-DAEA1E636C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036E4F13-DBC1-4518-BC04-DAEA1E636C74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,12 +10,12 @@ namespace BianCore.Tools
         private FileStream fileStream;
         private bool disposedValue;
 
+        public enum Level { INFO, WARN, ERROR }
+
         public Log(string logPath)
         {
             if (!Directory.Exists(Path.GetDirectoryName(logPath)))
-            {
                 Directory.CreateDirectory(Path.GetDirectoryName(logPath));
-            }
             fileStream = new FileStream(logPath, FileMode.Create);
         }
 
@@ -38,21 +38,12 @@ namespace BianCore.Tools
             });
         }
 
-        public enum Level
-        {
-            INFO,
-            WARN,
-            ERROR
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
+                if (disposing) 
                     fileStream.Close();
-                }
                 disposedValue = true;
             }
         }
