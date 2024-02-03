@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BianCore.Network
 {
@@ -31,7 +24,7 @@ namespace BianCore.Network
         public static readonly Dictionary<Guid, TcpServerSocket> clients = new();
         private Guid uid;
 
-        public TcpServerSocket(Socket socket, Action<TcpSocket> start_action, Action<TcpSocket, byte[]> message_action, Action<TcpSocket> end_action) 
+        public TcpServerSocket(Socket socket, Action<TcpSocket> start_action, Action<TcpSocket, byte[]> message_action, Action<TcpSocket> end_action)
         {
             this.socket = socket;
             this.uid = Guid.NewGuid();
@@ -48,7 +41,8 @@ namespace BianCore.Network
             Trace.WriteLine("[TcpSocketServer]新客户连接建立");
             Task.Run(() => { start_action(this); });
             while (connected)
-                try {
+                try
+                {
                     byte[] buffer = new byte[8193];
                     int size = socket.Receive(buffer);
                     if (size <= 0) { throw new Exception(); }
@@ -60,28 +54,34 @@ namespace BianCore.Network
             Disconnect();
         }
 
-        public static void BroadcastPacket(string data) {
+        public static void BroadcastPacket(string data)
+        {
             lock (clients) foreach (var client in clients.Values)
                     try { client.socket.Send(Encoding.UTF8.GetBytes(data)); }
                     catch { client.Disconnect(); }
             Trace.WriteLine($"广播数据：{data}");
         }
-        public static void BroadcastPacket(byte[] data) {
+        public static void BroadcastPacket(byte[] data)
+        {
             lock (clients) foreach (var client in clients.Values)
                     try { client.socket.Send(data); }
                     catch { client.Disconnect(); }
             Trace.WriteLine($"广播数据：{data}");
         }
-        public static void SendPacket(TcpServerSocket tcpSocket, string data) {
+        public static void SendPacket(TcpServerSocket tcpSocket, string data)
+        {
             try { tcpSocket.socket.Send(Encoding.UTF8.GetBytes(data)); }
             catch { tcpSocket.Disconnect(); }
         }
-        public static void SendPacket(TcpServerSocket tcpSocket, byte[] data) {
+        public static void SendPacket(TcpServerSocket tcpSocket, byte[] data)
+        {
             try { tcpSocket.socket.Send(data); }
             catch { tcpSocket.Disconnect(); }
         }
-        public void Disconnect() {
-            if (connected) try {
+        public void Disconnect()
+        {
+            if (connected) try
+                {
                     socket.Close();
                     lock (clients) clients.Remove(uid);
                     connected = false;
@@ -110,31 +110,38 @@ namespace BianCore.Network
         public void MessageService()
         {
             Task.Run(() => { start_action(this); });
-            if (connected) try {
-                Task ReceiveTask = Task.Run(() => {
-                    while (socket != null && connected) {
-                        try {
-                            // 接收
-                            int size = 0;
-                            byte[] buffer = new byte[8193];
-                            size = socket.Receive(buffer);
-                            if (size <= 0) { throw new SocketException(10054); }
-                            Array.Resize(ref buffer, size);
-                            Task.Run(() => { message_action(this,buffer); });
+            if (connected) try
+                {
+                    Task ReceiveTask = Task.Run(() =>
+                    {
+                        while (socket != null && connected)
+                        {
+                            try
+                            {
+                                // 接收
+                                int size = 0;
+                                byte[] buffer = new byte[8193];
+                                size = socket.Receive(buffer);
+                                if (size <= 0) { throw new SocketException(10054); }
+                                Array.Resize(ref buffer, size);
+                                Task.Run(() => { message_action(this, buffer); });
+                            }
+                            catch
+                            {
+                                if (connected) Disconnect();
+                                break;
+                            }
                         }
-                        catch {
-                            if (connected) Disconnect();
-                            break;
-                        }
-                    }
-                    Disconnect();
-                });
-            }
-            catch { Disconnect(); }
+                        Disconnect();
+                    });
+                }
+                catch { Disconnect(); }
         }
 
-        public void Disconnect() {
-            if (connected) try {
+        public void Disconnect()
+        {
+            if (connected) try
+                {
                     connected = false;
                     socket.Close();
                     Task.Run(() => { end_action(this); });

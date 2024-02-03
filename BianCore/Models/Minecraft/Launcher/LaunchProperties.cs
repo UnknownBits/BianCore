@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BianCore.DataType.Minecraft.Launcher
+﻿namespace BianCore.DataType.Minecraft.Launcher
 {
     public struct LaunchProperties
     {

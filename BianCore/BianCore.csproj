@@ -59,17 +59,6 @@
     <None Remove="Modules\OpenFrp\**" />
     <None Remove="obj\**" />
   </ItemGroup>
-		
-  <ItemGroup>
-    <None Remove="Resources\bian_128.png" />
-  </ItemGroup>
-		
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\bian_128.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </EmbeddedResource>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
@@ -85,10 +74,25 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Update="Resources\1.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\zh_cn.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>zh_cn.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\zh_cn.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>zh_cn.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

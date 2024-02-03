@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Management;
 using System.Runtime.InteropServices;
 
 namespace BianCore.Tools
@@ -17,7 +16,7 @@ namespace BianCore.Tools
         public static string GetOSVersion() { return RuntimeInformation.OSDescription; }
 
         public static Architecture GetArchitecture() { return RuntimeInformation.ProcessArchitecture; }
-        
+
 
         public static void GetOSPlatform(out OSPlatform platform)
         {

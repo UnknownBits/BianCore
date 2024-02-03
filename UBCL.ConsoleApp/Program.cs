@@ -1,9 +1,5 @@
-﻿using BianCore;
-using BianCore.API;
+﻿using BianCore.API;
 using BianCore.DataType.API.Microsoft;
-using BianCore.Modules.Minecraft.Authenticator.EventArgs;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace UBCL.ConsoleApp
 {

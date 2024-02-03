@@ -1,6 +1,5 @@
 ﻿using BianCore.Tools;
 using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using System;
 
 namespace BianCore.API

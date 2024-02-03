@@ -1,11 +1,8 @@
 ﻿using BianCore.DataType.Minecraft.Launcher;
 using BianCore.Tools;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace BianCore.Modules.Minecraft
 {
@@ -149,7 +146,7 @@ namespace BianCore.Modules.Minecraft
                         result.Add(lib);
                 }
             }
-            
+
             return result.ToArray();
         }
     }

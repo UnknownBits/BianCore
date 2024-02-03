@@ -42,7 +42,7 @@ namespace BianCore.Tools
         {
             if (!disposedValue)
             {
-                if (disposing) 
+                if (disposing)
                     fileStream.Close();
                 disposedValue = true;
             }

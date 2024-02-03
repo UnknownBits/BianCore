@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace BianCore.Tools
 {
@@ -14,15 +11,11 @@ namespace BianCore.Tools
             DirectoryInfo[] directoryInfos = info.GetDirectories();
             List<FileInfo> fileInfos = new List<FileInfo>();
             foreach (var directory in directoryInfos)
-            {
                 fileInfos.AddRange(directory.GetFiles());
-            }
             List<FileInfo> results = new List<FileInfo>();
             foreach (FileInfo file in fileInfos)
-            {
-                if (file.Name.Contains(pattern)) results.Add(file);
-            }
-
+                if (file.Name.Contains(pattern)) 
+                    results.Add(file);
             return results.ToArray();
         }
     }

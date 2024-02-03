@@ -1,13 +1,10 @@
 ﻿using BianCore.DataType.Minecraft.Launcher;
 using BianCore.Tools;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace BianCore.Modules.Minecraft
 {
@@ -119,7 +116,7 @@ namespace BianCore.Modules.Minecraft
             jvmSb.Append($" -Dfml.ignorePatchDiscrepancies={prop.JVMProperties.FML_IgnorePatchDiscrepancies}");
 
             // log4j CVE-2021-44228
-            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true"); 
+            jvmSb.Append($" -Dlog4j2.formatMsgNoLookups=true");
 
             // 内存参数
             jvmSb.Append($" -Xmn{prop.JVMProperties.NewGenHeapSize}M");
@@ -147,9 +144,9 @@ namespace BianCore.Modules.Minecraft
             }
             else // 1.12 及以下版本参数
             {
-                if (prop.LaunchVersion.MinecraftArguments != null)  GetOldJVMArguments(ref jvmSb, prop);
+                if (prop.LaunchVersion.MinecraftArguments != null) GetOldJVMArguments(ref jvmSb, prop);
             }
-            
+
         SkipJVM:
             // 替换 JVM 参数填充符
             jvmSb.Replace("${launcher_name}", '\"' + Config.Project_Name + '\"');
@@ -157,16 +154,16 @@ namespace BianCore.Modules.Minecraft
             var libStrs = LibrariesCompleter.LibrariesToPaths(libs, MinecraftPath).ToList();
 
             if (prop.LaunchVersion.InheritsFrom == null)
-            if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
-            {
-                libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
-                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
-            }
-            else // 继承版本
-            {
-                libStrs.Add(Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}.jar"));
-                jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
-            }
+                if (string.IsNullOrEmpty(prop.LaunchVersion.InheritsFrom))
+                {
+                    libStrs.Add(Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}.jar"));
+                    jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(prop.LaunchVersion.VersionPath, $"{prop.LaunchVersion.ID}-natives") + '\"');
+                }
+                else // 继承版本
+                {
+                    libStrs.Add(Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}.jar"));
+                    jvmSb.Replace("${natives_directory}", '\"' + Path.Combine(inheritsVer.VersionPath, $"{inheritsVer.ID}-natives") + '\"');
+                }
             jvmSb.Replace("${classpath}", '\"' + string.Join(Path.PathSeparator.ToString(), libStrs) + '\"');
             jvmSb.Append(' ' + prop.LaunchVersion.MainClass);
             jvmSb.Replace("${library_directory}", '\"' + Path.Combine(MinecraftPath, "libraries") + '\"');
